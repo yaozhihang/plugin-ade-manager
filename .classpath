@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/citygml4j-2.4.2.jar"/>
+	<classpathentry kind="lib" path="lib/ojdbc7.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-9.4.1209.jar"/>
 	<classpathentry kind="lib" path="lib/3dcitydb-impexp.jar"/>
+	<classpathentry kind="lib" path="lib/citydb-schema.jar"/>
+	<classpathentry kind="lib" path="resources/jar"/>
 	<classpathentry kind="lib" path="lib/tomcat-jdbc.jar"/>
 	<classpathentry kind="lib" path="lib/tomcat-juli.jar"/>
-	<classpathentry kind="lib" path="lib/ojdbc7.jar"/>
-	<classpathentry kind="lib" path="lib/postgis-jdbc-2.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/postgresql-9.4.1209.jar"/>
-	<classpathentry kind="lib" path="lib/sdoapi.jar"/>
+	<classpathentry kind="lib" path="lib/citygml4j-2.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
