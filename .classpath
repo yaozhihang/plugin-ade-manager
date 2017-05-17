@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/tomcat-jdbc.jar"/>
 	<classpathentry kind="lib" path="lib/tomcat-juli.jar"/>
 	<classpathentry kind="lib" path="lib/citygml4j-2.5.0.jar"/>
+	<classpathentry kind="lib" path="lib/sdoapi.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

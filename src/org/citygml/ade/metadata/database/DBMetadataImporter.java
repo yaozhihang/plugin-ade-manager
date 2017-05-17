@@ -34,11 +34,11 @@ public class DBMetadataImporter {
 		this.dbPool = dbPool;
 
 		String insertSchemaQueryStr = "INSERT INTO SCHEMA"
-				+ "(ID, IS_ROOT_SCHEMA, NAME, NAMESPACE_URI, DB_PREFIX, VERSION, XML_PREFIX, XML_SCHEMA_LOCATION, XML_SCHEMAFILE, XML_SCHEMAFILE_TYPE, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT) VALUES"
+				+ "(ID, IS_ADE_ROOT, NAME, NAMESPACE_URI, DB_PREFIX, VERSION, XML_PREFIX, XML_SCHEMA_LOCATION, XML_SCHEMAFILE, XML_SCHEMAFILE_TYPE, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT) VALUES"
 				+ "(?,?,?,?,?,?,?,?,?,?,?,?)";
 		psInsertSchema = dbPool.getConnection().prepareStatement(insertSchemaQueryStr);
 		
-		String insertSchemaReferencingQueryString = "INSERT INTO schema_referencing" + "(LOCAL_ID, REFERENCING_ID) VALUES" + "(?,?)";
+		String insertSchemaReferencingQueryString = "INSERT INTO schema_referencing" + "(REFERENCED_ID, REFERENCING_ID) VALUES" + "(?,?)";
 		psInsertSchemaReferencing = dbPool.getConnection().prepareStatement(insertSchemaReferencingQueryString);
 				
 		String insertObjectclassQueryString = "INSERT INTO OBJECTCLASS" + "(ID, IS_ADE_CLASS, CLASSNAME, TABLENAME, SUPERCLASS_ID, BASECLASS_ID) VALUES" + "(?,?,?,?,?,?)";
@@ -111,7 +111,7 @@ public class DBMetadataImporter {
 				psInsertSchema.setNull(index++, Types.VARCHAR);
 				psInsertSchema.setString(index++, adeSchema.getId());
 				psInsertSchema.setString(index++, adeNamespace.getURI());
-				psInsertSchema.setObject(index++, Types.BLOB);
+				psInsertSchema.setObject(index++, null);
 				psInsertSchema.setNull(index++, Types.VARCHAR);
 				psInsertSchema.setNull(index++, Types.CLOB);
 				psInsertSchema.setNull(index++, Types.CLOB);
@@ -146,16 +146,16 @@ public class DBMetadataImporter {
 	private void insertSchemaReferencing(Map<String, List<Long>> insertedSchemas, String adeRootSchemaId) throws SQLException {	
 		int numberOfCityGMLversions = schemaMapping.getAppSchemas().get(0).getNamespaces().size();
 		for (int i = 0; i < numberOfCityGMLversions; i++) {
-			long insertedRootId = insertedSchemas.get(adeRootSchemaId).get(i);
+			long referencingId = insertedSchemas.get(adeRootSchemaId).get(i);
 			
 			Iterator<String> iter = insertedSchemas.keySet().iterator();
 		    while (iter.hasNext()) {
 		        String schemaId = iter.next();
 		        if (!schemaId.equalsIgnoreCase(adeRootSchemaId)) {
-		        	long insertedId = insertedSchemas.get(schemaId).get(i);
-	
-		        	psInsertSchemaReferencing.setLong(1, insertedRootId);
-		        	psInsertSchemaReferencing.setLong(2, insertedId);	
+		        	long referencedId = insertedSchemas.get(schemaId).get(i);
+			        	
+		        	psInsertSchemaReferencing.setLong(1, referencedId);	
+		        	psInsertSchemaReferencing.setLong(2, referencingId);
 		        	
 		        	psInsertSchemaReferencing.executeUpdate();
 		        }		        

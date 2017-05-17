@@ -39,7 +39,7 @@ public class Main {
 	}
 	
 	public void doMain() {
-		String impExpConfigpPath = "resources" + File.separator + "impExpConfig.xml";
+		String impExpConfigpPath = "resources" + File.separator + "impExpConfig_oracle.xml";
 		String sourceAdeSchemaMappingPath = "resources" + File.separator + "test-ade-schema.xml";
 		String updatedAdeSchemaMappingPath = "output" + File.separator + "test-ade-schema2.xml";
 		
