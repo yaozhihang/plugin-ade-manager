@@ -29,5 +29,5 @@ package org.citygml.ade.metadata.database;
 
 public enum DBSequenceType {
 	schema_seq,
-	objectclass_seq
+	ade_seq
 }

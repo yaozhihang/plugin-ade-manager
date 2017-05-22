@@ -14,18 +14,18 @@ import org.citydb.database.schema.mapping.SchemaMapping;
 public class DBUtil {
 
 	public static SchemaMapping regenerateObjectclassIds(DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
+		int initialObjectclassid = 10000;
+		
 		Iterator<ObjectType> objectIter = schemaMapping.getObjectTypes().iterator();			
 		while (objectIter.hasNext()) {
 			ObjectType objectType = objectIter.next();				
-			long objectclassId = getSequenceID (dbPool, DBSequenceType.objectclass_seq);
-			objectType.setObjectClass((int)objectclassId);					
+			objectType.setObjectClass(initialObjectclassid++);					
 		}
 		
 		Iterator<FeatureType> featureIter = schemaMapping.getFeatureTypes().iterator();
 		while (featureIter.hasNext()) {
 			FeatureType featureType = featureIter.next();				
-			long objectclassId = getSequenceID (dbPool, DBSequenceType.objectclass_seq);
-			featureType.setObjectClass((int)objectclassId);				
+			featureType.setObjectClass(initialObjectclassid++);				
 		}		
 		
 		return schemaMapping;

@@ -21,6 +21,7 @@ import org.citydb.database.schema.mapping.SchemaMapping;
 public class DBMetadataImporter {	
 	private final DatabaseConnectionPool dbPool;
 	
+	private PreparedStatement psInsertADE;
 	private PreparedStatement psInsertSchema;
 	private PreparedStatement psInsertSchemaToObjectclass;
 	private PreparedStatement psInsertSchemaReferencing;
@@ -33,9 +34,14 @@ public class DBMetadataImporter {
 	public DBMetadataImporter(DatabaseConnectionPool dbPool) throws SQLException {
 		this.dbPool = dbPool;
 
+		String insertADEQueryStr = "INSERT INTO ADE"
+				+ "(ID, NAME, DESCRIPTION, VERSION, DB_PREFIX, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT, CREATION_DATE, CREATION_PERSON) VALUES"
+				+ "(?,?,?,?,?,?,?,?,?)";
+		psInsertADE = dbPool.getConnection().prepareStatement(insertADEQueryStr);
+		
 		String insertSchemaQueryStr = "INSERT INTO SCHEMA"
-				+ "(ID, IS_ADE_ROOT, NAME, NAMESPACE_URI, DB_PREFIX, VERSION, XML_PREFIX, XML_SCHEMA_LOCATION, XML_SCHEMAFILE, XML_SCHEMAFILE_TYPE, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT) VALUES"
-				+ "(?,?,?,?,?,?,?,?,?,?,?,?)";
+				+ "(ID, IS_ADE_ROOT, CITYGML_VERSION, XML_NAMESPACE_URI, XML_NAMESPACE_PREFIX, XML_SCHEMA_LOCATION, XML_SCHEMAFILE, XML_SCHEMAFILE_TYPE, ADE_ID) VALUES"
+				+ "(?,?,?,?,?,?,?,?,?)";
 		psInsertSchema = dbPool.getConnection().prepareStatement(insertSchemaQueryStr);
 		
 		String insertSchemaReferencingQueryString = "INSERT INTO schema_referencing" + "(REFERENCED_ID, REFERENCING_ID) VALUES" + "(?,?)";
@@ -52,10 +58,18 @@ public class DBMetadataImporter {
 		this.schemaMapping = schemaMapping;
 		this.adeSchemaIds = adeSchemaIds;
 		this.adeRootSchemaId = adeRootSchemaId;
+
+		long insertedADEId;
+		try {
+			insertedADEId = insertADE();
+			psInsertADE.close();
+		} catch (SQLException e) {
+			throw new DBMetadataImportException("Failed to import metadata into 'ADE' table.", e);
+		}
 		
 		Map<String, List<Long>> insertedSchemas = null;
 		try {
-			insertedSchemas = insertSchemas();
+			insertedSchemas = insertSchemas(insertedADEId);
 			psInsertSchema.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'SCHEMA' table.", e);
@@ -84,7 +98,25 @@ public class DBMetadataImporter {
 		}	
 	}
 
-	private Map<String, List<Long>> insertSchemas() throws SQLException {				
+	private long insertADE() throws SQLException {				
+		long seqId = DBUtil.getSequenceID(dbPool, DBSequenceType.ade_seq);
+		
+		int index = 1;
+		psInsertADE.setLong(index++, seqId);
+		psInsertADE.setString(index++, "TestADE");
+		psInsertADE.setString(index++, "TestADE");
+		psInsertADE.setString(index++, "1.0");
+		psInsertADE.setString(index++, "test");
+		psInsertADE.setNull(index++, Types.CLOB);
+		psInsertADE.setNull(index++, Types.CLOB);
+		psInsertADE.setNull(index++, Types.DATE);
+		psInsertADE.setNull(index++, Types.VARCHAR);
+		
+		psInsertADE.executeUpdate();
+		return seqId;
+	}
+	
+	private Map<String, List<Long>> insertSchemas(long adeId) throws SQLException {				
 		Map<String, List<Long>> insertedSchemas = new HashMap<String, List<Long>>();
 
 		Iterator<AppSchema> schemaIter = schemaMapping.getAppSchemas().iterator();		
@@ -105,16 +137,13 @@ public class DBMetadataImporter {
 				int index = 1;
 				psInsertSchema.setLong(index++, seqId);
 				psInsertSchema.setInt(index++, adeSchema.getId().equalsIgnoreCase(adeRootSchemaId)?1:0);
-				psInsertSchema.setString(index++, adeSchema.getName());
+				psInsertSchema.setString(index++, adeNamespace.getContext().name());
 				psInsertSchema.setString(index++, adeNamespace.getURI());
 				psInsertSchema.setString(index++, adeSchema.getId());
 				psInsertSchema.setNull(index++, Types.VARCHAR);
-				psInsertSchema.setString(index++, adeSchema.getId());
-				psInsertSchema.setString(index++, adeNamespace.getURI());
 				psInsertSchema.setObject(index++, null);
 				psInsertSchema.setNull(index++, Types.VARCHAR);
-				psInsertSchema.setNull(index++, Types.CLOB);
-				psInsertSchema.setNull(index++, Types.CLOB);
+				psInsertSchema.setLong(index++, adeId);
 				
 				psInsertSchema.executeUpdate();
 			}					
