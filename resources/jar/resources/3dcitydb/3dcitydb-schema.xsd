@@ -15,35 +15,35 @@
       <xs:element name="attributeTypes" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="attributeType" type="complexAttributeType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="attributeType" type="complexAttributeType" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="complexTypes" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="complexType" type="complexType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="complexType" type="complexType" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="objectTypes" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="objectType" type="objectType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="objectType" type="objectType" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="featureTypes" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="featureType" type="featureType" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="featureType" type="featureType" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
       <xs:element name="propertyInjections" minOccurs="0">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="propertyInjection" type="propertyInjection" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="propertyInjection" type="propertyInjection" minOccurs="0" maxOccurs="unbounded"/>
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -73,7 +73,7 @@
         <xs:element name="complexAttribute" type="complexAttribute"/>
       </xs:choice>
     </xs:sequence>
-    <xs:attribute name="id" type="xs:ID"/>
+    <xs:attribute name="id" type="xs:ID" use="required"/>
     <xs:attribute name="table" type="xs:string"/>
   </xs:complexType>
 
@@ -120,7 +120,7 @@
     <xs:complexContent>
       <xs:extension base="abstractJoin">
         <xs:sequence>
-          <xs:element name="condition" type="condition" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="condition" type="condition" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="table" type="xs:string" use="required"/>
         <xs:attribute name="fromColumn" type="xs:string" use="required"/>
@@ -311,7 +311,7 @@
         <xs:attribute name="abstract" type="xs:boolean"/>
         <xs:attribute name="id" type="xs:ID" use="required"/>
         <xs:attribute name="table" type="xs:string" use="required"/>
-        <xs:attribute name="objectClass" type="xs:int" use="required"/>
+        <xs:attribute name="objectClassId" type="xs:int"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -345,7 +345,7 @@
         <xs:attribute name="abstract" type="xs:boolean"/>
         <xs:attribute name="id" type="xs:ID" use="required"/>
         <xs:attribute name="table" type="xs:string" use="required"/>
-        <xs:attribute name="objectClass" type="xs:int" use="required"/>
+        <xs:attribute name="objectClassId" type="xs:int"/>
         <xs:attribute name="topLevel" type="xs:boolean"/>
       </xs:extension>
     </xs:complexContent>
