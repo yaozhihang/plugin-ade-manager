@@ -1,5 +1,5 @@
 
-package org.citydb.plugins.ade_manager.gui.components;
+package org.citydb.plugins.ade_manager.gui.components.adeTable;
 
 public class ADERow implements Comparable<ADERow> {
 	public int rownum;

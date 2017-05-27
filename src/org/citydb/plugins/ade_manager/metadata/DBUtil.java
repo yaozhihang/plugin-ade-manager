@@ -1,4 +1,4 @@
-package org.citydb.plugins.ade_manager.database;
+package org.citydb.plugins.ade_manager.metadata;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,12 +14,12 @@ import org.citydb.database.DatabaseConnectionPool;
 import org.citydb.database.schema.mapping.FeatureType;
 import org.citydb.database.schema.mapping.ObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
-import org.citydb.plugins.ade_manager.gui.components.ADERow;
+import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
 
 public class DBUtil {
 
 	public static SchemaMapping regenerateObjectclassIds(DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
-		int initialObjectclassid = 80000;
+		int initialObjectclassid = schemaMapping.getMetadata().getInitialObjectClassId();
 		
 		Iterator<ObjectType> objectIter = schemaMapping.getObjectTypes().iterator();			
 		while (objectIter.hasNext()) {
@@ -78,13 +78,13 @@ public class DBUtil {
 		try {
 			conn = dbPool.getConnection();						
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select * from ade order by name");
+			rs = stmt.executeQuery("select * from ade order by id");
 			
 			while (rs.next()) {
-				String name = rs.getString(1);
-				String description = rs.getString(2);
-				String version = rs.getString(3);
-				String dbPrefix = rs.getString(4);
+				String name = rs.getString(2);
+				String description = rs.getString(3);
+				String version = rs.getString(4);
+				String dbPrefix = rs.getString(5);
 				ades.add(new ADERow(name, description, version, dbPrefix));					
 			}
 		} finally {

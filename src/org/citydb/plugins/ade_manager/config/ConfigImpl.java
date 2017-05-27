@@ -26,42 +26,115 @@
  */
 package org.citydb.plugins.ade_manager.config;
 
+import java.io.File;
+
 import javax.xml.bind.annotation.XmlType;
 
 import org.citydb.api.plugin.extension.config.PluginConfig;
 
 @XmlType(name="ADEManagerType", propOrder={			
-		"inputPath",		
-		"outputPath"	
+		"xmlSchemaInputPath",		
+		"transformationOutputPath",	
+		"inputGraphPath",		
+		"outputGraphPath",
+		"adeName",		
+		"adeDescription",	
+		"adeVersion",	
+		"adeDbPrefix",	
+		"initialObjectclassId",
+		"schemaMappingPath"	
 })
 
 public class ConfigImpl extends PluginConfig {
-	private String inputPath = "";
-	private String outputPath = "" ;	
-
+	private String xmlSchemaInputPath;
+	private String transformationOutputPath;
+	private String inputGraphPath;
+	private String outputGraphPath;
+	
+	private String adeName;
+	private String adeDescription;
+	private String adeVersion;
+	private String adeDbPrefix;
+	private int initialObjectclassId;
+	
+	private String schemaMappingPath;
+	
 	public ConfigImpl() {
-		
+		inputGraphPath = "graphs" + File.separator + "Working_Graph.ggx";
+		outputGraphPath = "graphs" + File.separator + "Working_Graph2.ggx";
+		initialObjectclassId = 10000;
 	}
 
-
-	public String getOutputPath() {
-		return outputPath;
+	public String getTransformationOutputPath() {
+		return transformationOutputPath;
 	}
 
-
-	public void setOutputPath(String outputPath) {
-		this.outputPath = outputPath;
-					
+	public void setTransformationOutputPath(String transformationOutputPath) {
+		this.transformationOutputPath = transformationOutputPath;					
 	}
 
-	public String getInputPath() {
-		return inputPath;
+	public String getXMLschemaInputPath() {
+		return xmlSchemaInputPath;
 	}
 
-
-	public void setInputPath(String inputPath) {
-		this.inputPath = inputPath;		
+	public void setXMLschemaInputPath(String xmlSchemaInputPath) {
+		this.xmlSchemaInputPath = xmlSchemaInputPath;		
 	}
 
+	public String getInputGraphPath() {
+		return inputGraphPath;
+	}
+
+	public String getOutputGraphPath() {
+		return outputGraphPath;
+	}
+
+	public String getAdeName() {
+		return adeName;
+	}
+
+	public void setAdeName(String adeName) {
+		this.adeName = adeName;
+	}
+
+	public String getAdeDescription() {
+		return adeDescription;
+	}
+
+	public void setAdeDescription(String adeDescription) {
+		this.adeDescription = adeDescription;
+	}
+
+	public String getAdeVersion() {
+		return adeVersion;
+	}
+
+	public void setAdeVersion(String adeVersion) {
+		this.adeVersion = adeVersion;
+	}
+
+	public String getAdeDbPrefix() {
+		return adeDbPrefix;
+	}
+
+	public void setAdeDbPrefix(String adeDbPrefix) {
+		this.adeDbPrefix = adeDbPrefix;
+	}
+
+	public int getInitialObjectclassId() {
+		return initialObjectclassId;
+	}
+
+	public void setInitialObjectclassId(int initialObjectclassId) {
+		this.initialObjectclassId = initialObjectclassId;
+	}
+
+	public String getSchemaMappingPath() {
+		return schemaMappingPath;
+	}
+
+	public void setSchemaMappingPath(String schemaMappingPath) {
+		this.schemaMappingPath = schemaMappingPath;
+	}
 
 }

@@ -1,0 +1,132 @@
+Mon May 22 11:11:02 CEST 2017
+Version:  AGG 2.1
+
+Layered graph transformation of : EdGraphOfMappingSchema
+on graph : MappingGraph
+[  Map-ObjectClass-To-Table  Map-Inheritance-To-Table  Create-Inline-Datatype  CloneSimpleAttribute  Map-Inheritance-To-Join  CreateObjectClassTable  Create-ObjectClassIDColumn  Map-M:N_Association  Map-M:N_Association-Self  Map-1:N_Association  Map-1:N_Association-Self  Map-1:N_Association-With-SharedTable  Map-1:N_Association-With-ForeignClass  Map-1:1_Association  Map-1:1_Association-Self  Map-1:1_Association-With-SharedTable  CreateSurfaceGeometryTable  Map-BrepGeometryProperty  Map-PointOrLinerGeometryProperty  Map-HybridGeometryProperty  Map-SimpleBasicDataProperty  Map-ComplexBasicDataProperty  Map-GenericDataProperty  CreateSimpleIndexForJoinColumn  CreateSpatialIndexForInlineGeometryColumn  CleanUp-IsolatedTables  ]
+
+Layer: 0
+[  Create-Inline-Datatype  Map-Inheritance-To-Table  CloneSimpleAttribute  Map-ObjectClass-To-Table  ]
+CloneSimpleAttribute 	 applied:  true
+[  Create-Inline-Datatype  Map-Inheritance-To-Table  CloneSimpleAttribute  Map-ObjectClass-To-Table  ]
+Map-ObjectClass-To-Table 	 applied:  false
+Attributes don't match.
+[  Create-Inline-Datatype  Map-Inheritance-To-Table  CloneSimpleAttribute  ]
+Map-Inheritance-To-Table 	 applied:  false
+Attributes don't match.
+[  Create-Inline-Datatype  CloneSimpleAttribute  ]
+CloneSimpleAttribute 	 applied:  false
+NAC  "Nac"  is violated!
+[  Create-Inline-Datatype  ]
+Create-Inline-Datatype 	 applied:  false
+NAC  "Nac"  is violated!
+[  ]
+used time: 95ms
+
+Layer: 1
+[  Map-Inheritance-To-Join  Create-ObjectClassIDColumn  CreateObjectClassTable  ]
+Map-Inheritance-To-Join 	 applied:  false
+NAC  "Nac"  is violated!
+[  Create-ObjectClassIDColumn  CreateObjectClassTable  ]
+CreateObjectClassTable 	 applied:  true
+[  Map-Inheritance-To-Join  Create-ObjectClassIDColumn  CreateObjectClassTable  ]
+Create-ObjectClassIDColumn 	 applied:  false
+
+[  Map-Inheritance-To-Join  CreateObjectClassTable  ]
+Map-Inheritance-To-Join 	 applied:  false
+
+[  CreateObjectClassTable  ]
+CreateObjectClassTable 	 applied:  false
+NAC  "Nac"  is violated!
+[  ]
+used time: 0ms
+
+Layer: 2
+[  Map-M:N_Association  Map-1:N_Association-With-ForeignClass  Map-1:1_Association-Self  Map-1:N_Association  Map-1:1_Association-With-SharedTable  Map-1:N_Association-Self  Map-1:1_Association  Map-M:N_Association-Self  Map-1:N_Association-With-SharedTable  ]
+Map-1:1_Association-With-SharedTable 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:N_Association-With-ForeignClass  Map-1:1_Association-Self  Map-1:N_Association  Map-1:N_Association-Self  Map-1:1_Association  Map-M:N_Association-Self  Map-1:N_Association-With-SharedTable  ]
+Map-1:1_Association 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:N_Association-With-ForeignClass  Map-1:1_Association-Self  Map-1:N_Association  Map-1:N_Association-Self  Map-M:N_Association-Self  Map-1:N_Association-With-SharedTable  ]
+Map-1:N_Association-With-ForeignClass 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:1_Association-Self  Map-1:N_Association  Map-1:N_Association-Self  Map-M:N_Association-Self  Map-1:N_Association-With-SharedTable  ]
+Map-1:N_Association 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:1_Association-Self  Map-1:N_Association-Self  Map-M:N_Association-Self  Map-1:N_Association-With-SharedTable  ]
+Map-1:N_Association-With-SharedTable 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:1_Association-Self  Map-1:N_Association-Self  Map-M:N_Association-Self  ]
+Map-1:1_Association-Self 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-1:N_Association-Self  Map-M:N_Association-Self  ]
+Map-1:N_Association-Self 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  Map-M:N_Association-Self  ]
+Map-M:N_Association-Self 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-M:N_Association  ]
+Map-M:N_Association 	 applied:  false
+NAC  "Nac"  is violated!
+[  ]
+used time: 0ms
+
+Layer: 3
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-GenericDataProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+Map-GenericDataProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+Map-BrepGeometryProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+Map-ComplexBasicDataProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+Map-PointOrLinerGeometryProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-SimpleBasicDataProperty  CreateSurfaceGeometryTable  ]
+CreateSurfaceGeometryTable 	 applied:  true
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-GenericDataProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+Map-GenericDataProperty 	 applied:  false
+
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  CreateSurfaceGeometryTable  ]
+CreateSurfaceGeometryTable 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-SimpleBasicDataProperty  Map-PointOrLinerGeometryProperty  ]
+Map-SimpleBasicDataProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-ComplexBasicDataProperty  Map-BrepGeometryProperty  Map-PointOrLinerGeometryProperty  ]
+Map-ComplexBasicDataProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-BrepGeometryProperty  Map-PointOrLinerGeometryProperty  ]
+Map-PointOrLinerGeometryProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-HybridGeometryProperty  Map-BrepGeometryProperty  ]
+Map-HybridGeometryProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  Map-BrepGeometryProperty  ]
+Map-BrepGeometryProperty 	 applied:  false
+NAC  "Nac"  is violated!
+[  ]
+used time: 10ms
+
+Layer: 4
+[  CleanUp-IsolatedTables  CreateSimpleIndexForJoinColumn  CreateSpatialIndexForInlineGeometryColumn  ]
+CleanUp-IsolatedTables 	 applied:  true
+[  CleanUp-IsolatedTables  CreateSimpleIndexForJoinColumn  CreateSpatialIndexForInlineGeometryColumn  ]
+CleanUp-IsolatedTables 	 applied:  true
+[  CleanUp-IsolatedTables  CreateSimpleIndexForJoinColumn  CreateSpatialIndexForInlineGeometryColumn  ]
+CleanUp-IsolatedTables 	 applied:  false
+
+[  CreateSimpleIndexForJoinColumn  CreateSpatialIndexForInlineGeometryColumn  ]
+CreateSimpleIndexForJoinColumn 	 applied:  false
+
+[  CreateSpatialIndexForInlineGeometryColumn  ]
+CreateSpatialIndexForInlineGeometryColumn 	 applied:  false
+
+[  ]
+used time: 0ms
+
+No more layers.
+Graph transformation finished

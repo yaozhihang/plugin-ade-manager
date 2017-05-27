@@ -1,4 +1,4 @@
-package org.citydb.plugins.ade_manager.database;
+package org.citydb.plugins.ade_manager.metadata;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,7 +13,6 @@ import org.citydb.database.DatabaseConnectionPool;
 import org.citydb.database.schema.mapping.AbstractExtension;
 import org.citydb.database.schema.mapping.AbstractObjectType;
 import org.citydb.database.schema.mapping.AppSchema;
-import org.citydb.database.schema.mapping.FeatureType;
 import org.citydb.database.schema.mapping.Namespace;
 import org.citydb.database.schema.mapping.ObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
@@ -111,10 +110,10 @@ public class DBMetadataImporter {
 		
 		int index = 1;
 		psInsertADE.setLong(index++, seqId);
-		psInsertADE.setString(index++, "TestADE");
-		psInsertADE.setString(index++, "TestADE");
-		psInsertADE.setString(index++, "1.0");
-		psInsertADE.setString(index++, "test");
+		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getName());
+		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDescription());
+		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getVersion());
+		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDBPrefix());
 		psInsertADE.setNull(index++, Types.CLOB);
 		psInsertADE.setNull(index++, Types.CLOB);
 		psInsertADE.setNull(index++, Types.DATE);

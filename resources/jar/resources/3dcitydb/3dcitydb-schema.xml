@@ -2,61 +2,61 @@
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.3dcitydb.org/database/schema/3.0 3dcitydb-schema.xsd">
 
   <applicationSchemas>
-    <schema id="core" name="Core">
+    <schema id="core">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/1.0</namespace>
     </schema>
-    <schema id="app" name="Appearance">
+    <schema id="app">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/appearance/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/appearance/1.0</namespace>
     </schema>
-    <schema id="bldg" name="Building">
+    <schema id="bldg">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/building/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/building/1.0</namespace>
     </schema>
-    <schema id="brid" name="Bridge">
+    <schema id="brid">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/bridge/2.0</namespace>
     </schema>
-    <schema id="frn" name="CityFurniture">
+    <schema id="frn">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/cityfurniture/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/cityfurniture/1.0</namespace>
     </schema>
-    <schema id="grp" name="CityObjectGroup">
+    <schema id="grp">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/cityobjectgroup/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/cityobjectgroup/1.0</namespace>
     </schema>
-    <schema id="gen" name="Generics">
+    <schema id="gen">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/generics/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/generics/1.0</namespace>
     </schema>
-    <schema id="luse" name="LandUse">
+    <schema id="luse">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/landuse/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/landuse/1.0</namespace>
     </schema>
-    <schema id="dem" name="Relief">
+    <schema id="dem">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/relief/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/relief/1.0</namespace>
     </schema>
-    <schema id="tran" name="Transportation">
+    <schema id="tran">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/transportation/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/transportation/1.0</namespace>
     </schema>
-    <schema id="tun" name="Tunnel">
+    <schema id="tun">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/tunnel/2.0</namespace>
     </schema>
-    <schema id="veg" name="Vegetation">
+    <schema id="veg">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/vegetation/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/vegetation/1.0</namespace>
     </schema>
-    <schema id="wtr" name="WaterBody">
+    <schema id="wtr">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/waterbody/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/waterbody/1.0</namespace>
     </schema>
-    <schema id="gml" name="GML">
+    <schema id="gml">
       <namespace context="citygml-2.0">http://www.opengis.net/gml</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/gml</namespace>
     </schema>
-    <schema id="citydb" name="3DCityDB ADE">
+    <schema id="citydb">
       <namespace context="citygml-2.0">http://www.3dcitydb.org/citygml-ade/3.0</namespace>
       <namespace context="citygml-1.0">http://www.3dcitydb.org/citygml-ade/3.0</namespace>
     </schema>

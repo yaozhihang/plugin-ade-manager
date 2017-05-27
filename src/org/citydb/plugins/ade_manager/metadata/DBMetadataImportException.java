@@ -1,4 +1,4 @@
-package org.citydb.plugins.ade_manager.database;
+package org.citydb.plugins.ade_manager.metadata;
 
 public class DBMetadataImportException extends Exception {
 

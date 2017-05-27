@@ -1,5 +1,5 @@
 
-package org.citydb.plugins.ade_manager.gui.components;
+package org.citydb.plugins.ade_manager.gui.components.schemaTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,21 +7,19 @@ import java.util.Collections;
 import javax.swing.table.AbstractTableModel;
 
 @SuppressWarnings("serial")
-public class ADETableModel extends AbstractTableModel {
+public class SchemaTableModel extends AbstractTableModel {
 
 	private String[] columnNames = null;
-	private ArrayList<ADERow> rows = new ArrayList<ADERow>();
+	private ArrayList<SchemaRow> rows = new ArrayList<SchemaRow>();
 
-	public ADETableModel() {
+	public SchemaTableModel() {
 		updateColumnsTitle();
 	}
 
 	public void updateColumnsTitle() {
-		columnNames = new String[4];
-		columnNames[0] = "Name";
-		columnNames[1] = "Description";
-		columnNames[2] = "Namespace";
-		columnNames[3] = "DB_Prefix";
+		columnNames = new String[1];
+		columnNames[0] = "Namespace of visited Schemas";
+
 		fireTableStructureChanged();
 	}
 
@@ -49,13 +47,13 @@ public class ADETableModel extends AbstractTableModel {
 		rows.get(row).setValue(col, value);
 	}
 
-	public void addNewRow(ADERow data) {
+	public void addNewRow(SchemaRow data) {
 		data.rownum = rows.size();
 		rows.add(data);
 		fireTableRowsInserted(rows.size() - 1, rows.size() - 1);
 	}
 
-	public void editRow(ADERow data) {
+	public void editRow(SchemaRow data) {
 		rows.set(data.rownum, data);
 		fireTableRowsUpdated(data.rownum, data.rownum);
 	}
@@ -88,7 +86,7 @@ public class ADETableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public ADERow getSchemaColumn(int index) {
+	public SchemaRow getSchemaColumn(int index) {
 		if (index < 0 || index >= rows.size())
 			return null;
 		return rows.get(index);
@@ -98,13 +96,13 @@ public class ADETableModel extends AbstractTableModel {
 		return false;
 	}
 
-	public ArrayList<ADERow> getRows() {
+	public ArrayList<SchemaRow> getRows() {
 		return rows;
 	}
 
 	public void reset() {
 		int size = rows.size();
-		rows = new ArrayList<ADERow>();
+		rows = new ArrayList<SchemaRow>();
 		if (size != 0)
 			fireTableRowsDeleted(0, size - 1);
 	}
