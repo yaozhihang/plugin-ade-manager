@@ -11,29 +11,80 @@ import java.util.List;
 
 import org.citydb.api.database.DatabaseType;
 import org.citydb.database.DatabaseConnectionPool;
-import org.citydb.database.schema.mapping.FeatureType;
-import org.citydb.database.schema.mapping.ObjectType;
+import org.citydb.database.schema.mapping.AbstractObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
 
 public class DBUtil {
 
-	public static SchemaMapping regenerateObjectclassIds(DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
-		int initialObjectclassid = schemaMapping.getMetadata().getInitialObjectClassId();
+	public static SchemaMapping regenerateObjectclassIds(DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) {
+		int initialObjectclassid = schemaMapping.getMetadata().getInitialObjectClassId();		
 		
-		Iterator<ObjectType> objectIter = schemaMapping.getObjectTypes().iterator();			
-		while (objectIter.hasNext()) {
-			ObjectType objectType = objectIter.next();				
-			objectType.setObjectClassId(initialObjectclassid++);					
+		Iterator<AbstractObjectType<?>> iter = schemaMapping.getAbstractObjectTypes().iterator();
+		while (iter.hasNext()) {
+			AbstractObjectType<?> objectclass = iter.next();
+			objectclass.setObjectClassId(initialObjectclassid++);
 		}
 		
-		Iterator<FeatureType> featureIter = schemaMapping.getFeatureTypes().iterator();
-		while (featureIter.hasNext()) {
-			FeatureType featureType = featureIter.next();				
-			featureType.setObjectClassId(initialObjectclassid++);				
-		}		
-		
 		return schemaMapping;
+	}
+	
+	public static void validateSchemaMapping (DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
+		Iterator<AbstractObjectType<?>> iter = schemaMapping.getAbstractObjectTypes().iterator();
+		while (iter.hasNext()) {
+			AbstractObjectType<?> objectclass = iter.next();
+			int objectclassId = objectclass.getObjectClassId();
+			if (!validateObjectclassId(dbPool, objectclassId))
+				throw new SQLException("The objectclass Id '" + objectclassId + "'" + " is invalid, because it has already been reserved by other class");			
+		}
+	}
+	
+	public static boolean validateObjectclassId (DatabaseConnectionPool dbPool, int objectclassId) throws SQLException {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		boolean isValid = true;
+
+		try {
+			conn = dbPool.getConnection();						
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select * from objectclass where id = " + objectclassId);
+			
+			if (rs.next())
+				isValid = false;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				rs = null;
+			}
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				stmt = null;
+			}
+
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				conn = null;
+			}
+		}
+		
+		return isValid;
 	}
 	
 	public static long getSequenceID(DatabaseConnectionPool dbPool, DBSequenceType seqType) throws SQLException {

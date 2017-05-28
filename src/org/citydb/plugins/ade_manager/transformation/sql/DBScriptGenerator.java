@@ -22,7 +22,7 @@ import org.apache.ddlutils.model.Table;
 import org.apache.ddlutils.platform.SqlBuilder;
 import org.apache.ddlutils.platform.oracle.Oracle10Platform;
 import org.apache.ddlutils.platform.postgresql.PostgreSqlPlatform;
-
+import org.citydb.log.Logger;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphNodeArcType;
@@ -42,6 +42,9 @@ public class DBScriptGenerator {
 	private Platform databasePlatform;
 	private ConfigImpl config;
 	private static final String indentStr = "    ";
+	
+	private final Logger LOG = Logger.getInstance();
+	
 	
 	public DBScriptGenerator(GraGra graphGrammar, ConfigImpl config) {
 		this.graphGrammar = graphGrammar;		
@@ -186,7 +189,7 @@ public class DBScriptGenerator {
 			column.setTypeCode(Types.INTEGER);
 		}
 		else {
-			System.out.println("Wrong Data Type at column: " + column.getName());
+			LOG.error("Incorrect Data Type at column: " + column.getName());
 			column.setTypeCode(Types.CLOB);
 		}
 		
@@ -318,9 +321,7 @@ public class DBScriptGenerator {
 					
 					if (shortenedName != null) {
 						attr.setValueAt(shortenedName, "name");
-						System.out.println(originalDatabaseObjectName + " ," + shortenedName);
-					}				
-					
+					}									
 				}		
 				break;
 			};
@@ -450,9 +451,10 @@ public class DBScriptGenerator {
 		int counter = 0;	
 		
 		// Create Database Schema for ADE...
+		PrintWriter writer = null;
 		try {
 			// create tables...
-			PrintWriter writer = new PrintWriter(createDbFile);
+			writer = new PrintWriter(createDbFile);
 			SqlBuilder sqlBuilder = new SqlBuilder(databasePlatform) {};		
 			sqlBuilder.setWriter(writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
@@ -469,7 +471,7 @@ public class DBScriptGenerator {
 					counter++;	
 				}
 			}
-			System.out.println(counter + " Tables have been generated!");
+			LOG.info(counter + " Tables have been generated for " + dbFolderName);
 
 			// create foreign key constraints
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
@@ -506,18 +508,17 @@ public class DBScriptGenerator {
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 			printComment("*********************************  Create Sequences  ***********************************", databasePlatform, writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
-			this.printCreateSequences(writer);
-			
-			// Close Writer instance
-			writer.close();						
-		} catch (IOException|NullPointerException e) {			
+			this.printCreateSequences(writer);			
+		} catch (IOException | NullPointerException e) {			
 			e.printStackTrace();
-		}	
+		} finally {
+			writer.close();	
+		}
 		
 		// Drop Database Schema for ADE...
 		try {
 			// drop foreign key constraints
-			PrintWriter writer = new PrintWriter(dropDbFile);
+			writer = new PrintWriter(dropDbFile);
 			SqlBuilder sqlBuilder = new SqlBuilder(databasePlatform) {};		
 			sqlBuilder.setWriter(writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
@@ -558,11 +559,11 @@ public class DBScriptGenerator {
 			// Recycle Bin for Oracle
 			if (databasePlatform instanceof Oracle10Platform)
 				printRecycleBinForOracle(writer);
-			
+		} catch (IOException | NullPointerException e) {			
+			e.printStackTrace();
+		} finally {
 			// Close Writer instance
 			writer.close();
-		} catch (IOException|NullPointerException e) {			
-			e.printStackTrace();
 		}
 	}
 	

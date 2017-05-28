@@ -79,6 +79,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	private JButton browseXMLSchemaButton = new JButton();
 	private JButton readXMLSchemaButton = new JButton();	
 	private JTable schemaTable;
+	private JScrollPane schemaPanel;
 	
 	private JPanel namePanel;
 	private JTextField nameInputField = new JTextField();	
@@ -118,6 +119,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		
 		initGui();
 		addListeners();
+		
+		setEnabledMetadataSettings(false);
 	}
 
 	private void initGui() {	
@@ -134,7 +137,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		schemaTable.setColumnSelectionAllowed(false);
 		schemaTable.setRowSelectionAllowed(true);
 		schemaTable.setRowHeight(20);		
-		JScrollPane schemaPanel = new JScrollPane(schemaTable);
+		schemaPanel = new JScrollPane(schemaTable);
 		schemaPanel.setPreferredSize(new Dimension(browseXMLSchemaText.getPreferredSize().width, 200));
 		schemaPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 4, 4)));
 		
@@ -179,7 +182,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		schemaAndMetadataPanel.add(schemaPanel, GuiUtil.setConstraints(0,0,0.7,0,GridBagConstraints.BOTH,0,0,0,0));
 		schemaAndMetadataPanel.add(Box.createRigidArea(new Dimension(BORDER_THICKNESS, 0)), GuiUtil.setConstraints(1,0,0,0,GridBagConstraints.NONE,0,0,0,0));
 		schemaAndMetadataPanel.add(metadataInputPanel, GuiUtil.setConstraints(2,0,0.3,0,GridBagConstraints.BOTH,0,0,0,0));
-						
+	
 		// Export panel
 		transformationOutputPanel = new JPanel();
 		transformationOutputPanel.setLayout(new GridBagLayout());
@@ -195,7 +198,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		adeTable.setRowSelectionAllowed(true);
 		adeTable.setRowHeight(20);		
 		adeTableScrollPanel = new JScrollPane(adeTable);
-		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 180));
+		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 200));
 		adeTableScrollPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 4, 4)));
 
 		browseSchemaMappingPanel = new JPanel();
@@ -401,6 +404,17 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	
 		browseSchemaMappingText.setText(chooser.getSelectedFile().toString());
 	}
+	
+	private void setEnabledMetadataSettings(boolean enable) {
+		nameInputField.setEnabled(enable);
+		descriptionInputField.setEnabled(enable);
+		versionInputField.setEnabled(enable);
+		dbPrefixInputField.setEnabled(enable);
+		initObjectClassIdInputField.setEnabled(enable);
+		browseOutputText.setEnabled(enable);
+		browserOutputButton.setEnabled(enable);
+		transformAndExportButton.setEnabled(enable);
+	}
 
 	private void browseTransformationOutputDirectory() {
 		JFileChooser chooser = new JFileChooser();
@@ -425,6 +439,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			schemaHandler = SchemaHandler.newInstance();
 			schemaHandler.setAnnotationParser(new DomAnnotationParserFactory());
 			String schemaFilePath = browseXMLSchemaText.getText();
+			
+			LOG.info("Parsing XML schema...");
 			schemaHandler.parseSchema(new File(schemaFilePath));
 
 			for (String schemaNamespace : schemaHandler.getTargetNamespaces()) {
@@ -435,6 +451,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 					schemaTableModel.addNewRow(schemaColumn);
 				}
 			}
+			LOG.info("Parsing finished");
+			setEnabledMetadataSettings(true);
 		} catch (SAXException e) {
 			LOG.error("Failed to read CityGML ADE's XML schema: " + e.getMessage());
 		}
@@ -443,8 +461,31 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	private void doTransformAndExport() {	
 		setSettings();
 		
-		String selectedSchemaNamespace = schemaTableModel.getSchemaColumn(schemaTable.getSelectedRow()).namespace;
-		Schema schema = schemaHandler.getSchema(selectedSchemaNamespace);	
+		int selectedRowNum = schemaTable.getSelectedRow();
+		if (selectedRowNum == -1) {
+			viewController.errorMessage("Incomplete Information", "Please select a schema namespace");
+			return;
+		}
+		String selectedSchemaNamespace = schemaTableModel.getSchemaColumn(selectedRowNum).namespace;
+		Schema schema = schemaHandler.getSchema(selectedSchemaNamespace);
+		
+		String adeName = config.getAdeName();
+		if (adeName.trim().equals("")) {
+			viewController.errorMessage("Incomplete Information", "Please enter a name for the ADE");
+			return;
+		}
+		
+		String dbPrefix = config.getAdeDbPrefix();
+		if (dbPrefix.trim().equals("")) {
+			viewController.errorMessage("Incomplete Information", "Please enter a name for the ADE");
+			return;
+		}
+		
+		int initialObjectclassId = config.getInitialObjectclassId();
+		if (initialObjectclassId < 10000) {
+			viewController.errorMessage("Incorrect Information", "Then initial objectclass ID must be greater than or equal to 10000");
+			return;
+		}
 		
 		Manager manager = new Manager(schemaHandler, schema, config);		
 		try {

@@ -27,15 +27,15 @@ public class Manager implements EventHandler {
 	
 	public void doProcess() throws TransformationException { 
 		
-		LOG.info("Map XML schema elements to a graph");
+		LOG.info("Mapping XML schema elements to a graph...");
 		GraphTransformationManager aggGraphTransformationManager = new GraphTransformationManager(schemaHandler, schema, config);
 		GraGra graph = aggGraphTransformationManager.executeGraphTransformation();
 
-		LOG.info("Generate Oracle and PostGIS database schema in SQL scripts ");
+		LOG.info("Generating Oracle and PostGIS database schema in SQL scripts...");
 		DBScriptGenerator databaseScriptCreator = new DBScriptGenerator(graph, config);
 		databaseScriptCreator.createDatabaseScripts();   
 		
-		LOG.info("Create 3dcitydb XML SchemaMapping file");
+		LOG.info("Creating 3dcitydb XML SchemaMapping file...");
 		SchemaMappingCreator schemaMappingCreator = new SchemaMappingCreator(graph, config);
     	try {
 			schemaMappingCreator.createSchemaMapping();
