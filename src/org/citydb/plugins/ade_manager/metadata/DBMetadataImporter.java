@@ -55,16 +55,17 @@ public class DBMetadataImporter {
 	
 	public void doImport(SchemaMapping adeSchemaMapping) throws DBMetadataImportException {
 		this.adeSchemaMapping = adeSchemaMapping;
-		DBUtil.regenerateObjectclassIds(dbPool, adeSchemaMapping);
-		
+
 		if (adeSchemaMapping.getMetadata().getInitialObjectClassId() != null) {
-			try {
-				DBUtil.validateSchemaMapping(dbPool, adeSchemaMapping);
-			} catch (SQLException e) {
-				throw new DBMetadataImportException("Failed to read and process objectclass Ids, Aborting.", e);
-			}
+			DBUtil.regenerateObjectclassIds(dbPool, adeSchemaMapping);			
 		}		
 	
+		try {
+			DBUtil.validateSchemaMapping(dbPool, adeSchemaMapping);
+		} catch (SQLException e) {
+			throw new DBMetadataImportException("Failed to read and process objectclass Ids, Aborting.", e);
+		}
+		
 		adeSchemaIds = new ArrayList<String>();		
 		Iterator<AppSchema> adeSchemas = adeSchemaMapping.getSchemas().iterator();
 		while (adeSchemas.hasNext()) {

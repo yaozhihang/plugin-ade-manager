@@ -34,6 +34,10 @@ public class DBUtil {
 		while (iter.hasNext()) {
 			AbstractObjectType<?> objectclass = iter.next();
 			int objectclassId = objectclass.getObjectClassId();
+			
+			if (objectclassId == 0 && schemaMapping.getMetadata().getInitialObjectClassId() == null)
+				throw new SQLException("The object class '" + objectclass.getId() + "'" + " must be assigned with a valid ID");	
+			
 			if (!validateObjectclassId(dbPool, objectclassId))
 				throw new SQLException("The objectclass Id '" + objectclassId + "'" + " is invalid, because it has already been reserved by other class");			
 		}
