@@ -42,7 +42,8 @@ import org.citydb.api.plugin.extension.config.PluginConfig;
 		"adeVersion",	
 		"adeDbPrefix",	
 		"initialObjectclassId",
-		"schemaMappingPath"	
+		"schemaMappingPath",	
+		"dbScriptPath"	
 })
 
 public class ConfigImpl extends PluginConfig {
@@ -58,6 +59,7 @@ public class ConfigImpl extends PluginConfig {
 	private int initialObjectclassId;
 	
 	private String schemaMappingPath;
+	private String dbScriptPath;
 	
 	public ConfigImpl() {
 		inputGraphPath = "graphs" + File.separator + "Working_Graph.ggx";
@@ -135,6 +137,14 @@ public class ConfigImpl extends PluginConfig {
 
 	public void setSchemaMappingPath(String schemaMappingPath) {
 		this.schemaMappingPath = schemaMappingPath;
+	}
+
+	public String getDbScriptPath() {
+		return dbScriptPath;
+	}
+
+	public void setDbScriptPath(String dbScriptPath) {
+		this.dbScriptPath = dbScriptPath;
 	}
 
 }

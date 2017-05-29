@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <name>test</name>
-        <version>test</version>
+        <name>testADE</name>
+        <version>1.2</version>
         <description>test</description>
         <dbPrefix>test</dbPrefix>
-        <initialObjectClassId>130000</initialObjectClassId>
+        <initialObjectClassId>940000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
         <schema id="TestADE">

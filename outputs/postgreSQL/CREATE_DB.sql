@@ -7,10 +7,9 @@
 CREATE TABLE Test_BuildingUnit
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
+    building_buildingUnit_ID INTEGER,
     lod2MultiCurve geometry(GEOMETRYZ),
     lod3MultiCurve geometry(GEOMETRYZ),
     lod4MultiCurve geometry(GEOMETRYZ),
@@ -59,7 +58,6 @@ CREATE TABLE Test_EnergyPerformanceCertific
 CREATE TABLE Test_Facilities
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
     BuildingUnit_equippedWith_ID INTEGER,
     totalValue_uom VARCHAR(254),
     totalValue NUMERIC,
@@ -97,19 +95,16 @@ CREATE TABLE Test_building
 -- Test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE Test_BuildingUnit
-    ADD CONSTRAINT Test_BuildingUni_Objectclas_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
-ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
-
-ALTER TABLE Test_BuildingUnit
-    ADD CONSTRAINT Test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES Test_building (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES Test_BuildingUnit (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES Test_BuildingUnit (ID);
+
+ALTER TABLE Test_BuildingUnit
+    ADD CONSTRAINT Test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES Test_building (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -154,9 +149,6 @@ ALTER TABLE Test_EnergyPerformanceCertific
 -- Test_Facilities 
 -- -------------------------------------------------------------------- 
 ALTER TABLE Test_Facilities
-    ADD CONSTRAINT Test_Facilities_Objectclass_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
-ALTER TABLE Test_Facilities
     ADD CONSTRAINT Test_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES Test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
@@ -177,18 +169,6 @@ ALTER TABLE Test_building
 -- -------------------------------------------------------------------- 
 -- Test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX Test_BuildingUn_Objectclas_FKX ON Test_BuildingUnit
-    USING btree
-    (
-      OBJECTCLASS_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
-CREATE INDEX Test_Buildin_buildi_buildi_FKX ON Test_BuildingUnit
-    USING btree
-    (
-      building_buildingUnit_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
 CREATE INDEX Test_BuildingUnit_Parent_FKX ON Test_BuildingUnit
     USING btree
     (
@@ -199,6 +179,12 @@ CREATE INDEX Test_BuildingUnit_Root_FKX ON Test_BuildingUnit
     USING btree
     (
       BuildingUnit_Root_ID ASC NULLS LAST
+    )   WITH (FILLFACTOR = 90);
+
+CREATE INDEX Test_Buildin_buildi_buildi_FKX ON Test_BuildingUnit
+    USING btree
+    (
+      building_buildingUnit_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
 CREATE INDEX Test_BuildingUn_lod2MultiC_SPX ON Test_BuildingUnit
@@ -279,12 +265,6 @@ CREATE INDEX Test_EnergyP_Buildi_energy_FKX ON Test_EnergyPerformanceCertific
 -- -------------------------------------------------------------------- 
 -- Test_Facilities 
 -- -------------------------------------------------------------------- 
-CREATE INDEX Test_Facilities_Objectclas_FKX ON Test_Facilities
-    USING btree
-    (
-      OBJECTCLASS_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
 CREATE INDEX Test_Facilit_Buildi_equipp_FKX ON Test_Facilities
     USING btree
     (

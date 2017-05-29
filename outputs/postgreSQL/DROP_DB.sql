@@ -5,19 +5,16 @@
 -- Test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUni_Objectclas_FK;
-
-ALTER TABLE Test_BuildingUnit
     DROP CONSTRAINT Test_BuildingUnit_FK;
-
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_Buildin_buildin_buildi_FK;
 
 ALTER TABLE Test_BuildingUnit
     DROP CONSTRAINT Test_BuildingUnit_Parent_FK;
 
 ALTER TABLE Test_BuildingUnit
     DROP CONSTRAINT Test_BuildingUnit_Root_FK;
+
+ALTER TABLE Test_BuildingUnit
+    DROP CONSTRAINT Test_Buildin_buildin_buildi_FK;
 
 ALTER TABLE Test_BuildingUnit
     DROP CONSTRAINT Test_BuildingUni_lod1MultiS_FK;
@@ -61,9 +58,6 @@ ALTER TABLE Test_EnergyPerformanceCertific
 -- -------------------------------------------------------------------- 
 -- Test_Facilities 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_Facilities
-    DROP CONSTRAINT Test_Facilities_Objectclass_FK;
-
 ALTER TABLE Test_Facilities
     DROP CONSTRAINT Test_Facilit_Buildin_equipp_FK;
 

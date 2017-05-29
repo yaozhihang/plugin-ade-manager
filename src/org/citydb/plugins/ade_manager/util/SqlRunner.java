@@ -5,7 +5,6 @@ package org.citydb.plugins.ade_manager.util;
 
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,20 +21,15 @@ public class SqlRunner {
     private final boolean autoCommit, stopOnError;
     private final Connection connection;
     private String delimiter = SqlRunner.DEFAULT_DELIMITER;
-    private final PrintWriter out, err;
 
-    public SqlRunner(final Connection connection, final PrintWriter out, final PrintWriter err, final boolean autoCommit, final boolean stopOnError) {
+    public SqlRunner(final Connection connection, final boolean autoCommit, final boolean stopOnError) {
         if (connection == null) {
             throw new RuntimeException("SqlRunner requires an SQL Connection");
         }
-        if (err == null || out == null) {
-            throw new RuntimeException("SqlRunner requires both out and err PrintWriters");
-        }
+
         this.connection = connection;
         this.autoCommit = autoCommit;
         this.stopOnError = stopOnError;
-        this.out = out;
-        this.err = err;
     }
 
     public void runScript(final Reader reader) throws SQLException {
@@ -64,8 +58,7 @@ public class SqlRunner {
                 if (trimmedLine.startsWith("--") || trimmedLine.startsWith("//") || trimmedLine.startsWith("#")) {
 
                     // Line is a comment
-                    out.println(trimmedLine);
-                    out.flush();
+                    System.out.println(trimmedLine);
 
                 } else if (trimmedLine.endsWith(this.delimiter)) {
 
@@ -94,9 +87,7 @@ public class SqlRunner {
                     ResultSet rs = null;
                     try {
                         stmt = conn.createStatement();
-                        out.println();
-                        out.println(command);
-                        out.flush();
+                        System.out.println(command);
                         boolean hasResults = false;
                         if (this.stopOnError) {
                             hasResults = stmt.execute(command.toString());
@@ -105,9 +96,8 @@ public class SqlRunner {
                                 stmt.execute(command.toString());
                             } catch (final SQLException e) {
                                 e.fillInStackTrace();
-                                err.println("Error on command: " + command);
-                                err.println(e);
-                                err.flush();
+                                System.out.println("Error on command: " + command);
+                                System.out.println(e);
                             }
                         }
                         if (this.autoCommit && !conn.getAutoCommit()) {
@@ -121,24 +111,21 @@ public class SqlRunner {
                             final int cols = md.getColumnCount();
                             for (int i = 0; i < cols; i++) {
                                 final String name = md.getColumnLabel(i + 1);
-                                out.print(name + "\t");
+                                System.out.print(name + "\t");
                             }
-                            out.println("");
-                            out.println(StringUtils.repeat("---------", md.getColumnCount()));
-                            out.flush();
+                            System.out.println("");
+                            System.out.println(StringUtils.repeat("---------", md.getColumnCount()));
 
                             // Print result rows
                             while (rs.next()) {
                                 for (int i = 1; i <= cols; i++) {
                                     final String value = rs.getString(i);
-                                    out.print(value + "\t");
+                                    System.out.print(value + "\t");
                                 }
-                                out.println("");
+                                System.out.println("");
                             }
-                            out.flush();
                         } else {
-                            out.println("Updated: " + stmt.getUpdateCount());
-                            out.flush();
+                        	System.out.println("Updated: " + stmt.getUpdateCount());
                         }
                         command = null;
                     } finally {
@@ -146,15 +133,13 @@ public class SqlRunner {
                             try {
                                 rs.close();
                             } catch (final Exception e) {
-                                err.println("Failed to close result: " + e.getMessage());
-                                err.flush();
+                            	System.out.println("Failed to close result: " + e.getMessage());
                             }
                         if (stmt != null)
                             try {
                                 stmt.close();
                             } catch (final Exception e) {
-                                err.println("Failed to close statement: " + e.getMessage());
-                                err.flush();
+                            	System.out.println("Failed to close statement: " + e.getMessage());
                             }
                     }
                 } else {
@@ -181,14 +166,12 @@ public class SqlRunner {
             }
         } catch (final SQLException e) {
             e.fillInStackTrace();
-            err.println("Error on command: " + command);
-            err.println(e);
-            err.flush();
+            System.out.println("Error on command: " + command);
+            System.out.println(e);
         } catch (final IOException e) {
             e.fillInStackTrace();
-            err.println("Error on command: " + command);
-            err.println(e);
-            err.flush();
+            System.out.println("Error on command: " + command);
+            System.out.println(e);
         }
     }
 }

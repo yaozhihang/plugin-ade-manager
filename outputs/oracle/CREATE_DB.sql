@@ -7,10 +7,9 @@
 CREATE TABLE Test_BuildingUnit
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
+    building_buildingUnit_ID INTEGER,
     lod2MultiCurve MDSYS.SDO_GEOMETRY,
     lod3MultiCurve MDSYS.SDO_GEOMETRY,
     lod4MultiCurve MDSYS.SDO_GEOMETRY,
@@ -59,7 +58,6 @@ CREATE TABLE Test_EnergyPerformanceCertific
 CREATE TABLE Test_Facilities
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
     BuildingUnit_equippedWith_ID INTEGER,
     totalValue_uom VARCHAR2(254),
     totalValue NUMBER,
@@ -97,19 +95,16 @@ CREATE TABLE Test_building
 -- Test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE Test_BuildingUnit
-    ADD CONSTRAINT Test_BuildingUni_Objectclas_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
-ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
-
-ALTER TABLE Test_BuildingUnit
-    ADD CONSTRAINT Test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES Test_building (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES Test_BuildingUnit (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES Test_BuildingUnit (ID);
+
+ALTER TABLE Test_BuildingUnit
+    ADD CONSTRAINT Test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES Test_building (ID);
 
 ALTER TABLE Test_BuildingUnit
     ADD CONSTRAINT Test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -154,9 +149,6 @@ ALTER TABLE Test_EnergyPerformanceCertific
 -- Test_Facilities 
 -- -------------------------------------------------------------------- 
 ALTER TABLE Test_Facilities
-    ADD CONSTRAINT Test_Facilities_Objectclass_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
-ALTER TABLE Test_Facilities
     ADD CONSTRAINT Test_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES Test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
@@ -196,13 +188,11 @@ prompt Used SRID for spatial indexes: &SRSNO
 -- -------------------------------------------------------------------- 
 -- Test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX Test_BuildingUn_Objectclas_FKX ON Test_BuildingUnit (OBJECTCLASS_ID);
-
-CREATE INDEX Test_Buildin_buildi_buildi_FKX ON Test_BuildingUnit (building_buildingUnit_ID);
-
 CREATE INDEX Test_BuildingUnit_Parent_FKX ON Test_BuildingUnit (BuildingUnit_Parent_ID);
 
 CREATE INDEX Test_BuildingUnit_Root_FKX ON Test_BuildingUnit (BuildingUnit_Root_ID);
+
+CREATE INDEX Test_Buildin_buildi_buildi_FKX ON Test_BuildingUnit (building_buildingUnit_ID);
 
 DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
@@ -246,8 +236,6 @@ CREATE INDEX Test_EnergyP_Buildi_energy_FKX ON Test_EnergyPerformanceCertific (B
 -- -------------------------------------------------------------------- 
 -- Test_Facilities 
 -- -------------------------------------------------------------------- 
-CREATE INDEX Test_Facilities_Objectclas_FKX ON Test_Facilities (OBJECTCLASS_ID);
-
 CREATE INDEX Test_Facilit_Buildi_equipp_FKX ON Test_Facilities (BuildingUnit_equippedWith_ID);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
