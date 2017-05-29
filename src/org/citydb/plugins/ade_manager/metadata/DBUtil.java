@@ -30,6 +30,10 @@ public class DBUtil {
 	}
 	
 	public static void validateSchemaMapping (DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
+		String dbPrefix = schemaMapping.getMetadata().getDBPrefix();
+		if (!validateDBPrefix(dbPool, dbPrefix))
+			throw new SQLException("The DB_Prefix '" + dbPrefix + "'" + " is invalid, because it has already been reserved by other registered ADE");		
+		
 		Iterator<AbstractObjectType<?>> iter = schemaMapping.getAbstractObjectTypes().iterator();
 		while (iter.hasNext()) {
 			AbstractObjectType<?> objectclass = iter.next();
@@ -39,7 +43,7 @@ public class DBUtil {
 				throw new SQLException("The object class '" + objectclass.getId() + "'" + " must be assigned with a valid ID");	
 			
 			if (!validateObjectclassId(dbPool, objectclassId))
-				throw new SQLException("The objectclass Id '" + objectclassId + "'" + " is invalid, because it has already been reserved by other class");			
+				throw new SQLException("The objectclass Id '" + objectclassId + "'" + " is invalid, because it has already been reserved by other class");							
 		}
 	}
 	
@@ -53,6 +57,54 @@ public class DBUtil {
 			conn = dbPool.getConnection();						
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select * from objectclass where id = " + objectclassId);
+			
+			if (rs.next())
+				isValid = false;
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				rs = null;
+			}
+
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				stmt = null;
+			}
+
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				conn = null;
+			}
+		}
+		
+		return isValid;
+	}
+	
+	public static boolean validateDBPrefix (DatabaseConnectionPool dbPool, String dbPrefix) throws SQLException {
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		boolean isValid = true;
+
+		try {
+			conn = dbPool.getConnection();						
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select * from ade where db_prefix = '" + dbPrefix + "'");
 			
 			if (rs.next())
 				isValid = false;

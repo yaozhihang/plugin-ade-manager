@@ -10,6 +10,12 @@ CREATE TABLE tes2_BuildingUnit
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
     building_buildingUnit_ID INTEGER,
+    class_uom VARCHAR2(254),
+    class VARCHAR2(254),
+    usage_uom VARCHAR2(254),
+    usage VARCHAR2(254),
+    function_uom VARCHAR2(254),
+    function VARCHAR2(254),
     lod2MultiCurve MDSYS.SDO_GEOMETRY,
     lod3MultiCurve MDSYS.SDO_GEOMETRY,
     lod4MultiCurve MDSYS.SDO_GEOMETRY,
@@ -21,12 +27,6 @@ CREATE TABLE tes2_BuildingUnit
     lod2Solid_ID INTEGER,
     lod3Solid_ID INTEGER,
     lod4Solid_ID INTEGER,
-    class_uom VARCHAR2(254),
-    class VARCHAR2(254),
-    usage_uom VARCHAR2(254),
-    usage VARCHAR2(254),
-    function_uom VARCHAR2(254),
-    function VARCHAR2(254),
     PRIMARY KEY (ID)
 );
 
@@ -80,10 +80,10 @@ CREATE TABLE tes2_IndustrialBuilding
 CREATE TABLE tes2_building
 (
     ID INTEGER NOT NULL,
+    ownerName VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,
     EnergyPerforman_certificationN VARCHAR2(254),
-    ownerName VARCHAR2(254),
     EnergyPerforman_certificationi VARCHAR2(254),
     PRIMARY KEY (ID)
 );
