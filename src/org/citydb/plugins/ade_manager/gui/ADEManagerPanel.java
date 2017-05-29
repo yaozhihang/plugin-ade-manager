@@ -49,7 +49,7 @@ import org.citydb.plugins.ade_manager.gui.components.schemaTable.SchemaTableMode
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImportException;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImporter;
 import org.citydb.plugins.ade_manager.metadata.DBUtil;
-import org.citydb.plugins.ade_manager.transformation.Manager;
+import org.citydb.plugins.ade_manager.transformation.TransformationManager;
 import org.citydb.plugins.ade_manager.transformation.TransformationException;
 import org.citydb.util.gui.GuiUtil;
 import org.citygml4j.xml.schema.Schema;
@@ -487,7 +487,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			return;
 		}
 		
-		Manager manager = new Manager(schemaHandler, schema, config);		
+		TransformationManager manager = new TransformationManager(schemaHandler, schema, config);		
 		try {
 			manager.doProcess();
 		} catch (TransformationException e) {

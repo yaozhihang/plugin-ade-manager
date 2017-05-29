@@ -3,7 +3,6 @@ package org.citydb.plugins.ade_manager.transformation;
 import org.citydb.api.event.Event;
 import org.citydb.api.event.EventHandler;
 import org.citydb.log.Logger;
-import org.citydb.modules.citygml.exporter.controller.CityGMLExportException;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphTransformationManager;
 import org.citydb.plugins.ade_manager.transformation.schemaMapping.SchemaMappingCreator;
@@ -12,14 +11,14 @@ import org.citygml4j.xml.schema.Schema;
 import org.citygml4j.xml.schema.SchemaHandler;
 import agg.xt_basis.GraGra;
 
-public class Manager implements EventHandler {
+public class TransformationManager implements EventHandler {
 	private final Logger LOG = Logger.getInstance();
 	
 	private SchemaHandler schemaHandler;
 	private Schema schema;
 	private ConfigImpl config;
 
-	public Manager(SchemaHandler schemaHandler, Schema schema, ConfigImpl config) {
+	public TransformationManager(SchemaHandler schemaHandler, Schema schema, ConfigImpl config) {
 		this.schemaHandler = schemaHandler;
 		this.schema = schema;	
 		this.config = config;
