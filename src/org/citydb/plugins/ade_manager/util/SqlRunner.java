@@ -32,19 +32,19 @@ public class SqlRunner {
         this.stopOnError = stopOnError;
     }
 
-    public void runScript(final Reader reader) throws SQLException {
+    public void runScript(final Reader reader, int srid) throws SQLException {
         final boolean originalAutoCommit = this.connection.getAutoCommit();
         try {
             if (originalAutoCommit != this.autoCommit) {
                 this.connection.setAutoCommit(this.autoCommit);
             }
-            this.runScript(this.connection, reader);
+            this.runScript(this.connection, reader, srid);
         } finally {
             this.connection.setAutoCommit(originalAutoCommit);
         }
     }
 
-    private void runScript(final Connection conn, final Reader reader) {
+    private void runScript(final Connection conn, final Reader reader, int srid) {
         StringBuffer command = null;
         try {
             final LineNumberReader lineReader = new LineNumberReader(reader);
@@ -82,66 +82,82 @@ public class SqlRunner {
                     // Append
                     command.append(line.substring(0, line.lastIndexOf(this.delimiter)));
                     command.append(" ");
+                    
+                    if(!(command.toString().toLowerCase().trim().startsWith("create") || 
+                    		command.toString().toLowerCase().trim().startsWith("insert") || 
+                			command.toString().toLowerCase().trim().startsWith("delete") ||
+                			command.toString().toLowerCase().trim().startsWith("alter")) ||
+                    		command.toString().toLowerCase().trim().startsWith("drop")) {
+                    	command = null;
+                    }
+                    else {
+                    	String subString = "&SRSNO";
+                    	int position = command.lastIndexOf(subString);
+                    	if (position > -1) {
+                    		command.replace(position, position + subString.length(), String.valueOf(srid));
+                    	}
+                    	
+                    	Statement stmt = null;
+                        ResultSet rs = null;
+                        try {
+                            stmt = conn.createStatement();
 
-                    Statement stmt = null;
-                    ResultSet rs = null;
-                    try {
-                        stmt = conn.createStatement();
-                        System.out.println(command);
-                        boolean hasResults = false;
-                        if (this.stopOnError) {
-                            hasResults = stmt.execute(command.toString());
-                        } else {
-                            try {
-                                stmt.execute(command.toString());
-                            } catch (final SQLException e) {
-                                e.fillInStackTrace();
-                                System.out.println("Error on command: " + command);
-                                System.out.println(e);
+                            boolean hasResults = false;
+                            if (this.stopOnError) {
+                                hasResults = stmt.execute(command.toString());
+                            } else {
+                                try {
+                                    stmt.execute(command.toString());
+                                } catch (final SQLException e) {
+                                    e.fillInStackTrace();
+                                    System.out.println("Error on command: " + command);
+                                    System.out.println(e);
+                                }
                             }
-                        }
-                        if (this.autoCommit && !conn.getAutoCommit()) {
-                            conn.commit();
-                        }
-                        rs = stmt.getResultSet();
-                        if (hasResults && rs != null) {
-
-                            // Print result column names
-                            final ResultSetMetaData md = rs.getMetaData();
-                            final int cols = md.getColumnCount();
-                            for (int i = 0; i < cols; i++) {
-                                final String name = md.getColumnLabel(i + 1);
-                                System.out.print(name + "\t");
+                            if (this.autoCommit && !conn.getAutoCommit()) {
+                                conn.commit();
                             }
-                            System.out.println("");
-                            System.out.println(StringUtils.repeat("---------", md.getColumnCount()));
+                            rs = stmt.getResultSet();
+                            if (hasResults && rs != null) {
 
-                            // Print result rows
-                            while (rs.next()) {
-                                for (int i = 1; i <= cols; i++) {
-                                    final String value = rs.getString(i);
-                                    System.out.print(value + "\t");
+                                // Print result column names
+                                final ResultSetMetaData md = rs.getMetaData();
+                                final int cols = md.getColumnCount();
+                                for (int i = 0; i < cols; i++) {
+                                    final String name = md.getColumnLabel(i + 1);
+                                    System.out.print(name + "\t");
                                 }
                                 System.out.println("");
+                                System.out.println(StringUtils.repeat("---------", md.getColumnCount()));
+
+                                // Print result rows
+                                while (rs.next()) {
+                                    for (int i = 1; i <= cols; i++) {
+                                        final String value = rs.getString(i);
+                                        System.out.print(value + "\t");
+                                    }
+                                    System.out.println("");
+                                }
+                            } else {
+                            //	System.out.println("Updated: " + stmt.getUpdateCount());
                             }
-                        } else {
-                        	System.out.println("Updated: " + stmt.getUpdateCount());
+                            command = null;
+                        } finally {
+                            if (rs != null)
+                                try {
+                                    rs.close();
+                                } catch (final Exception e) {
+                                	System.out.println("Failed to close result: " + e.getMessage());
+                                }
+                            if (stmt != null)
+                                try {
+                                    stmt.close();
+                                } catch (final Exception e) {
+                                	System.out.println("Failed to close statement: " + e.getMessage());
+                                }
                         }
-                        command = null;
-                    } finally {
-                        if (rs != null)
-                            try {
-                                rs.close();
-                            } catch (final Exception e) {
-                            	System.out.println("Failed to close result: " + e.getMessage());
-                            }
-                        if (stmt != null)
-                            try {
-                                stmt.close();
-                            } catch (final Exception e) {
-                            	System.out.println("Failed to close statement: " + e.getMessage());
-                            }
                     }
+   
                 } else {
 
                     // Line is middle of a statement

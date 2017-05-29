@@ -64,7 +64,7 @@ public class SchemaMappingCreator {
 		this.config = config;				
 	}
 	
-	public void createSchemaMapping() throws Exception {			
+	public SchemaMapping createSchemaMapping() throws Exception {			
 		JAXBContext ctx = JAXBContext.newInstance(SchemaMapping.class);
 		citygmlSchemaMapping = SchemaMappingUtil.unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"), ctx);
 				
@@ -79,6 +79,8 @@ public class SchemaMappingCreator {
 		
 		File mappingSchemaFile = new File(config.getTransformationOutputPath(), "schema-mapping.xml");			
 		SchemaMappingUtil.marshal(adeSchemaMapping, mappingSchemaFile, ctx);
+		
+		return adeSchemaMapping;
 	} 
 	
 	private Metadata generateMetadata() {

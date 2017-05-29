@@ -22,6 +22,7 @@ import org.apache.ddlutils.model.Table;
 import org.apache.ddlutils.platform.SqlBuilder;
 import org.apache.ddlutils.platform.oracle.Oracle10Platform;
 import org.apache.ddlutils.platform.postgresql.PostgreSqlPlatform;
+import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.log.Logger;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper;
@@ -36,6 +37,8 @@ import agg.xt_basis.Type;
 public class DBScriptGenerator {	
 	private Map<String, Table> databaseTables;
 	private GraGra graphGrammar;
+	private SchemaMapping adeSchemaMapping;
+	
 	private List<String> dbFkConstratintNameList;
 	private List<String> dbIndexNameList;
 	private Map<String, List<String>> dbTableColumnsMap;
@@ -46,8 +49,9 @@ public class DBScriptGenerator {
 	private final Logger LOG = Logger.getInstance();
 	
 	
-	public DBScriptGenerator(GraGra graphGrammar, ConfigImpl config) {
+	public DBScriptGenerator(GraGra graphGrammar, SchemaMapping adeSchemaMapping, ConfigImpl config) {
 		this.graphGrammar = graphGrammar;		
+		this.adeSchemaMapping = adeSchemaMapping;
 		new ArrayList<String>(); 
 		this.dbFkConstratintNameList = new ArrayList<String>(); 
 		this.dbIndexNameList = new ArrayList<String>(); 
@@ -267,7 +271,7 @@ public class DBScriptGenerator {
 	
 	private void shrotenDatabaseObjectName() {
 		int maximumLength = 30;
-		String prefix = getXmlnsFromGraph(graphGrammar);
+		String prefix = adeSchemaMapping.getMetadata().getDBPrefix();
 		
 		if (prefix.length() > 4)
 			prefix = prefix.substring(0, 4);
@@ -572,10 +576,10 @@ public class DBScriptGenerator {
 		writer.println("SET SERVEROUTPUT ON");
 		writer.println("SET FEEDBACK ON");
 		writer.println("SET VER OFF");
-		writer.println();
+/*		writer.println();
 		writer.println("ALTER SESSION set NLS_TERRITORY='AMERICA';");
 		writer.println("ALTER SESSION set NLS_LANGUAGE='AMERICAN';");
-		writer.println();
+		writer.println();*/
 		writer.println("VARIABLE SRID NUMBER;");		
 		writer.print("BEGIN");
 		writer.println();
@@ -766,21 +770,5 @@ public class DBScriptGenerator {
 		}
 		return false;
 	}
-	
-	private String getXmlnsFromGraph(GraGra graphGrammar) {
-		Enumeration<Type> e = graphGrammar.getTypes();
-		while(e.hasMoreElements()){
-			Type nodeType = e.nextElement();
-			if (nodeType.getName().equalsIgnoreCase(GraphNodeArcType.Schema)) {
-				List<Node> nodes = graphGrammar.getGraph().getNodes(nodeType);
-				if (!nodes.isEmpty()) {
-					Node hostSchemaNode = nodes.get(0);	
-					AttrInstance attrInstance = hostSchemaNode.getAttribute();
-					String xmlns = (String) attrInstance.getValueAt("xmlns");
-					return xmlns;
-				}								
-			};
-		}	
-		return null;
-	}
+
 }

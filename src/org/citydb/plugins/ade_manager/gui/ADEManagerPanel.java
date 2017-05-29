@@ -143,10 +143,10 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		schemaTable.setCellSelectionEnabled(false);
 		schemaTable.setColumnSelectionAllowed(false);
 		schemaTable.setRowSelectionAllowed(true);
-		schemaTable.setRowHeight(20);		
+		schemaTable.setRowHeight(25);		
 		schemaPanel = new JScrollPane(schemaTable);
 		schemaPanel.setPreferredSize(new Dimension(browseXMLSchemaText.getPreferredSize().width, 200));
-		schemaPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 4, 4)));
+		schemaPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 0, 0)));
 		
 		// metadata parameters
 		namePanel = new JPanel();
@@ -590,8 +590,9 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		
 		LOG.info("Create ADE database schema...");
 		try {
+			int srid = dbPool.getActiveDatabaseAdapter().getUtil().getDatabaseInfo().getReferenceSystem().getSrid();
 			SqlRunner sqlRunner = new SqlRunner(dbPool.getConnection(), true, true);
-			sqlRunner.runScript(new FileReader(new File(config.getDbScriptPath())));
+			sqlRunner.runScript(new FileReader(new File(config.getDbScriptPath())), srid);
 		} catch (Exception e) {
 			LOG.error("Failed to create database schema for ADE. Cause: " + e.getMessage());
 		}
