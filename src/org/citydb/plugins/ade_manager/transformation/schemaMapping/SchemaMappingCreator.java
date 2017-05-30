@@ -302,6 +302,7 @@ public class SchemaMappingCreator {
 		else if (derivedFrom.equalsIgnoreCase("_Object")) {
 			featureOrObjectOrComplexType = new ComplexType(path, appSchema, schemaMapping);
 			featureOrObjectOrComplexType.setId(featureOrObjectId);
+			featureOrObjectOrComplexType.setTable(tableName);
 			schemaMapping.addComplexType((ComplexType) featureOrObjectOrComplexType);			
 		} else if (derivedFrom.equalsIgnoreCase("HookClass")) {
 			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, appSchema, schemaMapping);

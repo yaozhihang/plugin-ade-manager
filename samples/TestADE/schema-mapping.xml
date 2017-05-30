@@ -14,7 +14,7 @@
         </schema>
     </applicationSchemas>
     <complexTypes>
-        <complexType id="EnergyPerformanceCertificationType" path="EnergyPerformanceCertification" schema="TestADE">
+        <complexType id="EnergyPerformanceCertificationType" table="test_EnergyPerformanceCertific" path="EnergyPerformanceCertification" schema="TestADE">
             <attribute column="certificationName" type="string" path="certificationName" schema="TestADE"/>
             <attribute column="certificationid" type="string" path="certificationid" schema="TestADE"/>
         </complexType>

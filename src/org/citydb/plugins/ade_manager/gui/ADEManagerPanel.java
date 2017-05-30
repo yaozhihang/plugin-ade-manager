@@ -205,7 +205,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		adeTable.setRowSelectionAllowed(true);
 		adeTable.setRowHeight(20);		
 		adeTableScrollPanel = new JScrollPane(adeTable);
-		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 150));
+		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 200));
 		adeTableScrollPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 4, 4)));
 
 		browseSchemaMappingPanel = new JPanel();

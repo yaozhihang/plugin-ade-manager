@@ -7,9 +7,9 @@
 CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
-    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
+    building_buildingUnit_ID INTEGER,
     class_uom VARCHAR2(254),
     class VARCHAR2(254),
     usage_uom VARCHAR2(254),
@@ -80,10 +80,10 @@ CREATE TABLE test_IndustrialBuilding
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    floorArea_uom VARCHAR2(254),
-    floorArea NUMBER,
     ownerName VARCHAR2(254),
     EnergyPerforman_certificationN VARCHAR2(254),
+    floorArea_uom VARCHAR2(254),
+    floorArea NUMBER,
     EnergyPerforman_certificationi VARCHAR2(254),
     PRIMARY KEY (ID)
 );
@@ -98,13 +98,13 @@ ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
-
-ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
+
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -184,11 +184,11 @@ prompt Used SRID for spatial indexes: &SRSNO
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit (building_buildingUnit_ID);
-
 CREATE INDEX test_BuildingUnit_Parent_FKX ON test_BuildingUnit (BuildingUnit_Parent_ID);
 
 CREATE INDEX test_BuildingUnit_Root_FKX ON test_BuildingUnit (BuildingUnit_Root_ID);
+
+CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit (building_buildingUnit_ID);
 
 DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
