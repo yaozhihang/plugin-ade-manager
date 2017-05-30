@@ -105,7 +105,9 @@
                     <attribute column="EnergyPerforman_certificationi" type="string" path="certificationid" schema="TestADE"/>
                 </type>
             </complexProperty>
-            <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE"/>
+            <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
+                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID"/>
+            </featureProperty>
         </propertyInjection>
     </propertyInjections>
 </schemaMapping>

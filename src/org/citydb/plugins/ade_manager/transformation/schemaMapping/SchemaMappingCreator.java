@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 
 import org.citydb.database.schema.mapping.AbstractExtension;
+import org.citydb.database.schema.mapping.AbstractJoin;
 import org.citydb.database.schema.mapping.AbstractProperty;
 import org.citydb.database.schema.mapping.AbstractType;
 import org.citydb.database.schema.mapping.AbstractTypeProperty;
@@ -157,19 +158,38 @@ public class SchemaMappingCreator {
 					AppSchema schema = property.getSchema();
 					if (property instanceof FeatureProperty) {
 						FeatureType featureType = ((FeatureProperty) property).getType();
-						propertyInjection.addProperty(new InjectedFeatureProperty(path, featureType, schema));
+						InjectedFeatureProperty injectedProperty = new InjectedFeatureProperty(path, featureType, schema);
+						AbstractJoin abstractJoin = ((FeatureProperty) property).getJoin();
+						if (abstractJoin instanceof Join)
+							injectedProperty.setJoin((Join) abstractJoin);
+						else
+							injectedProperty.setJoin((JoinTable) abstractJoin);						
+						propertyInjection.addProperty(injectedProperty);
 					}
 					else if (property instanceof ObjectProperty) {
 						ObjectType objectType = ((ObjectProperty) property).getType();
-						propertyInjection.addProperty(new InjectedObjectProperty(path, objectType, schema));
+						InjectedObjectProperty injectedProperty = new InjectedObjectProperty(path, objectType, schema);
+						AbstractJoin abstractJoin = ((ObjectProperty) property).getJoin();
+						if (abstractJoin instanceof Join)
+							injectedProperty.setJoin((Join) abstractJoin);
+						else
+							injectedProperty.setJoin((JoinTable) abstractJoin);						
+						propertyInjection.addProperty(injectedProperty);
 					}
 					else if (property instanceof ComplexProperty) {
 						ComplexType complexType = ((ComplexProperty) property).getType();
 						InjectedComplexProperty injectedProperty = new InjectedComplexProperty(path, schema);
-						if (complexType.isSetId())
-							injectedProperty.setRefType(complexType);
-						else
+						if (complexType.isSetId()) {
+							injectedProperty.setRefType(complexType);							
+							AbstractJoin abstractJoin = ((ComplexProperty) property).getJoin();
+							if (abstractJoin instanceof Join)
+								injectedProperty.setJoin((Join) abstractJoin);
+							else
+								injectedProperty.setJoin((JoinTable) abstractJoin);		
+						}
+						else {
 							injectedProperty.setInlineType(complexType);
+						}							
 						propertyInjection.addProperty(injectedProperty);
 					}
 					else if (property instanceof ComplexAttribute) {
