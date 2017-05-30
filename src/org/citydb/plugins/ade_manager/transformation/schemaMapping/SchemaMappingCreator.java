@@ -19,6 +19,7 @@ import org.citydb.database.schema.mapping.ComplexAttributeType;
 import org.citydb.database.schema.mapping.ComplexProperty;
 import org.citydb.database.schema.mapping.ComplexType;
 import org.citydb.database.schema.mapping.ComplexTypeExtension;
+import org.citydb.database.schema.mapping.Condition;
 import org.citydb.database.schema.mapping.FeatureProperty;
 import org.citydb.database.schema.mapping.FeatureType;
 import org.citydb.database.schema.mapping.FeatureTypeExtension;
@@ -388,28 +389,41 @@ public class SchemaMappingCreator {
 		String joinFromColumnName = null;
 		String joinFromTableName = null;
 		String joinToTableName = null;
+		Node joinFromTableNode = null;
+		Node joinToTableNode = null;
 
 		while (iter.hasNext()) {
 			Arc arc = iter.next();
 			if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinFrom)) {
 				Node joinFromColumnNode = (Node) arc.getTarget();
 				joinFromColumnName = (String)joinFromColumnNode.getAttribute().getValueAt("name");
-				Node joinFromTableNode = (Node)joinFromColumnNode.getOutgoingArcs().next().getTarget();				
+				joinFromTableNode = (Node)joinFromColumnNode.getOutgoingArcs().next().getTarget();				
 				joinFromTableName= (String)joinFromTableNode.getAttribute().getValueAt("name");
 			}
 			else if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTo)) {
 				Node joinToColumnNode = (Node) arc.getTarget();
 				joinToColumnName = (String)joinToColumnNode.getAttribute().getValueAt("name");
-				Node joinToTableNode = (Node)joinToColumnNode.getOutgoingArcs().next().getTarget();				
+				joinToTableNode = (Node)joinToColumnNode.getOutgoingArcs().next().getTarget();				
 				joinToTableName= (String)joinToTableNode.getAttribute().getValueAt("name");
 			}
 		}
 		
-		String tableName = joinFromTableName;
-		if (tableName.equalsIgnoreCase(localTableName))
-			tableName = joinToTableName;
+		String refTableName = joinFromTableName;
+		Node refTableNode = joinFromTableNode;
+		if (refTableName.equalsIgnoreCase(localTableName)) {
+			refTableName = joinToTableName;
+			refTableNode = joinToTableNode;
+		}
+		
+		Join join = new Join(refTableName, joinFromColumnName, joinToColumnName);
+		
+		if (refTableNode.getAttribute().getValueAt("isMerged") != null && !joinFromTableNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTable)) {
+			if ((boolean)refTableNode.getAttribute().getValueAt("isMerged")) {
+				join.addCondition(new Condition("objectclass_id", "${target.objectclass_id}", SimpleType.INTEGER));
+			}
+		}	
 
-		return new Join(tableName, joinFromColumnName, joinToColumnName);
+		return join;
 	}
 
 	private void generateFeatureOrObjectOrComplexTypeProperty(AbstractType<?> localType, Node featureOrObjectOrComplexTypePropertyNode, 
