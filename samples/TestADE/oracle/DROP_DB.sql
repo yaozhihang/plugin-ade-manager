@@ -2,114 +2,114 @@
 -- ***********************************  Drop foreign keys ********************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- Test_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_Parent_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_Buildin_buildin_buildi_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_Root_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_Parent_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_Buildin_buildin_buildi_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_Root_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUni_lod1MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod1MultiS_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUni_lod2MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod2MultiS_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUni_lod3MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod3MultiS_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUni_lod4MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod4MultiS_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_lod1Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod1Solid_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_lod2Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod2Solid_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_lod3Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod3Solid_FK;
 
-ALTER TABLE Test_BuildingUnit
-    DROP CONSTRAINT Test_BuildingUnit_lod4Solid_FK;
-
--- -------------------------------------------------------------------- 
--- Test_BuildingUnit_to_address 
--- -------------------------------------------------------------------- 
-ALTER TABLE Test_BuildingUnit_to_address
-    DROP CONSTRAINT Test_BuildingUn_to_address_FK1;
-
-ALTER TABLE Test_BuildingUnit_to_address
-    DROP CONSTRAINT Test_BuildingUn_to_address_FK2;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod4Solid_FK;
 
 -- -------------------------------------------------------------------- 
--- Test_EnergyPerformanceCertific 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_EnergyPerformanceCertific
-    DROP CONSTRAINT Test_EnergyP_Buildin_energy_FK;
+ALTER TABLE test_BuildingUnit_to_address
+    DROP CONSTRAINT test_BuildingUn_to_address_FK1;
+
+ALTER TABLE test_BuildingUnit_to_address
+    DROP CONSTRAINT test_BuildingUn_to_address_FK2;
 
 -- -------------------------------------------------------------------- 
--- Test_Facilities 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_Facilities
-    DROP CONSTRAINT Test_Facilit_Buildin_equipp_FK;
+ALTER TABLE test_EnergyPerformanceCertific
+    DROP CONSTRAINT test_EnergyP_Buildin_energy_FK;
 
 -- -------------------------------------------------------------------- 
--- Test_IndustrialBuilding 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_IndustrialBuilding
-    DROP CONSTRAINT Test_IndustrialBuilding_FK;
+ALTER TABLE test_Facilities
+    DROP CONSTRAINT test_Facilit_Buildin_equipp_FK;
 
 -- -------------------------------------------------------------------- 
--- Test_building 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-ALTER TABLE Test_building
-    DROP CONSTRAINT Test_building_FK;
+ALTER TABLE test_IndustrialBuilding
+    DROP CONSTRAINT test_IndustrialBuilding_FK;
+
+-- -------------------------------------------------------------------- 
+-- test_building 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_building
+    DROP CONSTRAINT test_building_FK;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- ***********************************  Drop tables  ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- Test_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_BuildingUnit;
+DROP TABLE test_BuildingUnit;
 
 -- -------------------------------------------------------------------- 
--- Test_BuildingUnit_to_address 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_BuildingUnit_to_address;
+DROP TABLE test_BuildingUnit_to_address;
 
 -- -------------------------------------------------------------------- 
--- Test_EnergyPerformanceCertific 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_EnergyPerformanceCertific;
+DROP TABLE test_EnergyPerformanceCertific;
 
 -- -------------------------------------------------------------------- 
--- Test_Facilities 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_Facilities;
+DROP TABLE test_Facilities;
 
 -- -------------------------------------------------------------------- 
--- Test_IndustrialBuilding 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_IndustrialBuilding;
+DROP TABLE test_IndustrialBuilding;
 
 -- -------------------------------------------------------------------- 
--- Test_building 
+-- test_building 
 -- -------------------------------------------------------------------- 
-DROP TABLE Test_building;
+DROP TABLE test_building;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************  Drop Sequences  ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
-DROP SEQUENCE Test_EnergyPerformanceCert_SEQ;
+DROP SEQUENCE test_EnergyPerformanceCert_SEQ;
 
 PURGE RECYCLEBIN;

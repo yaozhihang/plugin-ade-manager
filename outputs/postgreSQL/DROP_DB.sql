@@ -2,112 +2,112 @@
 -- ***********************************  Drop foreign keys ********************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_Parent_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_Buildin_buildin_buildi_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_Root_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_Parent_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_Buildin_buildin_buildi_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_Root_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUni_lod1MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod1MultiS_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUni_lod2MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod2MultiS_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUni_lod3MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod3MultiS_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUni_lod4MultiS_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_lod4MultiS_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_lod1Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod1Solid_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_lod2Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod2Solid_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_lod3Solid_FK;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod3Solid_FK;
 
-ALTER TABLE tes2_BuildingUnit
-    DROP CONSTRAINT tes2_BuildingUnit_lod4Solid_FK;
-
--- -------------------------------------------------------------------- 
--- tes2_BuildingUnit_to_address 
--- -------------------------------------------------------------------- 
-ALTER TABLE tes2_BuildingUnit_to_address
-    DROP CONSTRAINT tes2_BuildingUn_to_address_FK1;
-
-ALTER TABLE tes2_BuildingUnit_to_address
-    DROP CONSTRAINT tes2_BuildingUn_to_address_FK2;
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUnit_lod4Solid_FK;
 
 -- -------------------------------------------------------------------- 
--- tes2_EnergyPerformanceCertific 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_EnergyPerformanceCertific
-    DROP CONSTRAINT tes2_EnergyP_Buildin_energy_FK;
+ALTER TABLE test_BuildingUnit_to_address
+    DROP CONSTRAINT test_BuildingUn_to_address_FK1;
+
+ALTER TABLE test_BuildingUnit_to_address
+    DROP CONSTRAINT test_BuildingUn_to_address_FK2;
 
 -- -------------------------------------------------------------------- 
--- tes2_Facilities 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_Facilities
-    DROP CONSTRAINT tes2_Facilit_Buildin_equipp_FK;
+ALTER TABLE test_EnergyPerformanceCertific
+    DROP CONSTRAINT test_EnergyP_Buildin_energy_FK;
 
 -- -------------------------------------------------------------------- 
--- tes2_IndustrialBuilding 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_IndustrialBuilding
-    DROP CONSTRAINT tes2_IndustrialBuilding_FK;
+ALTER TABLE test_Facilities
+    DROP CONSTRAINT test_Facilit_Buildin_equipp_FK;
 
 -- -------------------------------------------------------------------- 
--- tes2_building 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_building
-    DROP CONSTRAINT tes2_building_FK;
+ALTER TABLE test_IndustrialBuilding
+    DROP CONSTRAINT test_IndustrialBuilding_FK;
+
+-- -------------------------------------------------------------------- 
+-- test_building 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_building
+    DROP CONSTRAINT test_building_FK;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- ***********************************  Drop tables  ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_BuildingUnit;
+DROP TABLE test_BuildingUnit;
 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit_to_address 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_BuildingUnit_to_address;
+DROP TABLE test_BuildingUnit_to_address;
 
 -- -------------------------------------------------------------------- 
--- tes2_EnergyPerformanceCertific 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_EnergyPerformanceCertific;
+DROP TABLE test_EnergyPerformanceCertific;
 
 -- -------------------------------------------------------------------- 
--- tes2_Facilities 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_Facilities;
+DROP TABLE test_Facilities;
 
 -- -------------------------------------------------------------------- 
--- tes2_IndustrialBuilding 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_IndustrialBuilding;
+DROP TABLE test_IndustrialBuilding;
 
 -- -------------------------------------------------------------------- 
--- tes2_building 
+-- test_building 
 -- -------------------------------------------------------------------- 
-DROP TABLE tes2_building;
+DROP TABLE test_building;
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************  Drop Sequences  ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
-DROP SEQUENCE tes2_EnergyPerformanceCert_SEQ;
+DROP SEQUENCE test_EnergyPerformanceCert_SEQ;

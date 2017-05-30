@@ -2,10 +2,10 @@
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
         <name>testADE</name>
-        <version>1.2</version>
+        <version>1.0</version>
         <description>test</description>
-        <dbPrefix>tes2</dbPrefix>
-        <initialObjectClassId>991000</initialObjectClassId>
+        <dbPrefix>test</dbPrefix>
+        <initialObjectClassId>20000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
         <schema id="TestADE">
@@ -20,7 +20,7 @@
         </complexType>
     </complexTypes>
     <featureTypes>
-        <featureType abstract="true" id="_AbstractBuildingUnitType" table="_BuildingUnit" topLevel="true" path="_AbstractBuildingUnit" schema="TestADE">
+        <featureType abstract="true" id="_AbstractBuildingUnitType" table="test_BuildingUnit" objectClassId="20000" topLevel="true" path="_AbstractBuildingUnit" schema="TestADE">
             <extension base="AbstractCityObjectType">
                 <join table="cityobject" fromColumn="ID" toColumn="ID"/>
             </extension>
@@ -37,7 +37,7 @@
                 <attribute column="function" type="string" path="." schema="TestADE"/>
             </complexAttribute>
             <complexProperty refType="EnergyPerformanceCertificationType" path="energyPerformanceCertification" schema="TestADE">
-                <join table="EnergyPerformanceCertification" fromColumn="_BuildingUnit_energyPerformanceCertification_ID" toColumn="ID"/>
+                <join table="test_EnergyPerformanceCertific" fromColumn="BuildingUnit_energyPerforma_ID" toColumn="ID"/>
             </complexProperty>
             <geometryProperty inlineColumn="lod2MultiCurve" type="MultiCurve" path="lod2MultiCurve" schema="TestADE"/>
             <geometryProperty inlineColumn="lod3MultiCurve" type="MultiCurve" path="lod3MultiCurve" schema="TestADE"/>
@@ -51,19 +51,19 @@
             <geometryProperty refColumn="lod3Solid_ID" type="AbstractSolid" path="lod3Solid" schema="TestADE"/>
             <geometryProperty refColumn="lod4Solid_ID" type="AbstractSolid" path="lod4Solid" schema="TestADE"/>
             <featureProperty target="AddressType" path="address" schema="TestADE">
-                <joinTable table="_BuildingUnit_to_address">
-                    <join table="_BuildingUnit" fromColumn="_BuildingUnit_ID" toColumn="ID"/>
+                <joinTable table="test_BuildingUnit_to_address">
+                    <join table="test_BuildingUnit" fromColumn="BuildingUnit_ID" toColumn="ID"/>
                     <join table="address" fromColumn="address_ID" toColumn="ID"/>
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="Facilities" fromColumn="_BuildingUnit_equippedWith_ID" toColumn="ID"/>
+                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID"/>
             </featureProperty>
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
-                <join table="_BuildingUnit" fromColumn="_BuildingUnit_Parent_ID" toColumn="ID"/>
+                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID"/>
             </featureProperty>
         </featureType>
-        <featureType abstract="true" id="FacilitiesType" table="Facilities" topLevel="true" path="Facilities" schema="TestADE">
+        <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="ID" toColumn="ID"/>
             </extension>
@@ -72,28 +72,28 @@
                 <attribute column="totalValue" type="double" path="." schema="TestADE"/>
             </complexAttribute>
         </featureType>
-        <featureType id="BuildingUnitPartType" table="_BuildingUnit" topLevel="true" path="BuildingUnitPart" schema="TestADE">
+        <featureType id="BuildingUnitPartType" table="test_BuildingUnit" objectClassId="20002" topLevel="true" path="BuildingUnitPart" schema="TestADE">
             <extension base="_AbstractBuildingUnitType"/>
         </featureType>
-        <featureType id="BuildingUnitType" table="_BuildingUnit" topLevel="true" path="BuildingUnit" schema="TestADE">
+        <featureType id="BuildingUnitType" table="test_BuildingUnit" objectClassId="20003" topLevel="true" path="BuildingUnit" schema="TestADE">
             <extension base="_AbstractBuildingUnitType"/>
         </featureType>
-        <featureType id="DHWFacilitiesType" table="Facilities" topLevel="true" path="DHWFacilities" schema="TestADE">
+        <featureType id="DHWFacilitiesType" table="test_Facilities" objectClassId="20004" topLevel="true" path="DHWFacilities" schema="TestADE">
             <extension base="FacilitiesType"/>
         </featureType>
-        <featureType id="IndustrialBuildingType" table="IndustrialBuilding" topLevel="true" path="IndustrialBuilding" schema="TestADE">
+        <featureType id="IndustrialBuildingType" table="test_IndustrialBuilding" objectClassId="20005" topLevel="true" path="IndustrialBuilding" schema="TestADE">
             <extension base="AbstractBuildingType">
                 <join table="building" fromColumn="ID" toColumn="ID"/>
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="LightingFacilitiesType" table="Facilities" topLevel="true" path="LightingFacilities" schema="TestADE">
+        <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20006" topLevel="true" path="LightingFacilities" schema="TestADE">
             <extension base="FacilitiesType"/>
         </featureType>
     </featureTypes>
     <propertyInjections>
-        <propertyInjection table="_building" defaultBase="AbstractBuildingType">
-            <join table="_building" fromColumn="ID" toColumn="ID"/>
+        <propertyInjection table="test_building" defaultBase="AbstractBuildingType">
+            <join table="test_building" fromColumn="ID" toColumn="ID"/>
             <attribute column="ownerName" type="string" path="ownerName" schema="TestADE"/>
             <complexAttribute path="floorArea" schema="TestADE">
                 <attribute column="floorArea_uom" type="string" path="@uom" schema="TestADE"/>
@@ -101,8 +101,8 @@
             </complexAttribute>
             <complexProperty path="energyPerformanceCertification" schema="TestADE">
                 <type path="EnergyPerformanceCertification" schema="TestADE">
-                    <attribute column="EnergyPerformanceCertificationType_certificationName" type="string" path="certificationName" schema="TestADE"/>
-                    <attribute column="EnergyPerformanceCertificationType_certificationid" type="string" path="certificationid" schema="TestADE"/>
+                    <attribute column="EnergyPerforman_certificationN" type="string" path="certificationName" schema="TestADE"/>
+                    <attribute column="EnergyPerforman_certificationi" type="string" path="certificationid" schema="TestADE"/>
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE"/>

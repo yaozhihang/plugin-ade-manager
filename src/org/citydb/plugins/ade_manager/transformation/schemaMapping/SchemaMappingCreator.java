@@ -58,13 +58,16 @@ public class SchemaMappingCreator {
 	private SchemaMapping adeSchemaMapping;
 	
 	private ConfigImpl config;
+	private int initialObjectclassId;
 	
 	public SchemaMappingCreator(GraGra graphGrammar, ConfigImpl config) {
 		this.graphGrammar = graphGrammar;
 		this.config = config;				
 	}
 	
-	public SchemaMapping createSchemaMapping() throws Exception {			
+	public SchemaMapping createSchemaMapping() throws Exception {		
+		initialObjectclassId = config.getInitialObjectclassId();
+		
 		JAXBContext ctx = JAXBContext.newInstance(SchemaMapping.class);
 		citygmlSchemaMapping = SchemaMappingUtil.unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"), ctx);
 				
@@ -288,11 +291,13 @@ public class SchemaMappingCreator {
 						
 		if (derivedFrom.equalsIgnoreCase("_Feature") || derivedFrom.equalsIgnoreCase("_CityObject")) {
 			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, appSchema, schemaMapping);
+			((FeatureType)featureOrObjectOrComplexType).setObjectClassId(initialObjectclassId++);
 			schemaMapping.addFeatureType((FeatureType) featureOrObjectOrComplexType);
 		}
 		else if (derivedFrom.equalsIgnoreCase("_GML")) {
 			featureOrObjectOrComplexType = new ObjectType(featureOrObjectId, path, tableName, appSchema, schemaMapping);
 			schemaMapping.addObjectType((ObjectType) featureOrObjectOrComplexType);
+			((ObjectType)featureOrObjectOrComplexType).setObjectClassId(initialObjectclassId++);
 		}
 		else if (derivedFrom.equalsIgnoreCase("_Object")) {
 			featureOrObjectOrComplexType = new ComplexType(path, appSchema, schemaMapping);

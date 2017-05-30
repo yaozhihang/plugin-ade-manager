@@ -2,14 +2,14 @@
 -- ***********************************  Create tables ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_BuildingUnit
+CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
+    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
     class_uom VARCHAR2(254),
     class VARCHAR2(254),
     usage_uom VARCHAR2(254),
@@ -31,9 +31,9 @@ CREATE TABLE tes2_BuildingUnit
 );
 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit_to_address 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_BuildingUnit_to_address
+CREATE TABLE test_BuildingUnit_to_address
 (
     BuildingUnit_ID INTEGER NOT NULL,
     address_ID INTEGER NOT NULL,
@@ -41,9 +41,9 @@ CREATE TABLE tes2_BuildingUnit_to_address
 );
 
 -- -------------------------------------------------------------------- 
--- tes2_EnergyPerformanceCertific 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_EnergyPerformanceCertific
+CREATE TABLE test_EnergyPerformanceCertific
 (
     ID INTEGER NOT NULL,
     BuildingUnit_energyPerforma_ID INTEGER,
@@ -53,9 +53,9 @@ CREATE TABLE tes2_EnergyPerformanceCertific
 );
 
 -- -------------------------------------------------------------------- 
--- tes2_Facilities 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_Facilities
+CREATE TABLE test_Facilities
 (
     ID INTEGER NOT NULL,
     BuildingUnit_equippedWith_ID INTEGER,
@@ -65,9 +65,9 @@ CREATE TABLE tes2_Facilities
 );
 
 -- -------------------------------------------------------------------- 
--- tes2_IndustrialBuilding 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_IndustrialBuilding
+CREATE TABLE test_IndustrialBuilding
 (
     ID INTEGER NOT NULL,
     remark VARCHAR2(254),
@@ -75,14 +75,14 @@ CREATE TABLE tes2_IndustrialBuilding
 );
 
 -- -------------------------------------------------------------------- 
--- tes2_building 
+-- test_building 
 -- -------------------------------------------------------------------- 
-CREATE TABLE tes2_building
+CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    ownerName VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,
+    ownerName VARCHAR2(254),
     EnergyPerforman_certificationN VARCHAR2(254),
     EnergyPerforman_certificationi VARCHAR2(254),
     PRIMARY KEY (ID)
@@ -92,76 +92,76 @@ CREATE TABLE tes2_building
 -- *********************************  Create foreign keys  ******************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES tes2_BuildingUnit (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES tes2_BuildingUnit (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES tes2_building (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUni_lod2MultiS_FK FOREIGN KEY (lod2MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUni_lod2MultiS_FK FOREIGN KEY (lod2MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUni_lod3MultiS_FK FOREIGN KEY (lod3MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUni_lod3MultiS_FK FOREIGN KEY (lod3MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUni_lod4MultiS_FK FOREIGN KEY (lod4MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUni_lod4MultiS_FK FOREIGN KEY (lod4MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_lod1Solid_FK FOREIGN KEY (lod1Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_lod1Solid_FK FOREIGN KEY (lod1Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_lod2Solid_FK FOREIGN KEY (lod2Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_lod2Solid_FK FOREIGN KEY (lod2Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_lod3Solid_FK FOREIGN KEY (lod3Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_lod3Solid_FK FOREIGN KEY (lod3Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
-ALTER TABLE tes2_BuildingUnit
-    ADD CONSTRAINT tes2_BuildingUnit_lod4Solid_FK FOREIGN KEY (lod4Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
-
--- -------------------------------------------------------------------- 
--- tes2_BuildingUnit_to_address 
--- -------------------------------------------------------------------- 
-ALTER TABLE tes2_BuildingUnit_to_address
-    ADD CONSTRAINT tes2_BuildingUn_to_address_FK1 FOREIGN KEY (BuildingUnit_ID) REFERENCES tes2_BuildingUnit (ID);
-
-ALTER TABLE tes2_BuildingUnit_to_address
-    ADD CONSTRAINT tes2_BuildingUn_to_address_FK2 FOREIGN KEY (address_ID) REFERENCES address (ID);
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_BuildingUnit_lod4Solid_FK FOREIGN KEY (lod4Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 -- -------------------------------------------------------------------- 
--- tes2_EnergyPerformanceCertific 
+-- test_BuildingUnit_to_address 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_EnergyPerformanceCertific
-    ADD CONSTRAINT tes2_EnergyP_Buildin_energy_FK FOREIGN KEY (BuildingUnit_energyPerforma_ID) REFERENCES tes2_BuildingUnit (ID);
+ALTER TABLE test_BuildingUnit_to_address
+    ADD CONSTRAINT test_BuildingUn_to_address_FK1 FOREIGN KEY (BuildingUnit_ID) REFERENCES test_BuildingUnit (ID);
+
+ALTER TABLE test_BuildingUnit_to_address
+    ADD CONSTRAINT test_BuildingUn_to_address_FK2 FOREIGN KEY (address_ID) REFERENCES address (ID);
 
 -- -------------------------------------------------------------------- 
--- tes2_Facilities 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_Facilities
-    ADD CONSTRAINT tes2_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES tes2_BuildingUnit (ID);
+ALTER TABLE test_EnergyPerformanceCertific
+    ADD CONSTRAINT test_EnergyP_Buildin_energy_FK FOREIGN KEY (BuildingUnit_energyPerforma_ID) REFERENCES test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
--- tes2_IndustrialBuilding 
+-- test_Facilities 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_IndustrialBuilding
-    ADD CONSTRAINT tes2_IndustrialBuilding_FK FOREIGN KEY (ID) REFERENCES building (ID);
+ALTER TABLE test_Facilities
+    ADD CONSTRAINT test_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
--- tes2_building 
+-- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
-ALTER TABLE tes2_building
-    ADD CONSTRAINT tes2_building_FK FOREIGN KEY (ID) REFERENCES building (ID);
+ALTER TABLE test_IndustrialBuilding
+    ADD CONSTRAINT test_IndustrialBuilding_FK FOREIGN KEY (ID) REFERENCES building (ID);
+
+-- -------------------------------------------------------------------- 
+-- test_building 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_building
+    ADD CONSTRAINT test_building_FK FOREIGN KEY (ID) REFERENCES building (ID);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************  Create Indexes  ************************************* 
@@ -182,60 +182,60 @@ select :SRID mc from dual;
 prompt Used SRID for spatial indexes: &SRSNO 
 
 -- -------------------------------------------------------------------- 
--- tes2_BuildingUnit 
+-- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX tes2_BuildingUnit_Parent_FKX ON tes2_BuildingUnit (BuildingUnit_Parent_ID);
+CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit (building_buildingUnit_ID);
 
-CREATE INDEX tes2_BuildingUnit_Root_FKX ON tes2_BuildingUnit (BuildingUnit_Root_ID);
+CREATE INDEX test_BuildingUnit_Parent_FKX ON test_BuildingUnit (BuildingUnit_Parent_ID);
 
-CREATE INDEX tes2_Buildin_buildi_buildi_FKX ON tes2_BuildingUnit (building_buildingUnit_ID);
+CREATE INDEX test_BuildingUnit_Root_FKX ON test_BuildingUnit (BuildingUnit_Root_ID);
 
-DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TES2_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
-VALUES ('tes2_BuildingUnit','lod2MultiCurve',
+VALUES ('test_BuildingUnit','lod2MultiCurve',
 MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X', 0.000, 10000000.000, 0.0005), MDSYS.SDO_DIM_ELEMENT('Y', 0.000, 10000000.000, 0.0005),MDSYS.SDO_DIM_ELEMENT('Z', -1000, 10000, 0.0005)), &SRSNO);
-CREATE INDEX tes2_BuildingUn_lod2MultiC_SPX ON tes2_BuildingUnit (lod2MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+CREATE INDEX test_BuildingUn_lod2MultiC_SPX ON test_BuildingUnit (lod2MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 
-DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TES2_BUILDINGUNIT' AND COLUMN_NAME='LOD3MULTICURVE';
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD3MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
-VALUES ('tes2_BuildingUnit','lod3MultiCurve',
+VALUES ('test_BuildingUnit','lod3MultiCurve',
 MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X', 0.000, 10000000.000, 0.0005), MDSYS.SDO_DIM_ELEMENT('Y', 0.000, 10000000.000, 0.0005),MDSYS.SDO_DIM_ELEMENT('Z', -1000, 10000, 0.0005)), &SRSNO);
-CREATE INDEX tes2_BuildingUn_lod3MultiC_SPX ON tes2_BuildingUnit (lod3MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+CREATE INDEX test_BuildingUn_lod3MultiC_SPX ON test_BuildingUnit (lod3MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 
-DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TES2_BUILDINGUNIT' AND COLUMN_NAME='LOD4MULTICURVE';
+DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD4MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
-VALUES ('tes2_BuildingUnit','lod4MultiCurve',
+VALUES ('test_BuildingUnit','lod4MultiCurve',
 MDSYS.SDO_DIM_ARRAY(MDSYS.SDO_DIM_ELEMENT('X', 0.000, 10000000.000, 0.0005), MDSYS.SDO_DIM_ELEMENT('Y', 0.000, 10000000.000, 0.0005),MDSYS.SDO_DIM_ELEMENT('Z', -1000, 10000, 0.0005)), &SRSNO);
-CREATE INDEX tes2_BuildingUn_lod4MultiC_SPX ON tes2_BuildingUnit (lod4MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+CREATE INDEX test_BuildingUn_lod4MultiC_SPX ON test_BuildingUnit (lod4MultiCurve) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
 
-CREATE INDEX tes2_BuildingUn_lod1MultiS_FKX ON tes2_BuildingUnit (lod1MultiSurface_ID);
+CREATE INDEX test_BuildingUn_lod1MultiS_FKX ON test_BuildingUnit (lod1MultiSurface_ID);
 
-CREATE INDEX tes2_BuildingUn_lod2MultiS_FKX ON tes2_BuildingUnit (lod2MultiSurface_ID);
+CREATE INDEX test_BuildingUn_lod2MultiS_FKX ON test_BuildingUnit (lod2MultiSurface_ID);
 
-CREATE INDEX tes2_BuildingUn_lod3MultiS_FKX ON tes2_BuildingUnit (lod3MultiSurface_ID);
+CREATE INDEX test_BuildingUn_lod3MultiS_FKX ON test_BuildingUnit (lod3MultiSurface_ID);
 
-CREATE INDEX tes2_BuildingUn_lod4MultiS_FKX ON tes2_BuildingUnit (lod4MultiSurface_ID);
+CREATE INDEX test_BuildingUn_lod4MultiS_FKX ON test_BuildingUnit (lod4MultiSurface_ID);
 
-CREATE INDEX tes2_BuildingUni_lod1Solid_FKX ON tes2_BuildingUnit (lod1Solid_ID);
+CREATE INDEX test_BuildingUni_lod1Solid_FKX ON test_BuildingUnit (lod1Solid_ID);
 
-CREATE INDEX tes2_BuildingUni_lod2Solid_FKX ON tes2_BuildingUnit (lod2Solid_ID);
+CREATE INDEX test_BuildingUni_lod2Solid_FKX ON test_BuildingUnit (lod2Solid_ID);
 
-CREATE INDEX tes2_BuildingUni_lod3Solid_FKX ON tes2_BuildingUnit (lod3Solid_ID);
+CREATE INDEX test_BuildingUni_lod3Solid_FKX ON test_BuildingUnit (lod3Solid_ID);
 
-CREATE INDEX tes2_BuildingUni_lod4Solid_FKX ON tes2_BuildingUnit (lod4Solid_ID);
-
--- -------------------------------------------------------------------- 
--- tes2_EnergyPerformanceCertific 
--- -------------------------------------------------------------------- 
-CREATE INDEX tes2_EnergyP_Buildi_energy_FKX ON tes2_EnergyPerformanceCertific (BuildingUnit_energyPerforma_ID);
+CREATE INDEX test_BuildingUni_lod4Solid_FKX ON test_BuildingUnit (lod4Solid_ID);
 
 -- -------------------------------------------------------------------- 
--- tes2_Facilities 
+-- test_EnergyPerformanceCertific 
 -- -------------------------------------------------------------------- 
-CREATE INDEX tes2_Facilit_Buildi_equipp_FKX ON tes2_Facilities (BuildingUnit_equippedWith_ID);
+CREATE INDEX test_EnergyP_Buildi_energy_FKX ON test_EnergyPerformanceCertific (BuildingUnit_energyPerforma_ID);
+
+-- -------------------------------------------------------------------- 
+-- test_Facilities 
+-- -------------------------------------------------------------------- 
+CREATE INDEX test_Facilit_Buildi_equipp_FKX ON test_Facilities (BuildingUnit_equippedWith_ID);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************  Create Sequences  *********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
-CREATE SEQUENCE tes2_EnergyPerformanceCert_SEQ INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;
+CREATE SEQUENCE test_EnergyPerformanceCert_SEQ INCREMENT BY 1 START WITH 1 MINVALUE 1 CACHE 10000;

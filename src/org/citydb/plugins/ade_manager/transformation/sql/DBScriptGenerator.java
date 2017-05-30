@@ -37,7 +37,6 @@ import agg.xt_basis.Type;
 public class DBScriptGenerator {	
 	private Map<String, Table> databaseTables;
 	private GraGra graphGrammar;
-	private SchemaMapping adeSchemaMapping;
 	
 	private List<String> dbFkConstratintNameList;
 	private List<String> dbIndexNameList;
@@ -49,9 +48,8 @@ public class DBScriptGenerator {
 	private final Logger LOG = Logger.getInstance();
 	
 	
-	public DBScriptGenerator(GraGra graphGrammar, SchemaMapping adeSchemaMapping, ConfigImpl config) {
+	public DBScriptGenerator(GraGra graphGrammar, ConfigImpl config) {
 		this.graphGrammar = graphGrammar;		
-		this.adeSchemaMapping = adeSchemaMapping;
 		new ArrayList<String>(); 
 		this.dbFkConstratintNameList = new ArrayList<String>(); 
 		this.dbIndexNameList = new ArrayList<String>(); 
@@ -271,7 +269,7 @@ public class DBScriptGenerator {
 	
 	private void shrotenDatabaseObjectName() {
 		int maximumLength = 30;
-		String prefix = adeSchemaMapping.getMetadata().getDBPrefix();
+		String prefix = config.getAdeDbPrefix();
 		
 		if (prefix.length() > 4)
 			prefix = prefix.substring(0, 4);

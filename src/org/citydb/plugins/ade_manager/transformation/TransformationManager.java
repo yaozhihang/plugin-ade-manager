@@ -2,7 +2,6 @@ package org.citydb.plugins.ade_manager.transformation;
 
 import org.citydb.api.event.Event;
 import org.citydb.api.event.EventHandler;
-import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.log.Logger;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphTransformationManager;
@@ -31,18 +30,17 @@ public class TransformationManager implements EventHandler {
 		GraphTransformationManager aggGraphTransformationManager = new GraphTransformationManager(schemaHandler, schema, config);
 		GraGra graph = aggGraphTransformationManager.executeGraphTransformation();
 
+    	LOG.info("Generating Oracle and PostGIS database schema in SQL scripts...");
+		DBScriptGenerator databaseScriptCreator = new DBScriptGenerator(graph, config);
+		databaseScriptCreator.createDatabaseScripts(); 
+		
 		LOG.info("Creating 3dcitydb XML SchemaMapping file...");
 		SchemaMappingCreator schemaMappingCreator = new SchemaMappingCreator(graph, config);
-		SchemaMapping adeSchemaMapping = null;
     	try {
-    		adeSchemaMapping = schemaMappingCreator.createSchemaMapping();
+    		schemaMappingCreator.createSchemaMapping();
 		} catch (Exception e) {
 			throw new TransformationException("Error occurred while creating the XML schema Mapping file.", e);
-		}  	
-    	
-    	LOG.info("Generating Oracle and PostGIS database schema in SQL scripts...");
-		DBScriptGenerator databaseScriptCreator = new DBScriptGenerator(graph, adeSchemaMapping, config);
-		databaseScriptCreator.createDatabaseScripts(); 
+		} 
 	}
 	
 	@Override
