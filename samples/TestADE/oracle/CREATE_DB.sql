@@ -7,18 +7,19 @@
 CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
-    building_buildingUnit_ID INTEGER,
+    OBJECTCLASS_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    lod2MultiCurve MDSYS.SDO_GEOMETRY,
-    lod3MultiCurve MDSYS.SDO_GEOMETRY,
-    lod4MultiCurve MDSYS.SDO_GEOMETRY,
+    building_buildingUnit_ID INTEGER,
     class_uom VARCHAR2(254),
     class VARCHAR2(254),
     usage_uom VARCHAR2(254),
     usage VARCHAR2(254),
     function_uom VARCHAR2(254),
     function VARCHAR2(254),
+    lod2MultiCurve MDSYS.SDO_GEOMETRY,
+    lod3MultiCurve MDSYS.SDO_GEOMETRY,
+    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -58,6 +59,7 @@ CREATE TABLE test_EnergyPerformanceCertific
 CREATE TABLE test_Facilities
 (
     ID INTEGER NOT NULL,
+    OBJECTCLASS_ID INTEGER,
     BuildingUnit_equippedWith_ID INTEGER,
     totalValue_uom VARCHAR2(254),
     totalValue NUMBER,
@@ -119,11 +121,11 @@ CREATE TABLE test_OtherConstruction
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
+    EnergyPerforman_certificationN VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,
-    ownerName VARCHAR2(254),
-    EnergyPerforman_certificationN VARCHAR2(254),
     EnergyPerforman_certificationi VARCHAR2(254),
+    ownerName VARCHAR2(254),
     PRIMARY KEY (ID)
 );
 
@@ -134,16 +136,19 @@ CREATE TABLE test_building
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
+    ADD CONSTRAINT test_BuildingUni_Objectclas_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
+    ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
+
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -187,6 +192,9 @@ ALTER TABLE test_EnergyPerformanceCertific
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+ALTER TABLE test_Facilities
+    ADD CONSTRAINT test_Facilities_Objectclass_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
+
 ALTER TABLE test_Facilities
     ADD CONSTRAINT test_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES test_BuildingUnit (ID);
 
@@ -250,11 +258,13 @@ prompt Used SRID for spatial indexes: &SRSNO
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit (building_buildingUnit_ID);
+CREATE INDEX test_BuildingUn_Objectclas_FKX ON test_BuildingUnit (OBJECTCLASS_ID);
 
 CREATE INDEX test_BuildingUnit_Parent_FKX ON test_BuildingUnit (BuildingUnit_Parent_ID);
 
 CREATE INDEX test_BuildingUnit_Root_FKX ON test_BuildingUnit (BuildingUnit_Root_ID);
+
+CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit (building_buildingUnit_ID);
 
 DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)
@@ -298,6 +308,8 @@ CREATE INDEX test_EnergyP_Buildi_energy_FKX ON test_EnergyPerformanceCertific (B
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+CREATE INDEX test_Facilities_Objectclas_FKX ON test_Facilities (OBJECTCLASS_ID);
+
 CREATE INDEX test_Facilit_Buildi_equipp_FKX ON test_Facilities (BuildingUnit_equippedWith_ID);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 

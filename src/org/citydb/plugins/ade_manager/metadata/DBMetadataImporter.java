@@ -35,9 +35,7 @@ public class DBMetadataImporter {
 	private PreparedStatement psInsertObjectclass;
 	
 	private SchemaMapping adeSchemaMapping;
-	private List<String> adeSchemaIds;
-	private String adeRootSchemaId;
-		
+
 	public DBMetadataImporter(DatabaseConnectionPool dbPool) throws SQLException {
 		this.dbPool = dbPool;
 
@@ -74,18 +72,22 @@ public class DBMetadataImporter {
 			throw new DBMetadataImportException("Failed to read and process objectclass Ids, Aborting.", e);
 		}
 		
-		adeSchemaIds = new ArrayList<String>();		
+		List<String> adeSchemaIds = new ArrayList<String>();	
+		String adeRootSchemaId = null;
 		Iterator<AppSchema> adeSchemas = adeSchemaMapping.getSchemas().iterator();
 		while (adeSchemas.hasNext()) {
 			AppSchema adeSchema = adeSchemas.next();
 			adeSchemaIds.add(adeSchema.getId());
-		}			
+			if (adeSchema.isADERoot())
+				adeRootSchemaId = adeSchema.getId();
+		}		
 		
-		adeRootSchemaId = adeSchemaMapping.getSchemas().get(0).getId();	
+		if (adeRootSchemaId == null)
+			throw new DBMetadataImportException("Failed to import metadata, Cause: An ADE must have a root schema");
 
-		long insertedADEId;
+		long insertedADERowId;
 		try {
-			insertedADEId = insertADE(adeSchemaMapping);
+			insertedADERowId = insertADE(adeSchemaMapping);
 			psInsertADE.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'ADE' table.", e);
@@ -93,7 +95,7 @@ public class DBMetadataImporter {
 		
 		Map<String, List<Long>> insertedSchemas = null;
 		try {
-			insertedSchemas = insertSchemas(insertedADEId);
+			insertedSchemas = insertSchemas(insertedADERowId, adeSchemaIds);
 			psInsertSchema.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'SCHEMA' table.", e);
@@ -150,7 +152,7 @@ public class DBMetadataImporter {
 		return seqId;
 	}
 	
-	private Map<String, List<Long>> insertSchemas(long adeId) throws SQLException {				
+	private Map<String, List<Long>> insertSchemas(long adeRowId, List<String> adeSchemaIds) throws SQLException {				
 		Map<String, List<Long>> insertedSchemas = new HashMap<String, List<Long>>();
 
 		Iterator<AppSchema> schemaIter = adeSchemaMapping.getSchemas().iterator();		
@@ -170,14 +172,14 @@ public class DBMetadataImporter {
 
 				int index = 1;
 				psInsertSchema.setLong(index++, seqId);
-				psInsertSchema.setInt(index++, adeSchema.getId().equalsIgnoreCase(adeRootSchemaId)?1:0);
+				psInsertSchema.setInt(index++, adeSchema.isADERoot()?1:0);
 				psInsertSchema.setString(index++, adeNamespace.getContext().name());
 				psInsertSchema.setString(index++, adeNamespace.getURI());
 				psInsertSchema.setString(index++, adeSchema.getId());
 				psInsertSchema.setNull(index++, Types.VARCHAR);
 				psInsertSchema.setObject(index++, null);
 				psInsertSchema.setNull(index++, Types.VARCHAR);
-				psInsertSchema.setLong(index++, adeId);
+				psInsertSchema.setLong(index++, adeRowId);
 				
 				psInsertSchema.executeUpdate();
 			}					

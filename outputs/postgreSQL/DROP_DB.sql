@@ -11,13 +11,13 @@ ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Buildin_buildin_buildi_FK;
-
-ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_Parent_FK;
 
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_Root_FK;
+
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_Buildin_buildin_buildi_FK;
 
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUni_lod1MultiS_FK;

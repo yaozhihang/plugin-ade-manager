@@ -8,7 +8,7 @@
         <initialObjectClassId>20000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
-        <schema id="TestADE">
+        <schema id="TestADE" isADERoot="true">
             <namespace context="citygml-1.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
             <namespace context="citygml-2.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
         </schema>
@@ -57,10 +57,14 @@
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID"/>
+                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID"/>
+                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
         </featureType>
         <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
@@ -129,7 +133,9 @@
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID"/>
+                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
         </propertyInjection>
     </propertyInjections>

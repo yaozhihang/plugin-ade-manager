@@ -8,7 +8,7 @@
         <initialObjectClassId>20000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
-        <schema id="TestADE">
+        <schema id="TestADE" isADERoot="true">
             <namespace context="citygml-1.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
             <namespace context="citygml-2.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
         </schema>

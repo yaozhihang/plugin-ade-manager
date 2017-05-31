@@ -111,6 +111,7 @@ public class SchemaMappingCreator {
 		AppSchema appSchema = new AppSchema(xmlns, adeSchemaMapping);
 		appSchema.addNamespace(namespace1);
 		appSchema.addNamespace(namespace2);
+		appSchema.setIsADERoot(true);
 		
 		return appSchema;
 	}
