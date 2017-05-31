@@ -1,5 +1,6 @@
 package org.citydb.plugins.ade_manager.metadata;
 
+import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -9,6 +10,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+
 import org.citydb.database.DatabaseConnectionPool;
 import org.citydb.database.schema.mapping.AbstractExtension;
 import org.citydb.database.schema.mapping.AbstractObjectType;
@@ -16,6 +20,9 @@ import org.citydb.database.schema.mapping.AppSchema;
 import org.citydb.database.schema.mapping.Namespace;
 import org.citydb.database.schema.mapping.ObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
+import org.citydb.database.schema.mapping.SchemaMappingException;
+import org.citydb.database.schema.mapping.SchemaMappingValidationException;
+import org.citydb.database.schema.util.SchemaMappingUtil;
 
 public class DBMetadataImporter {	
 	private final DatabaseConnectionPool dbPool;
@@ -77,7 +84,7 @@ public class DBMetadataImporter {
 
 		long insertedADEId;
 		try {
-			insertedADEId = insertADE();
+			insertedADEId = insertADE(adeSchemaMapping);
 			psInsertADE.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'ADE' table.", e);
@@ -114,16 +121,25 @@ public class DBMetadataImporter {
 		}	
 	}
 
-	private long insertADE() throws SQLException {				
+	private long insertADE(SchemaMapping adeSchemaMapping) throws SQLException {				
 		long seqId = DBUtil.getSequenceID(dbPool, DBSequenceType.ade_seq);
-		
+			
 		int index = 1;
 		psInsertADE.setLong(index++, seqId);
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getName());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDescription());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getVersion());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDBPrefix());
-		psInsertADE.setNull(index++, Types.CLOB);
+		
+		String mappingText = getSchemaMappingAsString(adeSchemaMapping);
+		if (mappingText != null)
+			psInsertADE.setString(index++, mappingText);
+		else {
+			// instead of inserting NULL, an exception should be raised
+			// because xml_schemamapping_file should be non null
+			psInsertADE.setNull(index++, Types.CLOB);
+		}
+		
 		psInsertADE.setNull(index++, Types.CLOB);
 		psInsertADE.setNull(index++, Types.DATE);
 		psInsertADE.setNull(index++, Types.VARCHAR);
@@ -258,6 +274,17 @@ public class DBMetadataImporter {
 			return objectclassId;
 		else 
 			return getBaseclassId((AbstractObjectType<?>)objectType.getExtension().getBase());
-	}	
+	}
+	
+	private String getSchemaMappingAsString(SchemaMapping schemaMapping) {
+		try {			
+			JAXBContext mappingContext = JAXBContext.newInstance(SchemaMapping.class);
+			StringWriter writer = new StringWriter();			
+			SchemaMappingUtil.marshal(schemaMapping, writer, mappingContext, false);
+			return writer.toString();
+		} catch (JAXBException | SchemaMappingException | SchemaMappingValidationException e) {
+			return null;
+		}
+	}
 	
 }
