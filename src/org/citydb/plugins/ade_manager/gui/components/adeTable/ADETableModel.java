@@ -17,11 +17,12 @@ public class ADETableModel extends AbstractTableModel {
 	}
 
 	public void updateColumnsTitle() {
-		columnNames = new String[4];
-		columnNames[0] = "Name";
-		columnNames[1] = "Description";
-		columnNames[2] = "Namespace";
-		columnNames[3] = "DB_Prefix";
+		columnNames = new String[5];
+		columnNames[0] = "ADEID";
+		columnNames[1] = "Name";
+		columnNames[2] = "Description";
+		columnNames[3] = "Namespace";
+		columnNames[4] = "DB_Prefix";
 		fireTableStructureChanged();
 	}
 

@@ -5,6 +5,9 @@
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_BuildingUni_Objectclas_FK;
+
+ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_FK;
 
 ALTER TABLE test_BuildingUnit
@@ -58,6 +61,9 @@ ALTER TABLE test_EnergyPerformanceCertific
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+ALTER TABLE test_Facilities
+    DROP CONSTRAINT test_Facilities_Objectclass_FK;
+
 ALTER TABLE test_Facilities
     DROP CONSTRAINT test_Facilit_Buildin_equipp_FK;
 

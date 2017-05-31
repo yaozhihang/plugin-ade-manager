@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -41,8 +42,8 @@ public class DBMetadataImporter {
 		this.dbPool = dbPool;
 
 		String insertADEQueryStr = "INSERT INTO ADE"
-				+ "(ID, NAME, DESCRIPTION, VERSION, DB_PREFIX, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT, CREATION_DATE, CREATION_PERSON) VALUES"
-				+ "(?,?,?,?,?,?,?,?,?)";
+				+ "(ID, ADEID, NAME, DESCRIPTION, VERSION, DB_PREFIX, XML_SCHEMAMAPPING_FILE, DROP_DB_SCRIPT, CREATION_DATE, CREATION_PERSON) VALUES"
+				+ "(?,?,?,?,?,?,?,?,?,?)";
 		psInsertADE = dbPool.getConnection().prepareStatement(insertADEQueryStr);
 		
 		String insertSchemaQueryStr = "INSERT INTO SCHEMA"
@@ -126,6 +127,7 @@ public class DBMetadataImporter {
 			
 		int index = 1;
 		psInsertADE.setLong(index++, seqId);
+		psInsertADE.setString(index++, new StringBuilder("UUID_").append(UUID.randomUUID().toString()).toString());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getName());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDescription());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getVersion());

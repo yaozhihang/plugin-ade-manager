@@ -188,11 +188,12 @@ public class DBUtil {
 			rs = stmt.executeQuery("select * from ade order by id");
 			
 			while (rs.next()) {
-				String name = rs.getString(2);
-				String description = rs.getString(3);
-				String version = rs.getString(4);
-				String dbPrefix = rs.getString(5);
-				ades.add(new ADERow(name, description, version, dbPrefix));					
+				String adeid = rs.getString(2);
+				String name = rs.getString(3);
+				String description = rs.getString(4);
+				String version = rs.getString(5);
+				String dbPrefix = rs.getString(6);
+				ades.add(new ADERow(adeid, name, description, version, dbPrefix));					
 			}
 		} finally {
 			if (rs != null) {
