@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
+        <adeId>UUID_66d282f9-bc7b-465d-a7b3-568da9b0bbae</adeId>
         <name>testADE</name>
         <version>1.0</version>
         <description>test</description>

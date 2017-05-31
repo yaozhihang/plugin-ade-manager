@@ -8,18 +8,18 @@ CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
     OBJECTCLASS_ID INTEGER,
+    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
+    lod2MultiCurve geometry(GEOMETRYZ),
+    lod3MultiCurve geometry(GEOMETRYZ),
+    lod4MultiCurve geometry(GEOMETRYZ),
     class_uom VARCHAR(254),
     class VARCHAR(254),
     usage_uom VARCHAR(254),
     usage VARCHAR(254),
     function_uom VARCHAR(254),
     function VARCHAR(254),
-    lod2MultiCurve geometry(GEOMETRYZ),
-    lod3MultiCurve geometry(GEOMETRYZ),
-    lod4MultiCurve geometry(GEOMETRYZ),
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -121,11 +121,11 @@ CREATE TABLE test_OtherConstruction
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    EnergyPerforman_certificationN VARCHAR(254),
     floorArea_uom VARCHAR(254),
     floorArea NUMERIC,
-    EnergyPerforman_certificationi VARCHAR(254),
     ownerName VARCHAR(254),
+    EnergyPerforman_certificationN VARCHAR(254),
+    EnergyPerforman_certificationi VARCHAR(254),
     PRIMARY KEY (ID)
 );
 
@@ -142,13 +142,13 @@ ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
+
+ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
-
-ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -249,6 +249,12 @@ CREATE INDEX test_BuildingUn_Objectclas_FKX ON test_BuildingUnit
       OBJECTCLASS_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
+CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit
+    USING btree
+    (
+      building_buildingUnit_ID ASC NULLS LAST
+    )   WITH (FILLFACTOR = 90);
+
 CREATE INDEX test_BuildingUnit_Parent_FKX ON test_BuildingUnit
     USING btree
     (
@@ -259,12 +265,6 @@ CREATE INDEX test_BuildingUnit_Root_FKX ON test_BuildingUnit
     USING btree
     (
       BuildingUnit_Root_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
-CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit
-    USING btree
-    (
-      building_buildingUnit_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
 CREATE INDEX test_BuildingUn_lod2MultiC_SPX ON test_BuildingUnit

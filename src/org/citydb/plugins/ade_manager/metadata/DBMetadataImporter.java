@@ -129,7 +129,7 @@ public class DBMetadataImporter {
 			
 		int index = 1;
 		psInsertADE.setLong(index++, seqId);
-		psInsertADE.setString(index++, new StringBuilder("UUID_").append(UUID.randomUUID().toString()).toString());
+		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getADEId());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getName());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDescription());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getVersion());

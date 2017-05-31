@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 
@@ -89,7 +91,7 @@ public class SchemaMappingCreator {
 	} 
 	
 	private Metadata generateMetadata() {
-		Metadata metadata = new Metadata(config.getAdeName(), config.getAdeDbPrefix());
+		Metadata metadata = new Metadata(generateUUID(), config.getAdeName(), config.getAdeDbPrefix());
 		metadata.setDescription(config.getAdeDescription());
 		metadata.setVersion(config.getAdeVersion());
 		metadata.setInitialObjectClassId(config.getInitialObjectclassId());
@@ -596,5 +598,9 @@ public class SchemaMappingCreator {
 		}
 		else
 			return false;
+	}
+	
+	private static String generateUUID() {
+		return new StringBuilder("UUID_").append(UUID.randomUUID().toString()).toString();
 	}
 }

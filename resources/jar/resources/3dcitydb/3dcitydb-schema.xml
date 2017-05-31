@@ -146,6 +146,7 @@
         <attribute path="." column="name" type="string" schema="gml"/>
         <attribute path="@codeSpace" column="name_codespace" type="string" schema="gml"/>
       </complexAttribute>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
     </objectType>
   </objectTypes>
 
@@ -290,12 +291,12 @@
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="outerBuildingInstallation" target="BuildingInstallationType" schema="bldg">
         <join table="building_installation" fromColumn="id" toColumn="building_id">
-          <condition column="objectclass_id" value="27" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorBuildingInstallation" target="IntBuildingInstallationType" schema="bldg">
         <join table="building_installation" fromColumn="id" toColumn="building_id">
-          <condition column="objectclass_id" value="28" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
@@ -312,10 +313,14 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="bldg"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="interiorRoom" target="RoomType" schema="bldg">
-        <join table="room" fromColumn="id" toColumn="building_id"/>
+        <join table="room" fromColumn="id" toColumn="building_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="consistsOfBuildingPart" target="BuildingPartType" schema="bldg">
-        <join table="building" fromColumn="id" toColumn="building_parent_id"/>
+        <join table="building" fromColumn="id" toColumn="building_parent_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="bldg">
         <joinTable table="address_to_building">
@@ -497,11 +502,13 @@
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="BuildingFurnitureType" schema="bldg">
-        <join table="building_furniture" fromColumn="id" toColumn="room_id"/>
+        <join table="building_furniture" fromColumn="id" toColumn="room_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="roomInstallation" target="IntBuildingInstallationType" schema="bldg">
         <join table="building_installation" fromColumn="id" toColumn="room_id">
-          <condition column="objectclass_id" value="28" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfRoom"/>
@@ -643,7 +650,9 @@
         </joinTable>
       </featureProperty>
       <featureProperty path="parent" target="AbstractCityObjectType" schema="grp">
-        <join table="${target.table}" fromColumn="parent_cityobject_id" toColumn="id"/> 
+        <join table="${target.table}" fromColumn="parent_cityobject_id" toColumn="id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <geometryProperty path="geometry" refColumn="brep_id" inlineColumn="other_geom" type="AbstractGeometry" schema="grp"/>
       <adeHook name="_GenericApplicationPropertyOfCityObjectGroup"/>
@@ -801,12 +810,12 @@
       </complexAttribute>
       <featureProperty path="trafficArea" target="TrafficAreaType" schema="tran">
         <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id">
-          <condition column="objectclass_id" value="47" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="auxiliaryTrafficArea" target="AuxiliaryTrafficAreaType" schema="tran">
         <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id">
-          <condition column="objectclass_id" value="48" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <geometryProperty path="lod0Network" inlineColumn="lod0_network" type="GeometricComplex" schema="tran"/>
@@ -997,16 +1006,18 @@
       <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="brid"/>
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="outerBridgeConstruction" target="BridgeConstructionElementType" schema="brid">
-        <join table="bridge_constr_element" fromColumn="id" toColumn="bridge_id"/>
+        <join table="bridge_constr_element" fromColumn="id" toColumn="bridge_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="outerBridgeInstallation" target="BridgeInstallationType" schema="brid">
         <join table="bridge_installation" fromColumn="id" toColumn="bridge_id">
-          <condition column="objectclass_id" value="65" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorBridgeInstallation" target="IntBridgeInstallationType" schema="brid">
         <join table="bridge_installation" fromColumn="id" toColumn="bridge_id">
-          <condition column="objectclass_id" value="66" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
@@ -1023,10 +1034,14 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="brid"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="interiorBridgeRoom" target="BridgeRoomType" schema="brid">
-        <join table="bridge_room" fromColumn="id" toColumn="bridge_id"/>
+        <join table="bridge_room" fromColumn="id" toColumn="bridge_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="consistsOfBridgePart" target="BridgePartType" schema="brid">
-        <join table="bridge" fromColumn="id" toColumn="bridge_parent_id"/>
+        <join table="bridge" fromColumn="id" toColumn="bridge_parent_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="brid">
         <joinTable table="address_to_bridge">
@@ -1242,11 +1257,13 @@
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="BridgeFurnitureType" schema="brid">
-        <join table="bridge_furniture" fromColumn="id" toColumn="bridge_room_id"/>
+        <join table="bridge_furniture" fromColumn="id" toColumn="bridge_room_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="bridgeRoomInstallation" target="IntBridgeInstallationType" schema="brid">
         <join table="bridge_installation" fromColumn="id" toColumn="bridge_room_id">
-          <condition column="objectclass_id" value="66" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfBridgeRoom"/>
@@ -1299,12 +1316,12 @@
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="outerTunnelInstallation" target="TunnelInstallationType" schema="tun">
         <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id">
-          <condition column="objectclass_id" value="86" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorTunnelInstallation" target="IntTunnelInstallationType" schema="tun">
         <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id">
-          <condition column="objectclass_id" value="87" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
@@ -1321,10 +1338,14 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="tun"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="interiorHollowSpace" target="HollowSpaceType" schema="tun">
-        <join table="tunnel_hollow_space" fromColumn="id" toColumn="tunnel_id"/>
+        <join table="tunnel_hollow_space" fromColumn="id" toColumn="tunnel_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="consistsOfTunnelPart" target="TunnelPartType" schema="tun">
-        <join table="tunnel" fromColumn="id" toColumn="tunnel_parent_id"/>
+        <join table="tunnel" fromColumn="id" toColumn="tunnel_parent_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfAbstractTunnel"/>
     </featureType>
@@ -1497,11 +1518,13 @@
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="TunnelFurnitureType" schema="tun">
-        <join table="tunnel_furniture" fromColumn="id" toColumn="tunnel_hollow_space_id"/>
+        <join table="tunnel_furniture" fromColumn="id" toColumn="tunnel_hollow_space_id">
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+        </join>
       </featureProperty>
       <featureProperty path="hollowSpaceInstallation" target="IntTunnelInstallationType" schema="tun">
         <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_hollow_space_id">
-          <condition column="objectclass_id" value="87" type="integer"/>
+          <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfHollowSpace"/>
