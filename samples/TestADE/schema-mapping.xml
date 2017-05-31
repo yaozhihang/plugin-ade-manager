@@ -57,14 +57,10 @@
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID"/>
             </featureProperty>
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID"/>
             </featureProperty>
         </featureType>
         <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
@@ -91,8 +87,31 @@
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20006" topLevel="true" path="LightingFacilities" schema="TestADE">
+        <featureType id="IndustrialBuildingPartType" table="test_IndustrialBuildingPart" objectClassId="20006" topLevel="true" path="IndustrialBuildingPart" schema="TestADE">
+            <extension base="BuildingPartType">
+                <join table="building" fromColumn="ID" toColumn="ID"/>
+            </extension>
+            <attribute column="remark" type="string" path="remark" schema="TestADE"/>
+        </featureType>
+        <featureType id="IndustrialBuildingRoofSurfaceType" table="test_IndustrialBuildingRoofSur" objectClassId="20007" topLevel="true" path="IndustrialBuildingRoofSurface" schema="TestADE">
+            <extension base="RoofSurfaceType">
+                <join table="thematic_surface" fromColumn="ID" toColumn="ID"/>
+            </extension>
+            <attribute column="remark" type="string" path="remark" schema="TestADE"/>
+        </featureType>
+        <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20008" topLevel="true" path="LightingFacilities" schema="TestADE">
             <extension base="FacilitiesType"/>
+        </featureType>
+        <featureType id="OtherConstructionType" table="test_OtherConstruction" objectClassId="20009" topLevel="true" path="OtherConstruction" schema="TestADE">
+            <extension base="AbstractSiteType">
+                <join table="cityobject" fromColumn="ID" toColumn="ID"/>
+            </extension>
+            <featureProperty target="AbstractBoundarySurfaceType" path="boundedBy" schema="TestADE">
+                <joinTable table="test_OtherCo_to_themati_surfac">
+                    <join table="test_OtherConstruction" fromColumn="OtherConstruction_ID" toColumn="ID"/>
+                    <join table="thematic_surface" fromColumn="thematic_surface_ID" toColumn="ID"/>
+                </joinTable>
+            </featureProperty>
         </featureType>
     </featureTypes>
     <propertyInjections>
@@ -110,9 +129,7 @@
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID"/>
             </featureProperty>
         </propertyInjection>
     </propertyInjections>

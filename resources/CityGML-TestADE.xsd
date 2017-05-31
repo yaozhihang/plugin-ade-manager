@@ -93,6 +93,38 @@
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
+  <element name="IndustrialBuildingPart" substitutionGroup="bldg:BuildingPart" type="TestADE:IndustrialBuildingPartType"/>
+  <complexType name="IndustrialBuildingPartType">
+    <complexContent>
+      <extension base="bldg:BuildingPartType">
+        <sequence>
+          <element minOccurs="0" name="remark" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="IndustrialBuildingPartPropertyType">
+    <sequence minOccurs="0">
+      <element ref="TestADE:IndustrialBuildingPart"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="IndustrialBuildingRoofSurface" substitutionGroup="bldg:RoofSurface" type="TestADE:IndustrialBuildingRoofSurfaceType"/>
+  <complexType name="IndustrialBuildingRoofSurfaceType">
+    <complexContent>
+      <extension base="bldg:RoofSurfaceType">
+        <sequence>
+          <element minOccurs="0" name="remark" type="string"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="IndustrialBuildingRoofSurfacePropertyType">
+    <sequence minOccurs="0">
+      <element ref="TestADE:IndustrialBuildingRoofSurface"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
   <element name="LightingFacilities" substitutionGroup="TestADE:Facilities" type="TestADE:LightingFacilitiesType"/>
   <complexType name="LightingFacilitiesType">
     <complexContent>
@@ -104,6 +136,22 @@
   <complexType name="LightingFacilitiesPropertyType">
     <sequence minOccurs="0">
       <element ref="TestADE:LightingFacilities"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="OtherConstruction" substitutionGroup="core:_Site" type="TestADE:OtherConstructionType"/>
+  <complexType name="OtherConstructionType">
+    <complexContent>
+      <extension base="core:AbstractSiteType">
+        <sequence>
+          <element maxOccurs="unbounded" minOccurs="0" name="boundedBy" type="bldg:BoundarySurfacePropertyType"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="OtherConstructionPropertyType">
+    <sequence minOccurs="0">
+      <element ref="TestADE:OtherConstruction"/>
     </sequence>
     <attributeGroup ref="gml:AssociationAttributeGroup"/>
   </complexType>
