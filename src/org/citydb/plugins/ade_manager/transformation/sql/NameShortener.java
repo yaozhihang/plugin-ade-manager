@@ -31,12 +31,10 @@ public class NameShortener {
 	public static String shortenDbObjectName(String inputName, int maximumLength, int suffix) {
 	//	inputName = splitCamelCase(inputName);
 		if (suffix == 1) {
-			inputName = inputName + suffix;
+			inputName = inputName + "_" + suffix;
 		}			
 		else if (suffix > 1) {
-			inputName.replace("FK" + String.valueOf(suffix-1), "FK" + String.valueOf(suffix));
-			inputName.replace("ID" + String.valueOf(suffix-1), "ID" + String.valueOf(suffix));
-			inputName.replace("IDX" + String.valueOf(suffix-1), "IDX" + String.valueOf(suffix));
+			inputName = inputName.replace("_" + String.valueOf(suffix-1), "_" + String.valueOf(suffix));
 		}			
 		
 		String result = cleanUpUndercores(inputName);
