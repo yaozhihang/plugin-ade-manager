@@ -268,7 +268,7 @@ public class DBScriptGenerator {
     }
 	
 	private void shrotenDatabaseObjectName() {
-		int maximumLength = 30;
+		int maximumLength = 25;
 		String prefix = config.getAdeDbPrefix();
 		
 		if (prefix.length() > 4)
@@ -448,6 +448,8 @@ public class DBScriptGenerator {
 		
 		File createDbFile = new File(directory, "CREATE_DB.sql");
 		File dropDbFile = new File(directory, "DROP_DB.sql");
+		File enableVersioningFile = new File(directory, "ENABLE_VERSIONING.sql");
+		File disableVersioningFile = new File(directory, "DISABLE_VERSIONING.sql");
 		
 		Map<String, Table> treeMap = new TreeMap<String, Table>(databaseTables);
 		int counter = 0;	
@@ -510,13 +512,14 @@ public class DBScriptGenerator {
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 			printComment("*********************************  Create Sequences  ***********************************", databasePlatform, writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
-			this.printCreateSequences(writer);			
+			this.printCreateSequences(writer);	
+
 		} catch (IOException | NullPointerException e) {			
 			e.printStackTrace();
 		} finally {
 			writer.close();	
 		}
-		
+
 		// Drop Database Schema for ADE...
 		try {
 			// drop foreign key constraints
@@ -557,7 +560,7 @@ public class DBScriptGenerator {
 			printComment("*********************************  Drop Sequences  *************************************", databasePlatform, writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
 			this.printDropSequences(writer);
-			
+
 			// Recycle Bin for Oracle
 			if (databasePlatform instanceof Oracle10Platform)
 				printRecycleBinForOracle(writer);
@@ -567,6 +570,58 @@ public class DBScriptGenerator {
 			// Close Writer instance
 			writer.close();
 		}
+		
+		// enable Versioning
+		if (databasePlatform instanceof Oracle10Platform){
+			try {
+				writer = new PrintWriter(enableVersioningFile);
+				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
+				printComment("*********************************  Enable Versioning  ***********************************", databasePlatform, writer);
+				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
+				writer.println();
+				Iterator<Table> iterator = treeMap.values().iterator();
+				StringBuilder commandStr = new StringBuilder().append("DBMS_WM.EnableVersioning('"); 
+				while (iterator.hasNext()) {
+					Table table = iterator.next();
+					String tableName = table.getName();
+					if (!isMappedFromforeignClass(tableName)) 
+						commandStr.append(tableName).append(iterator.hasNext()?",":"");										
+				}	
+				commandStr.append("','VIEW_WO_OVERWRITE');"); 
+
+				writer.println("exec " + commandStr.toString());
+			} catch (IOException | NullPointerException e) {			
+				e.printStackTrace();
+			} finally {
+				writer.close();	
+			}
+		}  	
+		
+		// disable Versioning
+		if (databasePlatform instanceof Oracle10Platform){
+			try {
+				writer = new PrintWriter(disableVersioningFile);
+				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
+				printComment("*********************************  Disable Versioning  ***********************************", databasePlatform, writer);
+				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
+				writer.println();
+				Iterator<Table> iterator = treeMap.values().iterator();
+				StringBuilder commandStr = new StringBuilder().append("DBMS_WM.DisableVersioning('"); 
+				while (iterator.hasNext()) {
+					Table table = iterator.next();
+					String tableName = table.getName();
+					if (!isMappedFromforeignClass(tableName)) 
+						commandStr.append(tableName).append(iterator.hasNext()?",":"");										
+				}	
+				commandStr.append("',true, true);"); 
+
+				writer.println("exec " + commandStr.toString());
+			} catch (IOException | NullPointerException e) {			
+				e.printStackTrace();
+			} finally {
+				writer.close();	
+			}
+		}  
 	}
 	
 	private void printGetSridScript(PrintWriter writer) {
@@ -725,6 +780,7 @@ public class DBScriptGenerator {
 				}
 			};
 		}
+		writer.println();
 	}
 	
 	private void printDropSequences(PrintWriter writer) {

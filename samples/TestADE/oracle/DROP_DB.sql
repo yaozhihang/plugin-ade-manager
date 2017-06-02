@@ -2,103 +2,97 @@
 -- ***********************************  Drop foreign keys ********************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
+-- test_BuildingU_to_address 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_BuildingU_to_address
+    DROP CONSTRAINT test_Buildi_to_addres_FK1;
+
+ALTER TABLE test_BuildingU_to_address
+    DROP CONSTRAINT test_Buildi_to_addres_FK2;
+
+-- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUni_Objectclas_FK;
-
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Buildin_buildin_buildi_FK;
-
-ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUnit_Parent_FK;
+    DROP CONSTRAINT test_BuildingUn_Parent_FK;
 
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_Root_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUni_lod1MultiS_FK;
+    DROP CONSTRAINT test_Build_build_build_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUni_lod2MultiS_FK;
+    DROP CONSTRAINT test_Building_lod1Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUni_lod3MultiS_FK;
+    DROP CONSTRAINT test_Building_lod2Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUni_lod4MultiS_FK;
+    DROP CONSTRAINT test_Building_lod3Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUnit_lod1Solid_FK;
+    DROP CONSTRAINT test_Building_lod4Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUnit_lod2Solid_FK;
+    DROP CONSTRAINT test_Building_lod1Soli_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUnit_lod3Solid_FK;
+    DROP CONSTRAINT test_Building_lod2Soli_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUnit_lod4Solid_FK;
+    DROP CONSTRAINT test_Building_lod3Soli_FK;
+
+ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_Building_lod4Soli_FK;
 
 -- -------------------------------------------------------------------- 
--- test_BuildingUnit_to_address 
+-- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_BuildingUnit_to_address
-    DROP CONSTRAINT test_BuildingUn_to_address_FK1;
-
-ALTER TABLE test_BuildingUnit_to_address
-    DROP CONSTRAINT test_BuildingUn_to_address_FK2;
-
--- -------------------------------------------------------------------- 
--- test_EnergyPerformanceCertific 
--- -------------------------------------------------------------------- 
-ALTER TABLE test_EnergyPerformanceCertific
-    DROP CONSTRAINT test_EnergyP_Buildin_energy_FK;
+ALTER TABLE test_EnergyPerformanceCer
+    DROP CONSTRAINT test_Energ_Build_energ_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_Facilities
-    DROP CONSTRAINT test_Facilities_Objectclass_FK;
-
-ALTER TABLE test_Facilities
-    DROP CONSTRAINT test_Facilit_Buildin_equipp_FK;
+    DROP CONSTRAINT test_Facil_Build_equip_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_IndustrialBuilding
-    DROP CONSTRAINT test_IndustrialBuilding_FK;
+    DROP CONSTRAINT test_IndustrialBuildin_FK;
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingPart 
+-- test_IndustrialBuildingPa 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_IndustrialBuildingPart
-    DROP CONSTRAINT test_IndustrialBuildingPart_FK;
+ALTER TABLE test_IndustrialBuildingPa
+    DROP CONSTRAINT test_IndustrialBuild_FK_1;
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingRoofSur 
+-- test_IndustrialBuildingRo 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_IndustrialBuildingRoofSur
-    DROP CONSTRAINT test_IndustrialBuildingRoof_FK;
-
--- -------------------------------------------------------------------- 
--- test_OtherCo_to_themati_surfac 
--- -------------------------------------------------------------------- 
-ALTER TABLE test_OtherCo_to_themati_surfac
-    DROP CONSTRAINT test_OtherC_to_thema_surfa_FK1;
-
-ALTER TABLE test_OtherCo_to_themati_surfac
-    DROP CONSTRAINT test_OtherC_to_thema_surfa_FK2;
+ALTER TABLE test_IndustrialBuildingRo
+    DROP CONSTRAINT test_IndustrialBuild_FK_2;
 
 -- -------------------------------------------------------------------- 
 -- test_OtherConstruction 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_OtherConstruction
     DROP CONSTRAINT test_OtherConstruction_FK;
+
+-- -------------------------------------------------------------------- 
+-- test_Other_to_thema_surfa 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_Other_to_thema_surfa
+    DROP CONSTRAINT test_Othe_to_them_sur_FK1;
+
+ALTER TABLE test_Other_to_thema_surfa
+    DROP CONSTRAINT test_Othe_to_them_sur_FK2;
 
 -- -------------------------------------------------------------------- 
 -- test_building 
@@ -110,19 +104,19 @@ ALTER TABLE test_building
 -- ***********************************  Drop tables  ************************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
+-- test_BuildingU_to_address 
+-- -------------------------------------------------------------------- 
+DROP TABLE test_BuildingU_to_address;
+
+-- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 DROP TABLE test_BuildingUnit;
 
 -- -------------------------------------------------------------------- 
--- test_BuildingUnit_to_address 
+-- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
-DROP TABLE test_BuildingUnit_to_address;
-
--- -------------------------------------------------------------------- 
--- test_EnergyPerformanceCertific 
--- -------------------------------------------------------------------- 
-DROP TABLE test_EnergyPerformanceCertific;
+DROP TABLE test_EnergyPerformanceCer;
 
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
@@ -135,24 +129,24 @@ DROP TABLE test_Facilities;
 DROP TABLE test_IndustrialBuilding;
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingPart 
+-- test_IndustrialBuildingPa 
 -- -------------------------------------------------------------------- 
-DROP TABLE test_IndustrialBuildingPart;
+DROP TABLE test_IndustrialBuildingPa;
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingRoofSur 
+-- test_IndustrialBuildingRo 
 -- -------------------------------------------------------------------- 
-DROP TABLE test_IndustrialBuildingRoofSur;
-
--- -------------------------------------------------------------------- 
--- test_OtherCo_to_themati_surfac 
--- -------------------------------------------------------------------- 
-DROP TABLE test_OtherCo_to_themati_surfac;
+DROP TABLE test_IndustrialBuildingRo;
 
 -- -------------------------------------------------------------------- 
 -- test_OtherConstruction 
 -- -------------------------------------------------------------------- 
 DROP TABLE test_OtherConstruction;
+
+-- -------------------------------------------------------------------- 
+-- test_Other_to_thema_surfa 
+-- -------------------------------------------------------------------- 
+DROP TABLE test_Other_to_thema_surfa;
 
 -- -------------------------------------------------------------------- 
 -- test_building 
@@ -163,6 +157,6 @@ DROP TABLE test_building;
 -- *********************************  Drop Sequences  ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
-DROP SEQUENCE test_EnergyPerformanceCert_SEQ;
+DROP SEQUENCE test_EnergyPerformanc_SEQ;
 
 PURGE RECYCLEBIN;

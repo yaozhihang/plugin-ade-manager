@@ -2,24 +2,33 @@
 -- ***********************************  Create tables ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
+-- test_BuildingU_to_address 
+-- -------------------------------------------------------------------- 
+CREATE TABLE test_BuildingU_to_address
+(
+    BuildingUnit_ID INTEGER NOT NULL,
+    address_ID INTEGER NOT NULL,
+    PRIMARY KEY (BuildingUnit_ID, address_ID)
+);
+
+-- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    lod2MultiCurve geometry(GEOMETRYZ),
-    lod3MultiCurve geometry(GEOMETRYZ),
-    lod4MultiCurve geometry(GEOMETRYZ),
+    building_buildingUnit_ID INTEGER,
     class_uom VARCHAR(254),
     class VARCHAR(254),
     usage_uom VARCHAR(254),
     usage VARCHAR(254),
     function_uom VARCHAR(254),
     function VARCHAR(254),
+    lod2MultiCurve geometry(GEOMETRYZ),
+    lod3MultiCurve geometry(GEOMETRYZ),
+    lod4MultiCurve geometry(GEOMETRYZ),
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -32,22 +41,12 @@ CREATE TABLE test_BuildingUnit
 );
 
 -- -------------------------------------------------------------------- 
--- test_BuildingUnit_to_address 
+-- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
-CREATE TABLE test_BuildingUnit_to_address
-(
-    BuildingUnit_ID INTEGER NOT NULL,
-    address_ID INTEGER NOT NULL,
-    PRIMARY KEY (BuildingUnit_ID, address_ID)
-);
-
--- -------------------------------------------------------------------- 
--- test_EnergyPerformanceCertific 
--- -------------------------------------------------------------------- 
-CREATE TABLE test_EnergyPerformanceCertific
+CREATE TABLE test_EnergyPerformanceCer
 (
     ID INTEGER NOT NULL,
-    BuildingUnit_energyPerforma_ID INTEGER,
+    BuildingUni_energyPerf_ID INTEGER,
     certificationName VARCHAR(254),
     certificationid VARCHAR(254),
     PRIMARY KEY (ID)
@@ -59,8 +58,7 @@ CREATE TABLE test_EnergyPerformanceCertific
 CREATE TABLE test_Facilities
 (
     ID INTEGER NOT NULL,
-    OBJECTCLASS_ID INTEGER,
-    BuildingUnit_equippedWith_ID INTEGER,
+    BuildingUni_equippedWi_ID INTEGER,
     totalValue_uom VARCHAR(254),
     totalValue NUMERIC,
     PRIMARY KEY (ID)
@@ -77,9 +75,9 @@ CREATE TABLE test_IndustrialBuilding
 );
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingPart 
+-- test_IndustrialBuildingPa 
 -- -------------------------------------------------------------------- 
-CREATE TABLE test_IndustrialBuildingPart
+CREATE TABLE test_IndustrialBuildingPa
 (
     ID INTEGER NOT NULL,
     remark VARCHAR(254),
@@ -87,23 +85,13 @@ CREATE TABLE test_IndustrialBuildingPart
 );
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingRoofSur 
+-- test_IndustrialBuildingRo 
 -- -------------------------------------------------------------------- 
-CREATE TABLE test_IndustrialBuildingRoofSur
+CREATE TABLE test_IndustrialBuildingRo
 (
     ID INTEGER NOT NULL,
     remark VARCHAR(254),
     PRIMARY KEY (ID)
-);
-
--- -------------------------------------------------------------------- 
--- test_OtherCo_to_themati_surfac 
--- -------------------------------------------------------------------- 
-CREATE TABLE test_OtherCo_to_themati_surfac
-(
-    OtherConstruction_ID INTEGER NOT NULL,
-    thematic_surface_ID INTEGER NOT NULL,
-    PRIMARY KEY (OtherConstruction_ID, thematic_surface_ID)
 );
 
 -- -------------------------------------------------------------------- 
@@ -116,6 +104,16 @@ CREATE TABLE test_OtherConstruction
 );
 
 -- -------------------------------------------------------------------- 
+-- test_Other_to_thema_surfa 
+-- -------------------------------------------------------------------- 
+CREATE TABLE test_Other_to_thema_surfa
+(
+    OtherConstruction_ID INTEGER NOT NULL,
+    thematic_surface_ID INTEGER NOT NULL,
+    PRIMARY KEY (OtherConstruction_ID, thematic_surface_ID)
+);
+
+-- -------------------------------------------------------------------- 
 -- test_building 
 -- -------------------------------------------------------------------- 
 CREATE TABLE test_building
@@ -123,9 +121,9 @@ CREATE TABLE test_building
     ID INTEGER NOT NULL,
     floorArea_uom VARCHAR(254),
     floorArea NUMERIC,
-    EnergyPerforman_certificationN VARCHAR(254),
-    EnergyPerforman_certificationi VARCHAR(254),
     ownerName VARCHAR(254),
+    EnergyPerfor_certificatio VARCHAR(254),
+    EnergyPerfo_certificati_1 VARCHAR(254),
     PRIMARY KEY (ID)
 );
 
@@ -133,103 +131,97 @@ CREATE TABLE test_building
 -- *********************************  Create foreign keys  ******************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- -------------------------------------------------------------------- 
+-- test_BuildingU_to_address 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_BuildingU_to_address
+    ADD CONSTRAINT test_Buildi_to_addres_FK1 FOREIGN KEY (BuildingUnit_ID) REFERENCES test_BuildingUnit (ID);
+
+ALTER TABLE test_BuildingU_to_address
+    ADD CONSTRAINT test_Buildi_to_addres_FK2 FOREIGN KEY (address_ID) REFERENCES address (ID);
+
+-- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUni_Objectclas_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_Buildin_buildin_buildi_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
-
-ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
+    ADD CONSTRAINT test_BuildingUn_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUni_lod1MultiS_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Build_build_build_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUni_lod2MultiS_FK FOREIGN KEY (lod2MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod1Mult_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUni_lod3MultiS_FK FOREIGN KEY (lod3MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod2Mult_FK FOREIGN KEY (lod2MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUni_lod4MultiS_FK FOREIGN KEY (lod4MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod3Mult_FK FOREIGN KEY (lod3MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_lod1Solid_FK FOREIGN KEY (lod1Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod4Mult_FK FOREIGN KEY (lod4MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_lod2Solid_FK FOREIGN KEY (lod2Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod1Soli_FK FOREIGN KEY (lod1Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_lod3Solid_FK FOREIGN KEY (lod3Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod2Soli_FK FOREIGN KEY (lod2Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_BuildingUnit_lod4Solid_FK FOREIGN KEY (lod4Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+    ADD CONSTRAINT test_Building_lod3Soli_FK FOREIGN KEY (lod3Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
+
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Building_lod4Soli_FK FOREIGN KEY (lod4Solid_ID) REFERENCES SURFACE_GEOMETRY (ID);
 
 -- -------------------------------------------------------------------- 
--- test_BuildingUnit_to_address 
+-- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_BuildingUnit_to_address
-    ADD CONSTRAINT test_BuildingUn_to_address_FK1 FOREIGN KEY (BuildingUnit_ID) REFERENCES test_BuildingUnit (ID);
-
-ALTER TABLE test_BuildingUnit_to_address
-    ADD CONSTRAINT test_BuildingUn_to_address_FK2 FOREIGN KEY (address_ID) REFERENCES address (ID);
-
--- -------------------------------------------------------------------- 
--- test_EnergyPerformanceCertific 
--- -------------------------------------------------------------------- 
-ALTER TABLE test_EnergyPerformanceCertific
-    ADD CONSTRAINT test_EnergyP_Buildin_energy_FK FOREIGN KEY (BuildingUnit_energyPerforma_ID) REFERENCES test_BuildingUnit (ID);
+ALTER TABLE test_EnergyPerformanceCer
+    ADD CONSTRAINT test_Energ_Build_energ_FK FOREIGN KEY (BuildingUni_energyPerf_ID) REFERENCES test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_Facilities
-    ADD CONSTRAINT test_Facilities_Objectclass_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
-
-ALTER TABLE test_Facilities
-    ADD CONSTRAINT test_Facilit_Buildin_equipp_FK FOREIGN KEY (BuildingUnit_equippedWith_ID) REFERENCES test_BuildingUnit (ID);
+    ADD CONSTRAINT test_Facil_Build_equip_FK FOREIGN KEY (BuildingUni_equippedWi_ID) REFERENCES test_BuildingUnit (ID);
 
 -- -------------------------------------------------------------------- 
 -- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_IndustrialBuilding
-    ADD CONSTRAINT test_IndustrialBuilding_FK FOREIGN KEY (ID) REFERENCES building (ID);
+    ADD CONSTRAINT test_IndustrialBuildin_FK FOREIGN KEY (ID) REFERENCES building (ID);
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingPart 
+-- test_IndustrialBuildingPa 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_IndustrialBuildingPart
-    ADD CONSTRAINT test_IndustrialBuildingPart_FK FOREIGN KEY (ID) REFERENCES building (ID);
+ALTER TABLE test_IndustrialBuildingPa
+    ADD CONSTRAINT test_IndustrialBuild_FK_1 FOREIGN KEY (ID) REFERENCES building (ID);
 
 -- -------------------------------------------------------------------- 
--- test_IndustrialBuildingRoofSur 
+-- test_IndustrialBuildingRo 
 -- -------------------------------------------------------------------- 
-ALTER TABLE test_IndustrialBuildingRoofSur
-    ADD CONSTRAINT test_IndustrialBuildingRoof_FK FOREIGN KEY (ID) REFERENCES thematic_surface (ID);
-
--- -------------------------------------------------------------------- 
--- test_OtherCo_to_themati_surfac 
--- -------------------------------------------------------------------- 
-ALTER TABLE test_OtherCo_to_themati_surfac
-    ADD CONSTRAINT test_OtherC_to_thema_surfa_FK1 FOREIGN KEY (OtherConstruction_ID) REFERENCES test_OtherConstruction (ID);
-
-ALTER TABLE test_OtherCo_to_themati_surfac
-    ADD CONSTRAINT test_OtherC_to_thema_surfa_FK2 FOREIGN KEY (thematic_surface_ID) REFERENCES thematic_surface (ID);
+ALTER TABLE test_IndustrialBuildingRo
+    ADD CONSTRAINT test_IndustrialBuild_FK_2 FOREIGN KEY (ID) REFERENCES thematic_surface (ID);
 
 -- -------------------------------------------------------------------- 
 -- test_OtherConstruction 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_OtherConstruction
     ADD CONSTRAINT test_OtherConstruction_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
+
+-- -------------------------------------------------------------------- 
+-- test_Other_to_thema_surfa 
+-- -------------------------------------------------------------------- 
+ALTER TABLE test_Other_to_thema_surfa
+    ADD CONSTRAINT test_Othe_to_them_sur_FK1 FOREIGN KEY (OtherConstruction_ID) REFERENCES test_OtherConstruction (ID);
+
+ALTER TABLE test_Other_to_thema_surfa
+    ADD CONSTRAINT test_Othe_to_them_sur_FK2 FOREIGN KEY (thematic_surface_ID) REFERENCES thematic_surface (ID);
 
 -- -------------------------------------------------------------------- 
 -- test_building 
@@ -243,125 +235,113 @@ ALTER TABLE test_building
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
-CREATE INDEX test_BuildingUn_Objectclas_FKX ON test_BuildingUnit
-    USING btree
-    (
-      OBJECTCLASS_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
-CREATE INDEX test_Buildin_buildi_buildi_FKX ON test_BuildingUnit
-    USING btree
-    (
-      building_buildingUnit_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
-CREATE INDEX test_BuildingUnit_Parent_FKX ON test_BuildingUnit
+CREATE INDEX test_BuildingU_Parent_FKX ON test_BuildingUnit
     USING btree
     (
       BuildingUnit_Parent_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUnit_Root_FKX ON test_BuildingUnit
+CREATE INDEX test_BuildingUni_Root_FKX ON test_BuildingUnit
     USING btree
     (
       BuildingUnit_Root_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUn_lod2MultiC_SPX ON test_BuildingUnit
+CREATE INDEX test_Build_build_buil_FKX ON test_BuildingUnit
+    USING btree
+    (
+      building_buildingUnit_ID ASC NULLS LAST
+    )   WITH (FILLFACTOR = 90);
+
+CREATE INDEX test_Building_lod2Mul_SPX ON test_BuildingUnit
     USING gist
     (
       lod2MultiCurve
     );
 
-CREATE INDEX test_BuildingUn_lod3MultiC_SPX ON test_BuildingUnit
+CREATE INDEX test_Building_lod3Mul_SPX ON test_BuildingUnit
     USING gist
     (
       lod3MultiCurve
     );
 
-CREATE INDEX test_BuildingUn_lod4MultiC_SPX ON test_BuildingUnit
+CREATE INDEX test_Building_lod4Mul_SPX ON test_BuildingUnit
     USING gist
     (
       lod4MultiCurve
     );
 
-CREATE INDEX test_BuildingUn_lod1MultiS_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod1Mul_FKX ON test_BuildingUnit
     USING btree
     (
       lod1MultiSurface_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUn_lod2MultiS_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod2Mul_FKX ON test_BuildingUnit
     USING btree
     (
       lod2MultiSurface_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUn_lod3MultiS_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod3Mul_FKX ON test_BuildingUnit
     USING btree
     (
       lod3MultiSurface_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUn_lod4MultiS_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod4Mul_FKX ON test_BuildingUnit
     USING btree
     (
       lod4MultiSurface_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUni_lod1Solid_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod1Sol_FKX ON test_BuildingUnit
     USING btree
     (
       lod1Solid_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUni_lod2Solid_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod2Sol_FKX ON test_BuildingUnit
     USING btree
     (
       lod2Solid_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUni_lod3Solid_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod3Sol_FKX ON test_BuildingUnit
     USING btree
     (
       lod3Solid_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
-CREATE INDEX test_BuildingUni_lod4Solid_FKX ON test_BuildingUnit
+CREATE INDEX test_Building_lod4Sol_FKX ON test_BuildingUnit
     USING btree
     (
       lod4Solid_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
 -- -------------------------------------------------------------------- 
--- test_EnergyPerformanceCertific 
+-- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
-CREATE INDEX test_EnergyP_Buildi_energy_FKX ON test_EnergyPerformanceCertific
+CREATE INDEX test_Energ_Build_ener_FKX ON test_EnergyPerformanceCer
     USING btree
     (
-      BuildingUnit_energyPerforma_ID ASC NULLS LAST
+      BuildingUni_energyPerf_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
-CREATE INDEX test_Facilities_Objectclas_FKX ON test_Facilities
+CREATE INDEX test_Facil_Build_equi_FKX ON test_Facilities
     USING btree
     (
-      OBJECTCLASS_ID ASC NULLS LAST
-    )   WITH (FILLFACTOR = 90);
-
-CREATE INDEX test_Facilit_Buildi_equipp_FKX ON test_Facilities
-    USING btree
-    (
-      BuildingUnit_equippedWith_ID ASC NULLS LAST
+      BuildingUni_equippedWi_ID ASC NULLS LAST
     )   WITH (FILLFACTOR = 90);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- *********************************  Create Sequences  *********************************** 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 
-CREATE SEQUENCE test_EnergyPerformanceCert_SEQ
+CREATE SEQUENCE test_EnergyPerformanc_SEQ
 INCREMENT BY 1
 MINVALUE 0
 MAXVALUE 2147483647
@@ -369,4 +349,5 @@ START WITH 1
 CACHE 1
 NO CYCLE
 OWNED BY NONE;
+
 

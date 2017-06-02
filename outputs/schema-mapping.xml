@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <adeId>UUID_81c5a493-0c74-47e6-91cb-7efe23ee8c21</adeId>
+        <adeId>UUID_754e965a-4a13-4c6e-9eda-3a0905d83d18</adeId>
         <name>testADE</name>
         <version>1.0</version>
         <description>test</description>
@@ -14,7 +14,7 @@
         </schema>
     </applicationSchemas>
     <complexTypes>
-        <complexType id="EnergyPerformanceCertificationType" table="test_EnergyPerformanceCertific" path="EnergyPerformanceCertification" schema="TestADE">
+        <complexType id="EnergyPerformanceCertificationType" table="test_EnergyPerformanceCer" path="EnergyPerformanceCertification" schema="TestADE">
             <attribute column="certificationName" type="string" path="certificationName" schema="TestADE"/>
             <attribute column="certificationid" type="string" path="certificationid" schema="TestADE"/>
         </complexType>
@@ -37,7 +37,7 @@
                 <attribute column="function" type="string" path="." schema="TestADE"/>
             </complexAttribute>
             <complexProperty refType="EnergyPerformanceCertificationType" path="energyPerformanceCertification" schema="TestADE">
-                <join table="test_EnergyPerformanceCertific" fromColumn="BuildingUnit_energyPerforma_ID" toColumn="ID"/>
+                <join table="test_EnergyPerformanceCer" fromColumn="BuildingUni_energyPerf_ID" toColumn="ID"/>
             </complexProperty>
             <geometryProperty inlineColumn="lod2MultiCurve" type="MultiCurve" path="lod2MultiCurve" schema="TestADE"/>
             <geometryProperty inlineColumn="lod3MultiCurve" type="MultiCurve" path="lod3MultiCurve" schema="TestADE"/>
@@ -51,13 +51,13 @@
             <geometryProperty refColumn="lod3Solid_ID" type="AbstractSolid" path="lod3Solid" schema="TestADE"/>
             <geometryProperty refColumn="lod4Solid_ID" type="AbstractSolid" path="lod4Solid" schema="TestADE"/>
             <featureProperty target="AddressType" path="address" schema="TestADE">
-                <joinTable table="test_BuildingUnit_to_address">
+                <joinTable table="test_BuildingU_to_address">
                     <join table="test_BuildingUnit" fromColumn="BuildingUnit_ID" toColumn="ID"/>
                     <join table="address" fromColumn="address_ID" toColumn="ID"/>
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID">
+                <join table="test_Facilities" fromColumn="BuildingUni_equippedWi_ID" toColumn="ID">
                     <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
                 </join>
             </featureProperty>
@@ -91,13 +91,13 @@
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="IndustrialBuildingPartType" table="test_IndustrialBuildingPart" objectClassId="20006" topLevel="true" path="IndustrialBuildingPart" schema="TestADE">
+        <featureType id="IndustrialBuildingPartType" table="test_IndustrialBuildingPa" objectClassId="20006" topLevel="true" path="IndustrialBuildingPart" schema="TestADE">
             <extension base="BuildingPartType">
                 <join table="building" fromColumn="ID" toColumn="ID"/>
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="IndustrialBuildingRoofSurfaceType" table="test_IndustrialBuildingRoofSur" objectClassId="20007" topLevel="true" path="IndustrialBuildingRoofSurface" schema="TestADE">
+        <featureType id="IndustrialBuildingRoofSurfaceType" table="test_IndustrialBuildingRo" objectClassId="20007" topLevel="true" path="IndustrialBuildingRoofSurface" schema="TestADE">
             <extension base="RoofSurfaceType">
                 <join table="thematic_surface" fromColumn="ID" toColumn="ID"/>
             </extension>
@@ -111,7 +111,7 @@
                 <join table="cityobject" fromColumn="ID" toColumn="ID"/>
             </extension>
             <featureProperty target="AbstractBoundarySurfaceType" path="boundedBy" schema="TestADE">
-                <joinTable table="test_OtherCo_to_themati_surfac">
+                <joinTable table="test_Other_to_thema_surfa">
                     <join table="test_OtherConstruction" fromColumn="OtherConstruction_ID" toColumn="ID"/>
                     <join table="thematic_surface" fromColumn="thematic_surface_ID" toColumn="ID"/>
                 </joinTable>
@@ -128,8 +128,8 @@
             </complexAttribute>
             <complexProperty path="energyPerformanceCertification" schema="TestADE">
                 <type path="EnergyPerformanceCertification" schema="TestADE">
-                    <attribute column="EnergyPerforman_certificationN" type="string" path="certificationName" schema="TestADE"/>
-                    <attribute column="EnergyPerforman_certificationi" type="string" path="certificationid" schema="TestADE"/>
+                    <attribute column="EnergyPerfor_certificatio" type="string" path="certificationName" schema="TestADE"/>
+                    <attribute column="EnergyPerfo_certificati_1" type="string" path="certificationid" schema="TestADE"/>
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
