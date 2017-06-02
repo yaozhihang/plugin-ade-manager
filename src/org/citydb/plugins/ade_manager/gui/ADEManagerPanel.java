@@ -490,7 +490,6 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			schemaHandler.parseSchema(new File(schemaFilePath));
 
 			for (String schemaNamespace : schemaHandler.getTargetNamespaces()) {
-				System.out.println(schemaNamespace);
 				Schema schema = schemaHandler.getSchema(schemaNamespace);
 				Source schemaSource = schemaHandler.getSchemaSource(schema);
 				

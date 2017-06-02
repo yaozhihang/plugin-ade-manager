@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <adeId>UUID_66d282f9-bc7b-465d-a7b3-568da9b0bbae</adeId>
+        <adeId>UUID_d80f10f6-b4a5-4127-b964-6d3e395f6c93</adeId>
         <name>testADE</name>
         <version>1.0</version>
         <description>test</description>
         <dbPrefix>test</dbPrefix>
-        <initialObjectClassId>20000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
         <schema id="TestADE" isADERoot="true">
@@ -58,14 +57,10 @@
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID"/>
             </featureProperty>
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID"/>
             </featureProperty>
         </featureType>
         <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
@@ -134,9 +129,7 @@
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID">
-                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-                </join>
+                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID"/>
             </featureProperty>
         </propertyInjection>
     </propertyInjections>

@@ -94,7 +94,7 @@ public class SchemaMappingCreator {
 		Metadata metadata = new Metadata(generateUUID(), config.getAdeName(), config.getAdeDbPrefix());
 		metadata.setDescription(config.getAdeDescription());
 		metadata.setVersion(config.getAdeVersion());
-		metadata.setInitialObjectClassId(config.getInitialObjectclassId());
+		
 		return metadata;
 	}
 	
@@ -314,14 +314,12 @@ public class SchemaMappingCreator {
 		String derivedFrom = (String) featureObjectNode.getAttribute().getValueAt("derivedFrom");			
 						
 		if (derivedFrom.equalsIgnoreCase("_Feature") || derivedFrom.equalsIgnoreCase("_CityObject")) {
-			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, appSchema, schemaMapping);
-			((FeatureType)featureOrObjectOrComplexType).setObjectClassId(initialObjectclassId++);
+			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, initialObjectclassId++, appSchema, schemaMapping);
 			schemaMapping.addFeatureType((FeatureType) featureOrObjectOrComplexType);
 		}
 		else if (derivedFrom.equalsIgnoreCase("_GML")) {
-			featureOrObjectOrComplexType = new ObjectType(featureOrObjectId, path, tableName, appSchema, schemaMapping);
+			featureOrObjectOrComplexType = new ObjectType(featureOrObjectId, path, tableName, initialObjectclassId++, appSchema, schemaMapping);
 			schemaMapping.addObjectType((ObjectType) featureOrObjectOrComplexType);
-			((ObjectType)featureOrObjectOrComplexType).setObjectClassId(initialObjectclassId++);
 		}
 		else if (derivedFrom.equalsIgnoreCase("_Object")) {
 			featureOrObjectOrComplexType = new ComplexType(path, appSchema, schemaMapping);
@@ -329,7 +327,7 @@ public class SchemaMappingCreator {
 			featureOrObjectOrComplexType.setTable(tableName);
 			schemaMapping.addComplexType((ComplexType) featureOrObjectOrComplexType);			
 		} else if (derivedFrom.equalsIgnoreCase("HookClass")) {
-			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, appSchema, schemaMapping);
+			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, 0, appSchema, schemaMapping);
 		}
 				
 		if (featureOrObjectOrComplexType != null)

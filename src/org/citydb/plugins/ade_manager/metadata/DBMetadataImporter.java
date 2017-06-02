@@ -62,10 +62,6 @@ public class DBMetadataImporter {
 	public void doImport(SchemaMapping adeSchemaMapping) throws DBMetadataImportException {
 		this.adeSchemaMapping = adeSchemaMapping;
 
-		if (adeSchemaMapping.getMetadata().getInitialObjectClassId() != null) {
-			DBUtil.regenerateObjectclassIds(dbPool, adeSchemaMapping);			
-		}		
-	
 		try {
 			DBUtil.validateSchemaMapping(dbPool, adeSchemaMapping);
 		} catch (SQLException e) {

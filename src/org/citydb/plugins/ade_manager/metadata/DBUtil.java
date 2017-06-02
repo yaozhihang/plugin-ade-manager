@@ -17,18 +17,6 @@ import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
 
 public class DBUtil {
 
-	public static SchemaMapping regenerateObjectclassIds(DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) {
-		int initialObjectclassid = schemaMapping.getMetadata().getInitialObjectClassId();		
-		
-		Iterator<AbstractObjectType<?>> iter = schemaMapping.getAbstractObjectTypes().iterator();
-		while (iter.hasNext()) {
-			AbstractObjectType<?> objectclass = iter.next();
-			objectclass.setObjectClassId(initialObjectclassid++);
-		}
-		
-		return schemaMapping;
-	}
-	
 	public static void validateSchemaMapping (DatabaseConnectionPool dbPool, SchemaMapping schemaMapping) throws SQLException {
 		String dbPrefix = schemaMapping.getMetadata().getDBPrefix();
 		if (!validateDBPrefix(dbPool, dbPrefix))
@@ -38,9 +26,6 @@ public class DBUtil {
 		while (iter.hasNext()) {
 			AbstractObjectType<?> objectclass = iter.next();
 			int objectclassId = objectclass.getObjectClassId();
-			
-			if (objectclassId == 0 && schemaMapping.getMetadata().getInitialObjectClassId() == null)
-				throw new SQLException("The object class '" + objectclass.getId() + "'" + " must be assigned with a valid ID");	
 			
 			if (!validateObjectclassId(dbPool, objectclassId))
 				throw new SQLException("The objectclass Id '" + objectclassId + "'" + " is invalid, because it has already been reserved by other class");							
