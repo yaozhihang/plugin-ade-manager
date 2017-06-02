@@ -123,9 +123,9 @@ CREATE TABLE test_building
     ID INTEGER NOT NULL,
     floorArea_uom VARCHAR(254),
     floorArea NUMERIC,
-    ownerName VARCHAR(254),
     EnergyPerforman_certificationN VARCHAR(254),
     EnergyPerforman_certificationi VARCHAR(254),
+    ownerName VARCHAR(254),
     PRIMARY KEY (ID)
 );
 

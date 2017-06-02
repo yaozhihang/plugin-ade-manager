@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <adeId>UUID_d80f10f6-b4a5-4127-b964-6d3e395f6c93</adeId>
+        <adeId>UUID_81c5a493-0c74-47e6-91cb-7efe23ee8c21</adeId>
         <name>testADE</name>
         <version>1.0</version>
         <description>test</description>
@@ -57,10 +57,14 @@
                 </joinTable>
             </featureProperty>
             <featureProperty target="FacilitiesType" path="equippedWith" schema="TestADE">
-                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID"/>
+                <join table="test_Facilities" fromColumn="BuildingUnit_equippedWith_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID"/>
+                <join table="test_BuildingUnit" fromColumn="BuildingUnit_Parent_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
         </featureType>
         <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
@@ -129,7 +133,9 @@
                 </type>
             </complexProperty>
             <featureProperty target="_AbstractBuildingUnitType" path="buildingUnit" schema="TestADE">
-                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID"/>
+                <join table="test_BuildingUnit" fromColumn="building_buildingUnit_ID" toColumn="ID">
+                    <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                </join>
             </featureProperty>
         </propertyInjection>
     </propertyInjections>

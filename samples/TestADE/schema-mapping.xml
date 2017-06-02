@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <adeId>UUID_66d282f9-bc7b-465d-a7b3-568da9b0bbae</adeId>
+        <adeId>UUID_81c5a493-0c74-47e6-91cb-7efe23ee8c21</adeId>
         <name>testADE</name>
         <version>1.0</version>
         <description>test</description>
         <dbPrefix>test</dbPrefix>
-        <initialObjectClassId>20000</initialObjectClassId>
     </metadata>
     <applicationSchemas>
         <schema id="TestADE" isADERoot="true">
