@@ -1,6 +1,5 @@
 package org.citydb.plugins.ade_manager.transformation.graph;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,8 +17,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.sun.xml.xsom.XSAnnotation;
-import com.sun.xml.xsom.XSComplexType;
-import com.sun.xml.xsom.XSContentType;
 import com.sun.xml.xsom.XSElementDecl;
 import com.sun.xml.xsom.XSModelGroup;
 import com.sun.xml.xsom.XSParticle;
@@ -96,34 +93,23 @@ public class GraphCreator {
 					this.createArc(GraphNodeArcType.BaseType, extensionNode, parentNode);
 				}				
 			}
-			
+
 			// process properties 
 			if (xsElementDecl.getTargetNamespace().equalsIgnoreCase(schema.getNamespaceURI())) {
-				XSComplexType classXsType = decl.getXSElementDecl().getType().asComplexType();
-				List<XSContentType> list = Arrays.asList(new XSContentType[]{classXsType.getExplicitContent(), classXsType.getContentType()});
-		        Iterator<XSContentType> iter = list.iterator();
-		        while (iter.hasNext()) {
-		        	XSContentType xsContentType = (XSContentType) iter.next();
-		        	if (xsContentType != null) {
-		        		XSParticle particle = xsContentType.asParticle();          
-				        if (particle != null) {
-				            XSTerm term = particle.getTerm();
-				            if (term.isModelGroup()) {
-			          	        XSModelGroup xsModelGroup = term.asModelGroup();
-			          	        XSParticle[] particles = xsModelGroup.getChildren();
-			          	        for (XSParticle p : particles) {
-			          	            XSTerm pterm = p.getTerm();
-			          	            if (pterm.isElementDecl()) { 
-			          	            	int minOccurs = p.getMinOccurs().intValue();
-			          	                int maxOccurs = p.getMaxOccurs().intValue();
-			          	                XSElementDecl propertyXSElementDecl = pterm.asElementDecl();	      	              
-			          	                this.parseLocalPropertyElement(propertyXSElementDecl, classNode, minOccurs, maxOccurs);
-			          	            }
-			          	        }
-			          	    } 
-				        }
-		        	}	        	
-		        }
+				xsElementDecl.visit(new SchemaVisitor() {
+					@Override
+					public void modelGroup(XSModelGroup modelGroup) {
+						for (XSParticle p : modelGroup.getChildren()) {
+							XSTerm pterm = p.getTerm();
+							if (pterm.isElementDecl()) {
+								int minOccurs = p.getMinOccurs().intValue();
+								int maxOccurs = p.getMaxOccurs().intValue();
+								XSElementDecl propertyDecl = pterm.asElementDecl();
+								parseLocalPropertyElement(propertyDecl, classNode, minOccurs, maxOccurs);
+							}
+						}						
+					}				
+				});
 			}	
 		}
 	}
@@ -451,25 +437,22 @@ public class GraphCreator {
 	    		}	
 	    	}
 		}		
-    	
-		// parse target featureType of this featureProperty
-		XSContentType xsContentType = decl.getXSElementDecl().getType().asComplexType().getContentType();
-	    XSParticle particle = xsContentType.asParticle();       
-	    if (particle != null) {
-	        XSTerm term = particle.getTerm();
-	        if (term.isModelGroup()) {
-	            XSModelGroup xsModelGroup = term.asModelGroup();
-	            XSParticle[] particles = xsModelGroup.getChildren();
-	            for (XSParticle p : particles) {
-	                XSTerm pterm = p.getTerm();
-	                if (pterm.isElementDecl()) { 
+
+		final String reversePropertyName2 = reversePropertyName;
+		// parse target featureType of this featureProperty		
+		decl.getXSElementDecl().visit(new SchemaVisitor() {
+			@Override
+			public void modelGroup(XSModelGroup modelGroup) {
+				for (XSParticle p : modelGroup.getChildren()) {
+					XSTerm pterm = p.getTerm();
+					if (pterm.isElementDecl()) {							 
 	                    XSElementDecl childElementDecl = (XSElementDecl) pterm;
 	                    ADEschemaElement childDecl = new ADEschemaElement(childElementDecl, schemaHandler.getSchema(childElementDecl.getTargetNamespace()));	                   	                        
-	                    Node childNode = this.getOrCreateElementTypeNode(childDecl);     
-	        			this.createArc(GraphNodeArcType.TargetType, propertyNode, childNode);
+	                    Node childNode = getOrCreateElementTypeNode(childDecl);     
+	        			createArc(GraphNodeArcType.TargetType, propertyNode, childNode);
 	        			
-	        			// searching reverse property node in the target class node
-	        			if (reversePropertyName != null) {
+	        			// searching reverse property node in the target class node		
+	        			if (reversePropertyName2 != null) {
 	        				if (childNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexType)) {
 	        					Iterator<Arc> iter = childNode.getOutgoingArcs();
 	        					while (iter.hasNext()) {
@@ -478,20 +461,20 @@ public class GraphCreator {
 	        							Node reversePropertyNode = (Node) arc.getTarget();	        							
 	        							if (reversePropertyNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexTypeProperty)) {
 	        								String propertyName = (String)reversePropertyNode.getAttribute().getValueAt("name");
-	        								if (propertyName.equalsIgnoreCase(reversePropertyName)) {
-	        								//	System.out.println(propertyName + "-----:-----" + decl.getLocalName());
-		        								this.createArc(GraphNodeArcType.ReverseProperty, propertyNode, reversePropertyNode);
-		        								this.createArc(GraphNodeArcType.ReverseProperty, reversePropertyNode, propertyNode);
+	        								if (propertyName.equalsIgnoreCase(reversePropertyName2)) {
+		        								createArc(GraphNodeArcType.ReverseProperty, propertyNode, reversePropertyNode);
+		        								createArc(GraphNodeArcType.ReverseProperty, reversePropertyNode, propertyNode);
 		        							}
 	        							}
 	        						}
 	        					}
 	        				}
-	        			}
-	                }
-	            }
-	        }
-	    }
+	        			}	        					                
+					}
+				}						
+			}	
+		});			
+		
 	}
 	
 	private void processComplexAttributeNode(Node propertyNode, ADEschemaElement decl) {
