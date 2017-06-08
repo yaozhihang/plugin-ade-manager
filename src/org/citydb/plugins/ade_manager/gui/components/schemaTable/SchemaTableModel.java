@@ -86,7 +86,7 @@ public class SchemaTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public SchemaRow getSchemaColumn(int index) {
+	public SchemaRow getColumn(int index) {
 		if (index < 0 || index >= rows.size())
 			return null;
 		return rows.get(index);

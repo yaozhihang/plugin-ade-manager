@@ -214,4 +214,35 @@ public class DBUtil {
 
 		return ades;
 	}
+	
+	public static void deleteADEMetadata (DatabaseConnectionPool dbPool, String adeId) throws SQLException {
+		Connection conn = null;
+		Statement stmt = null;
+
+		try {
+			conn = dbPool.getConnection();						
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Delete from ade where adeid = '" + adeId + "'");
+		} finally {
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				stmt = null;
+			}
+
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					throw e;
+				}
+
+				conn = null;
+			}
+		}
+	}
 }

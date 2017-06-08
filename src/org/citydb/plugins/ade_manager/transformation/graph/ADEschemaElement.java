@@ -1,16 +1,7 @@
 package org.citydb.plugins.ade_manager.transformation.graph;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
 import javax.xml.namespace.QName;
 
-import org.citydb.database.schema.mapping.GeometryType;
-import org.citydb.database.schema.mapping.SimpleType;
 import org.citygml4j.xml.schema.ElementDecl;
 import org.citygml4j.xml.schema.Schema;
 import com.sun.xml.xsom.XSContentType;

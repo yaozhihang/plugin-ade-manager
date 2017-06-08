@@ -22,7 +22,6 @@ import org.apache.ddlutils.model.Table;
 import org.apache.ddlutils.platform.SqlBuilder;
 import org.apache.ddlutils.platform.oracle.Oracle10Platform;
 import org.apache.ddlutils.platform.postgresql.PostgreSqlPlatform;
-import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.log.Logger;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper;

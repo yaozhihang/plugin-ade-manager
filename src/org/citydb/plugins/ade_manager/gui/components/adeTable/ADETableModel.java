@@ -89,7 +89,7 @@ public class ADETableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public ADERow getSchemaColumn(int index) {
+	public ADERow getColumn(int index) {
 		if (index < 0 || index >= rows.size())
 			return null;
 		return rows.get(index);

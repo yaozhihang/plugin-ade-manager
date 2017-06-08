@@ -81,7 +81,7 @@ public class GraphTransformationEventListener implements GraTraEventListener {
 			Match currentMatch = g.getMatch();
 			Rule currentRule = currentMatch.getRule();
 			String currentRuleName = currentRule.getName();
-		//	Logger.debug("[" + g.getMessage() + "] no completion of current match of Rule <" + currentRuleName + "> !" );
+			Logger.debug("[" + g.getMessage() + "] no completion of current match of Rule <" + currentRuleName + "> !" );
 			
 		} else if (g.getMessage() == GraTraEvent.INCONSISTENT) {
 			// ruleName = currentRule.getName();

@@ -86,8 +86,8 @@ public class SqlRunner {
                     if(!(command.toString().toLowerCase().trim().startsWith("create") || 
                     		command.toString().toLowerCase().trim().startsWith("insert") || 
                 			command.toString().toLowerCase().trim().startsWith("delete") ||
-                			command.toString().toLowerCase().trim().startsWith("alter")) ||
-                    		command.toString().toLowerCase().trim().startsWith("drop")) {
+                			command.toString().toLowerCase().trim().startsWith("alter") ||
+                    		command.toString().toLowerCase().trim().startsWith("drop"))) {
                     	command = null;
                     }
                     else {

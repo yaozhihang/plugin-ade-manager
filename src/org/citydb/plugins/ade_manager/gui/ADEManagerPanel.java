@@ -103,14 +103,18 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	private JTextField browseSchemaMappingText = new JTextField();
 	private JButton browseSchemaMappingButton = new JButton();
 	
-	private JPanel browseDBScriptPanel;
-	private JTextField browseDBScriptText = new JTextField();
-	private JButton browseDBScriptButton = new JButton();
+	private JPanel browseCreateDBScriptPanel;
+	private JTextField browseCreateDBScriptText = new JTextField();
+	private JButton browseCreateDBScriptButton = new JButton();
 	
-	private JButton registerADEButton = new JButton();	
+	private JPanel browseDropDBScriptPanel;
+	private JTextField browseDropDBScriptText = new JTextField();
+	private JButton browseDropDBScriptButton = new JButton();
 	
 	private JPanel adeButtonsPanel;
+	private JButton registerADEButton = new JButton();	
 	private JButton fetchADEsButton = new JButton();	
+	private JButton removeADEButton = new JButton();	
 	private JScrollPane adeTableScrollPanel;
 	private JTable adeTable;
 	private ADETableModel adeTableModel = new ADETableModel();
@@ -205,7 +209,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		adeTable.setRowSelectionAllowed(true);
 		adeTable.setRowHeight(20);		
 		adeTableScrollPanel = new JScrollPane(adeTable);
-		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 200));
+		adeTableScrollPanel.setPreferredSize(new Dimension(adeTable.getPreferredSize().width, 150));
 		adeTableScrollPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(), BorderFactory.createEmptyBorder(0, 0, 4, 4)));
 
 		browseSchemaMappingPanel = new JPanel();
@@ -214,16 +218,23 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		browseSchemaMappingPanel.add(browseSchemaMappingText, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		browseSchemaMappingPanel.add(browseSchemaMappingButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		
-		browseDBScriptPanel = new JPanel();
-		browseDBScriptPanel.setLayout(new GridBagLayout());
-		browseDBScriptPanel.setBorder(BorderFactory.createTitledBorder(""));
-		browseDBScriptPanel.add(browseDBScriptText, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
-		browseDBScriptPanel.add(browseDBScriptButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		browseCreateDBScriptPanel = new JPanel();
+		browseCreateDBScriptPanel.setLayout(new GridBagLayout());
+		browseCreateDBScriptPanel.setBorder(BorderFactory.createTitledBorder(""));
+		browseCreateDBScriptPanel.add(browseCreateDBScriptText, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		browseCreateDBScriptPanel.add(browseCreateDBScriptButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		
+		browseDropDBScriptPanel = new JPanel();
+		browseDropDBScriptPanel.setLayout(new GridBagLayout());
+		browseDropDBScriptPanel.setBorder(BorderFactory.createTitledBorder(""));
+		browseDropDBScriptPanel.add(browseDropDBScriptText, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		browseDropDBScriptPanel.add(browseDropDBScriptButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		
 		adeButtonsPanel = new JPanel();
 		adeButtonsPanel.setLayout(new GridBagLayout());
 		adeButtonsPanel.add(fetchADEsButton, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		adeButtonsPanel.add(registerADEButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		adeButtonsPanel.add(removeADEButton, GuiUtil.setConstraints(2,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		
 		// Assemble all panels
 		JPanel mainScrollView = new JPanel();
@@ -237,7 +248,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		mainScrollView.add(transformAndExportButton, GuiUtil.setConstraints(0,index++,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS*2,BORDER_THICKNESS));
 		mainScrollView.add(adeTableScrollPanel, GuiUtil.setConstraints(0,index++,0,0.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));		
 		mainScrollView.add(browseSchemaMappingPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));		
-		mainScrollView.add(browseDBScriptPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));		
+		mainScrollView.add(browseCreateDBScriptPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));	
+		mainScrollView.add(browseDropDBScriptPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));	
 		mainScrollView.add(adeButtonsPanel, GuiUtil.setConstraints(0,index++,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 
 		JScrollPane mainScrollPanel = new JScrollPane(mainScrollView);
@@ -266,11 +278,15 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		((TitledBorder) browseSchemaMappingPanel.getBorder()).setTitle("Schema Mapping File (.xml)");
 		browseSchemaMappingButton.setText(Language.I18N.getString("common.button.browse"));
 		
-		((TitledBorder) browseDBScriptPanel.getBorder()).setTitle("CREATE_DB Script (.sql)");
-		browseDBScriptButton.setText(Language.I18N.getString("common.button.browse"));
+		((TitledBorder) browseCreateDBScriptPanel.getBorder()).setTitle("CREATE_DB Script (.sql)");
+		browseCreateDBScriptButton.setText(Language.I18N.getString("common.button.browse"));
+		
+		((TitledBorder) browseDropDBScriptPanel.getBorder()).setTitle("DROP_DB Script (.sql)");
+		browseDropDBScriptButton.setText(Language.I18N.getString("common.button.browse"));
 		
 		registerADEButton.setText("Register ADE into DB");
 		fetchADEsButton.setText("Fetch ADEs from DB");
+		removeADEButton.setText("Remove seleted ADE from DB");
 	}
 
 	public void loadSettings() {
@@ -282,7 +298,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		dbPrefixInputField.setText(config.getAdeDbPrefix());
 		initObjectClassIdInputField.setText(String.valueOf(config.getInitialObjectclassId()));
 		browseSchemaMappingText.setText(config.getSchemaMappingPath());
-		browseDBScriptText.setText(config.getDbScriptPath());
+		browseCreateDBScriptText.setText(config.getCreateDbScriptPath());
+		browseDropDBScriptText.setText(config.getDropDbScriptPath());
 	}
 
 	public void setSettings() {
@@ -294,7 +311,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		config.setAdeDbPrefix(dbPrefixInputField.getText());
 		config.setInitialObjectclassId(Integer.valueOf(initObjectClassIdInputField.getText()));
 		config.setSchemaMappingPath(browseSchemaMappingText.getText());
-		config.setDbScriptPath(browseDBScriptText.getText());
+		config.setCreateDbScriptPath(browseCreateDBScriptText.getText());
+		config.setDropDbScriptPath(browseDropDBScriptText.getText());
 	}
 
 	private void addListeners() {
@@ -374,15 +392,33 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			}
 		});
 		
+		removeADEButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Thread thread = new Thread() {
+					public void run() {
+						removeADEFromDB();
+					}
+				};
+				thread.setDaemon(true);
+				thread.start();
+			}
+		});
+		
 		browseSchemaMappingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				browserSchemaMappingFile();
 			}
 		});
 		
-		browseDBScriptButton.addActionListener(new ActionListener() {
+		browseCreateDBScriptButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				browserDBScriptFile();
+				browserCreateDBScriptFile();
+			}
+		});
+		
+		browseDropDBScriptButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				browserDropDBScriptFile();
 			}
 		});
 		
@@ -430,7 +466,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		browseSchemaMappingText.setText(chooser.getSelectedFile().toString());
 	}
 	
-	private void browserDBScriptFile() {
+	private void browserCreateDBScriptFile() {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	
@@ -439,8 +475,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		chooser.addChoosableFileFilter(chooser.getAcceptAllFileFilter());
 		chooser.setFileFilter(filter);
 	
-		if (!browseDBScriptText.getText().trim().isEmpty())
-			chooser.setCurrentDirectory(new File(browseDBScriptText.getText()));
+		if (!browseCreateDBScriptText.getText().trim().isEmpty())
+			chooser.setCurrentDirectory(new File(browseCreateDBScriptText.getText()));
 		else
 			chooser.setCurrentDirectory(new File(Internal.USER_PATH));
 	
@@ -448,7 +484,28 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		if (result == JFileChooser.CANCEL_OPTION)
 			return;
 	
-		browseDBScriptText.setText(chooser.getSelectedFile().toString());
+		browseCreateDBScriptText.setText(chooser.getSelectedFile().toString());
+	}
+		
+	private void browserDropDBScriptFile() {
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("DROP_DB script (*.sql)", "sql");
+		chooser.addChoosableFileFilter(filter);
+		chooser.addChoosableFileFilter(chooser.getAcceptAllFileFilter());
+		chooser.setFileFilter(filter);
+	
+		if (!browseDropDBScriptText.getText().trim().isEmpty())
+			chooser.setCurrentDirectory(new File(browseDropDBScriptText.getText()));
+		else
+			chooser.setCurrentDirectory(new File(Internal.USER_PATH));
+	
+		int result = chooser.showOpenDialog(getTopLevelAncestor());
+		if (result == JFileChooser.CANCEL_OPTION)
+			return;
+	
+		browseDropDBScriptText.setText(chooser.getSelectedFile().toString());
 	}
 	
 	private void setEnabledMetadataSettings(boolean enable) {
@@ -513,7 +570,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			viewController.errorMessage("Incomplete Information", "Please select a schema namespace");
 			return;
 		}
-		String selectedSchemaNamespace = schemaTableModel.getSchemaColumn(selectedRowNum).namespace;
+		String selectedSchemaNamespace = schemaTableModel.getColumn(selectedRowNum).namespace;
 		Schema schema = schemaHandler.getSchema(selectedSchemaNamespace);
 		
 		String adeName = config.getAdeName();
@@ -593,7 +650,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		try {
 			int srid = dbPool.getActiveDatabaseAdapter().getUtil().getDatabaseInfo().getReferenceSystem().getSrid();
 			SqlRunner sqlRunner = new SqlRunner(dbPool.getConnection(), true, true);
-			sqlRunner.runScript(new FileReader(new File(config.getDbScriptPath())), srid);
+			sqlRunner.runScript(new FileReader(new File(config.getCreateDbScriptPath())), srid);
 		} catch (Exception e) {
 			LOG.error("Failed to create database schema for ADE. Cause: " + e.getMessage());
 		}
@@ -602,9 +659,11 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	}
 	
 	private void fetchADEsFromDB() {
-		try {
-			checkAndConnectToDB();
+		setSettings();
+		
+		checkAndConnectToDB();
 
+		try {			
 			if (dbPool.isConnected()) {
 				adeTableModel.reset();
 
@@ -617,6 +676,37 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		catch (SQLException e) {
 			LOG.error("Failed to query registered ADEs from database: " + e.getMessage());
 		} 
+	}
+	
+	private void removeADEFromDB(){
+		viewController.clearConsole();
+		setSettings();	
+		
+		int selectedRowNum = adeTable.getSelectedRow();
+		if (selectedRowNum == -1) {
+			viewController.errorMessage("Incomplete Information", "Please select one of the listed ADEs");
+			return;
+		}
+		String adeId = adeTableModel.getColumn(selectedRowNum).getValue(0);
+			
+		checkAndConnectToDB();
+		
+		LOG.info("Start deleting metadata of the selected ADE from database...");
+		try {
+			DBUtil.deleteADEMetadata(dbPool, adeId);
+		} catch (Exception e) {
+			LOG.error("Failed to delete ADE metadata from database. Cause: " + e.getMessage());
+		}
+		LOG.info("Metadata have been successfully deleted.");
+		
+		LOG.info("Start dropping database schema of the selected ADE...");
+		try {
+			SqlRunner sqlRunner = new SqlRunner(dbPool.getConnection(), false, true);
+			sqlRunner.runScript(new FileReader(new File(config.getDropDbScriptPath())), -1);
+		} catch (Exception e) {
+			LOG.error("Failed to drop database schema of the selected ADE. Cause: " + e.getMessage());
+		}
+		LOG.info("Database schema has been successfully dropped");
 	}
 	
 	private void checkAndConnectToDB() {

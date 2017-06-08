@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
@@ -52,7 +50,7 @@ public class DBMetadataImporter {
 		String insertSchemaReferencingQueryString = "INSERT INTO schema_referencing" + "(REFERENCED_ID, REFERENCING_ID) VALUES" + "(?,?)";
 		psInsertSchemaReferencing = dbPool.getConnection().prepareStatement(insertSchemaReferencingQueryString);
 				
-		String insertObjectclassQueryString = "INSERT INTO OBJECTCLASS" + "(ID, IS_ADE_CLASS, CLASSNAME, TABLENAME, SUPERCLASS_ID, BASECLASS_ID) VALUES" + "(?,?,?,?,?,?)";
+		String insertObjectclassQueryString = "INSERT INTO OBJECTCLASS" + "(ID, IS_ADE_CLASS, CLASSNAME, TABLENAME, SUPERCLASS_ID, BASECLASS_ID, ADE_ID) VALUES" + "(?,?,?,?,?,?,?)";
 		psInsertObjectclass = dbPool.getConnection().prepareStatement(insertObjectclassQueryString);
 		
 		String insertSchemaToObjectclassQueryString = "INSERT INTO schema_to_objectclass" + "(SCHEMA_ID, OBJECTCLASS_ID) VALUES" + "(?,?)";
@@ -106,7 +104,7 @@ public class DBMetadataImporter {
 		
 		Map<Long, String> objectObjectclassIds;
 		try {			
-			objectObjectclassIds = insertObjectclasses();
+			objectObjectclassIds = insertObjectclasses(insertedADERowId);
 			psInsertObjectclass.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'OBJECTCLASS' table.", e);
@@ -224,7 +222,7 @@ public class DBMetadataImporter {
 		}
 	}
 	
-	private Map<Long, String> insertObjectclasses() throws SQLException {
+	private Map<Long, String> insertObjectclasses(long insertedADERowId) throws SQLException {
 		Map<Long, String> insertedObjectclasses = new HashMap<Long, String>();
 
 		// iterate through object and feature types
@@ -260,6 +258,8 @@ public class DBMetadataImporter {
 				}
 				
 			}
+			
+			psInsertObjectclass.setLong(index++, insertedADERowId);
 
 			psInsertObjectclass.executeUpdate();				
 		}
