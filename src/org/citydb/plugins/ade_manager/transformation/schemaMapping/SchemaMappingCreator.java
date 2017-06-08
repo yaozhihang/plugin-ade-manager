@@ -4,9 +4,7 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.namespace.QName;
 
 import org.citydb.database.schema.mapping.AbstractExtension;
@@ -46,7 +44,6 @@ import org.citydb.database.schema.mapping.SchemaMappingException;
 import org.citydb.database.schema.mapping.SimpleAttribute;
 import org.citydb.database.schema.mapping.SimpleType;
 import org.citydb.database.schema.util.SchemaMappingUtil;
-
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphNodeArcType;
 
@@ -72,8 +69,7 @@ public class SchemaMappingCreator {
 	public SchemaMapping createSchemaMapping() throws Exception {		
 		initialObjectclassId = config.getInitialObjectclassId();
 		
-		JAXBContext ctx = JAXBContext.newInstance(SchemaMapping.class);
-		citygmlSchemaMapping = SchemaMappingUtil.unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"), ctx);
+		citygmlSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"));
 				
 		adeSchemaMapping = new SchemaMapping();
 		adeSchemaMapping.setMetadata(this.generateMetadata());
@@ -85,13 +81,13 @@ public class SchemaMappingCreator {
 		processTopLevelFeatures(adeSchemaMapping);
 		
 		File mappingSchemaFile = new File(config.getTransformationOutputPath(), "schema-mapping.xml");			
-		SchemaMappingUtil.marshal(adeSchemaMapping, mappingSchemaFile, ctx);
+		SchemaMappingUtil.getInstance().marshal(adeSchemaMapping, mappingSchemaFile);
 		
 		return adeSchemaMapping;
 	} 
 	
 	private Metadata generateMetadata() {
-		Metadata metadata = new Metadata(generateUUID(), config.getAdeName(), config.getAdeDbPrefix());
+		Metadata metadata = new Metadata(config.getAdeName(), config.getAdeDbPrefix());
 		metadata.setDescription(config.getAdeDescription());
 		metadata.setVersion(config.getAdeVersion());
 		
@@ -598,7 +594,4 @@ public class SchemaMappingCreator {
 			return false;
 	}
 	
-	private static String generateUUID() {
-		return new StringBuilder("UUID_").append(UUID.randomUUID().toString()).toString();
-	}
 }

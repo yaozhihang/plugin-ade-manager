@@ -53,7 +53,6 @@
 
   <xs:complexType name="metadata">
     <xs:sequence>
-      <xs:element name="adeId" type="xs:string"/>
       <xs:element name="name" type="xs:string"/>
       <xs:element name="version" type="xs:string" minOccurs="0"/>
       <xs:element name="description" type="xs:string" minOccurs="0"/>

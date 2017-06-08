@@ -11,7 +11,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileReader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -23,7 +26,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 
@@ -46,13 +48,12 @@ import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
 import org.citydb.plugins.ade_manager.gui.components.adeTable.ADETableModel;
 import org.citydb.plugins.ade_manager.gui.components.schemaTable.SchemaRow;
 import org.citydb.plugins.ade_manager.gui.components.schemaTable.SchemaTableModel;
-
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImportException;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImporter;
 import org.citydb.plugins.ade_manager.metadata.DBUtil;
+import org.citydb.plugins.ade_manager.transformation.TransformationException;
 import org.citydb.plugins.ade_manager.transformation.TransformationManager;
 import org.citydb.plugins.ade_manager.util.SqlRunner;
-import org.citydb.plugins.ade_manager.transformation.TransformationException;
 import org.citydb.util.gui.GuiUtil;
 import org.citygml4j.xml.schema.Schema;
 import org.citygml4j.xml.schema.SchemaHandler;
@@ -555,16 +556,15 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		
 		checkAndConnectToDB();
 		
-		String sourceAdeSchemaMappingPath = config.getSchemaMappingPath();
+		Path sourceAdeSchemaMappingPath = Paths.get(config.getSchemaMappingPath());
 
 		SchemaMapping adeSchemaMapping = null;			
 
 		// read ADE's schema mapping file
 		LOG.info("Loading ADE's schema mapping file...");
 		try {			
-			JAXBContext mappingContext = JAXBContext.newInstance(SchemaMapping.class);	
-			SchemaMapping citydbSchemaMapping = SchemaMappingUtil.unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"), mappingContext);
-			adeSchemaMapping = SchemaMappingUtil.unmarshal(citydbSchemaMapping, new File(sourceAdeSchemaMappingPath), mappingContext);	
+			SchemaMapping citydbSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"));
+			adeSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(citydbSchemaMapping, sourceAdeSchemaMappingPath.toFile());	
 		} catch (JAXBException e) {
 			LOG.error(e.getMessage());
 			return;
@@ -578,7 +578,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		DBMetadataImporter importer;
 		try {
 			importer = new DBMetadataImporter(dbPool);
-			importer.doImport(adeSchemaMapping);
+			importer.doImport(adeSchemaMapping, sourceAdeSchemaMappingPath);
 		} catch (SQLException | DBMetadataImportException e) {
 			LOG.error(e.getMessage());			
 			Throwable cause = e.getCause();
