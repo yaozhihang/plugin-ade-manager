@@ -1,24 +1,29 @@
 
-package org.citydb.plugins.ade_manager.gui.components.adeTable;
+package org.citydb.plugins.ade_manager.gui.table.adeTable;
 
-public class ADERow implements Comparable<ADERow> {
-	public int rownum;
+import org.citydb.plugins.ade_manager.gui.table.TableRowDefaultImpl;
 
+public class ADERow extends TableRowDefaultImpl {
+
+	private static String[] columnNames;	
 	private String adeid = "";
 	private String name = "";
 	private String description = "";
 	private String version = "";
 	private String dbPrefix = "";
 
-	public ADERow() {
-		this.rownum = -1;
-		this.name = "";
-		this.name = "";
-		this.description = "";
-		this.version = "";
-		this.dbPrefix = "";
+	public static String[] getColumnNames() {
+		if (columnNames == null) {
+			columnNames = new String[5];
+			columnNames[0] = "ADEID";
+			columnNames[1] = "Name";
+			columnNames[2] = "Description";
+			columnNames[3] = "Namespace";
+			columnNames[4] = "DB_Prefix";
+		}
+		return columnNames;
 	}
-
+	
 	public ADERow(String adeid, String name, String description, String version, String dbPrefix) {
 		this.adeid = adeid;
 		this.name = name;
@@ -26,7 +31,7 @@ public class ADERow implements Comparable<ADERow> {
 		this.version = version;
 		this.dbPrefix = dbPrefix;
 	}
-
+	
 	public String getValue(int col) {
 		switch (col) {
 		case 0:
@@ -69,17 +74,6 @@ public class ADERow implements Comparable<ADERow> {
 			dbPrefix = (String) obj;
 			return;
 		}
-	}
-
-	@Override
-	public int compareTo(ADERow o) {
-		if (!(o instanceof ADERow))
-			return 0;
-		if (((ADERow) o).rownum > this.rownum)
-			return -1;
-		if (((ADERow) o).rownum < this.rownum)
-			return 1;
-		return 0;
 	}
 
 }

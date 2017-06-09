@@ -42,11 +42,9 @@ import org.citydb.gui.ImpExpGui;
 import org.citydb.log.Logger;
 import org.citydb.plugins.ade_manager.ADEManagerPlugin;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
-import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
-import org.citydb.plugins.ade_manager.gui.components.adeTable.ADETableModel;
-import org.citydb.plugins.ade_manager.gui.components.schemaTable.SchemaRow;
-import org.citydb.plugins.ade_manager.gui.components.schemaTable.SchemaTableModel;
-
+import org.citydb.plugins.ade_manager.gui.table.TableModelImpl;
+import org.citydb.plugins.ade_manager.gui.table.adeTable.ADERow;
+import org.citydb.plugins.ade_manager.gui.table.schemaTable.SchemaRow;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImportException;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImporter;
 import org.citydb.plugins.ade_manager.metadata.DBUtil;
@@ -117,10 +115,10 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	private JButton removeADEButton = new JButton();	
 	private JScrollPane adeTableScrollPanel;
 	private JTable adeTable;
-	private ADETableModel adeTableModel = new ADETableModel();
+	private TableModelImpl<ADERow> adeTableModel = new TableModelImpl<ADERow>(ADERow.getColumnNames());
 	
 	private SchemaHandler schemaHandler; 
-	private SchemaTableModel schemaTableModel = new SchemaTableModel();	
+	private TableModelImpl<SchemaRow> schemaTableModel = new TableModelImpl<SchemaRow>(SchemaRow.getColumnNames());	
 
 	public ADEManagerPanel(ADEManagerPlugin plugin) {	
 		config = plugin.getConfig();
@@ -570,7 +568,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			viewController.errorMessage("Incomplete Information", "Please select a schema namespace");
 			return;
 		}
-		String selectedSchemaNamespace = schemaTableModel.getColumn(selectedRowNum).namespace;
+		String selectedSchemaNamespace = schemaTableModel.getColumn(selectedRowNum).getValue(0);
 		Schema schema = schemaHandler.getSchema(selectedSchemaNamespace);
 		
 		String adeName = config.getAdeName();

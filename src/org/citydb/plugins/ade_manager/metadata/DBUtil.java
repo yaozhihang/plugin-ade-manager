@@ -13,7 +13,7 @@ import org.citydb.api.database.DatabaseType;
 import org.citydb.database.DatabaseConnectionPool;
 import org.citydb.database.schema.mapping.AbstractObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
-import org.citydb.plugins.ade_manager.gui.components.adeTable.ADERow;
+import org.citydb.plugins.ade_manager.gui.table.adeTable.ADERow;
 
 public class DBUtil {
 
