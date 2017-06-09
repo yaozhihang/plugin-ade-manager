@@ -692,17 +692,19 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		LOG.info("Start deleting metadata of the selected ADE from database...");
 		try {
 			DBUtil.deleteADEMetadata(dbPool, adeId);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			LOG.error("Failed to delete ADE metadata from database. Cause: " + e.getMessage());
+			return;
 		}
 		LOG.info("Metadata have been successfully deleted.");
 		
 		LOG.info("Start dropping database schema of the selected ADE...");
 		try {
-			SqlRunner sqlRunner = new SqlRunner(dbPool.getConnection(), false, true);
+			SqlRunner sqlRunner = new SqlRunner(dbPool.getConnection(), true, true);
 			sqlRunner.runScript(new FileReader(new File(config.getDropDbScriptPath())), -1);
 		} catch (Exception e) {
 			LOG.error("Failed to drop database schema of the selected ADE. Cause: " + e.getMessage());
+			return;
 		}
 		LOG.info("Database schema has been successfully dropped");
 	}
