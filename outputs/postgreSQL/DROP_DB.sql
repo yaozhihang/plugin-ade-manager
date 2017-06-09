@@ -14,6 +14,9 @@ ALTER TABLE test_BuildingU_to_address
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_BuildingUnit
+    DROP CONSTRAINT test_Building_Objectcl_FK;
+
+ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_FK;
 
 ALTER TABLE test_BuildingUnit
@@ -58,6 +61,9 @@ ALTER TABLE test_EnergyPerformanceCer
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+ALTER TABLE test_Facilities
+    DROP CONSTRAINT test_Faciliti_Objectcl_FK;
+
 ALTER TABLE test_Facilities
     DROP CONSTRAINT test_Facil_Build_equip_FK;
 

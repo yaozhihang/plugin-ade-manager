@@ -1,6 +1,10 @@
 package org.citydb.plugins.ade_manager.metadata;
 
-import java.io.StringWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -9,8 +13,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 
 import org.citydb.database.DatabaseConnectionPool;
 import org.citydb.database.schema.mapping.AbstractExtension;
@@ -19,9 +21,6 @@ import org.citydb.database.schema.mapping.AppSchema;
 import org.citydb.database.schema.mapping.Namespace;
 import org.citydb.database.schema.mapping.ObjectType;
 import org.citydb.database.schema.mapping.SchemaMapping;
-import org.citydb.database.schema.mapping.SchemaMappingException;
-import org.citydb.database.schema.mapping.SchemaMappingValidationException;
-import org.citydb.database.schema.util.SchemaMappingUtil;
 
 public class DBMetadataImporter {	
 	private final DatabaseConnectionPool dbPool;
@@ -32,8 +31,9 @@ public class DBMetadataImporter {
 	private PreparedStatement psInsertSchemaReferencing;
 	private PreparedStatement psInsertObjectclass;
 	
+	private MessageDigest md5;
 	private SchemaMapping adeSchemaMapping;
-
+	
 	public DBMetadataImporter(DatabaseConnectionPool dbPool) throws SQLException {
 		this.dbPool = dbPool;
 
@@ -55,9 +55,15 @@ public class DBMetadataImporter {
 		
 		String insertSchemaToObjectclassQueryString = "INSERT INTO schema_to_objectclass" + "(SCHEMA_ID, OBJECTCLASS_ID) VALUES" + "(?,?)";
 		psInsertSchemaToObjectclass = dbPool.getConnection().prepareStatement(insertSchemaToObjectclassQueryString);
+		
+		try {
+			md5 = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new SQLException(e);
+		}
 	}
 	
-	public void doImport(SchemaMapping adeSchemaMapping) throws DBMetadataImportException {
+	public void doImport(SchemaMapping adeSchemaMapping, Path schemaMappingFile) throws DBMetadataImportException {
 		this.adeSchemaMapping = adeSchemaMapping;
 
 		try {
@@ -81,7 +87,7 @@ public class DBMetadataImporter {
 
 		long insertedADERowId;
 		try {
-			insertedADERowId = insertADE(adeSchemaMapping);
+			insertedADERowId = insertADE(schemaMappingFile);
 			psInsertADE.close();
 		} catch (SQLException e) {
 			throw new DBMetadataImportException("Failed to import metadata into 'ADE' table.", e);
@@ -118,18 +124,18 @@ public class DBMetadataImporter {
 		}	
 	}
 
-	private long insertADE(SchemaMapping adeSchemaMapping) throws SQLException {				
+	private long insertADE(Path schemaMappingFile) throws SQLException {				
 		long seqId = DBUtil.getSequenceID(dbPool, DBSequenceType.ade_seq);
 			
 		int index = 1;
 		psInsertADE.setLong(index++, seqId);
-		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getADEId());
+		psInsertADE.setString(index++, createMD5Fingerprint(schemaMappingFile));
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getName());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDescription());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getVersion());
 		psInsertADE.setString(index++, adeSchemaMapping.getMetadata().getDBPrefix());
 		
-		String mappingText = getSchemaMappingAsString(adeSchemaMapping);
+		String mappingText = getSchemaMappingAsString(schemaMappingFile);
 		if (mappingText != null)
 			psInsertADE.setString(index++, mappingText);
 		else {
@@ -276,15 +282,25 @@ public class DBMetadataImporter {
 			return getBaseclassId((AbstractObjectType<?>)objectType.getExtension().getBase());
 	}
 	
-	private String getSchemaMappingAsString(SchemaMapping schemaMapping) {
-		try {			
-			JAXBContext mappingContext = JAXBContext.newInstance(SchemaMapping.class);
-			StringWriter writer = new StringWriter();			
-			SchemaMappingUtil.marshal(schemaMapping, writer, mappingContext, false);
-			return writer.toString();
-		} catch (JAXBException | SchemaMappingException | SchemaMappingValidationException e) {
+	private String getSchemaMappingAsString(Path schemaMappingFile) {
+		try {
+			return new String(Files.readAllBytes(schemaMappingFile));
+		} catch (IOException e) {
 			return null;
-		}
+		}	
+	}
+	
+	private String createMD5Fingerprint(Path schemaMappingFile) {
+		try {
+			byte[] hash = md5.digest(Files.readAllBytes(schemaMappingFile));
+			StringBuffer hex = new StringBuffer();
+			for (int i = 0; i < hash.length; i++)
+				hex.append(Integer.toString((hash[i] & 0xff) + 0x100, 16).substring(1));
+			
+			return hex.toString();
+		} catch (IOException e) {
+			return null;
+		}		
 	}
 	
 }
