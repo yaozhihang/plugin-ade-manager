@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0">
     <metadata>
-        <adeId>UUID_754e965a-4a13-4c6e-9eda-3a0905d83d18</adeId>
-        <name>testADE</name>
+        <name>TestADE</name>
         <version>1.0</version>
-        <description>test</description>
+        <description>TestADE</description>
         <dbPrefix>test</dbPrefix>
     </metadata>
     <applicationSchemas>

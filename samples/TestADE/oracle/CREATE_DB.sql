@@ -17,18 +17,19 @@ CREATE TABLE test_BuildingU_to_address
 CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
+    OBJECTCLASS_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
     building_buildingUnit_ID INTEGER,
+    lod2MultiCurve MDSYS.SDO_GEOMETRY,
+    lod3MultiCurve MDSYS.SDO_GEOMETRY,
+    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     class_uom VARCHAR2(254),
     class VARCHAR2(254),
     usage_uom VARCHAR2(254),
     usage VARCHAR2(254),
     function_uom VARCHAR2(254),
     function VARCHAR2(254),
-    lod2MultiCurve MDSYS.SDO_GEOMETRY,
-    lod3MultiCurve MDSYS.SDO_GEOMETRY,
-    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -58,6 +59,7 @@ CREATE TABLE test_EnergyPerformanceCer
 CREATE TABLE test_Facilities
 (
     ID INTEGER NOT NULL,
+    OBJECTCLASS_ID INTEGER,
     BuildingUni_equippedWi_ID INTEGER,
     totalValue_uom VARCHAR2(254),
     totalValue NUMBER,
@@ -119,10 +121,10 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
+    EnergyPerfor_certificatio VARCHAR2(254),
+    ownerName VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,
-    ownerName VARCHAR2(254),
-    EnergyPerfor_certificatio VARCHAR2(254),
     EnergyPerfo_certificati_1 VARCHAR2(254),
     PRIMARY KEY (ID)
 );
@@ -142,6 +144,9 @@ ALTER TABLE test_BuildingU_to_address
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
+ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Building_Objectcl_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
+
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
@@ -187,6 +192,9 @@ ALTER TABLE test_EnergyPerformanceCer
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+ALTER TABLE test_Facilities
+    ADD CONSTRAINT test_Faciliti_Objectcl_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
+
 ALTER TABLE test_Facilities
     ADD CONSTRAINT test_Facil_Build_equip_FK FOREIGN KEY (BuildingUni_equippedWi_ID) REFERENCES test_BuildingUnit (ID);
 
@@ -250,6 +258,8 @@ prompt Used SRID for spatial indexes: &SRSNO
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
+CREATE INDEX test_Building_Objectc_FKX ON test_BuildingUnit (OBJECTCLASS_ID);
+
 CREATE INDEX test_BuildingU_Parent_FKX ON test_BuildingUnit (BuildingUnit_Parent_ID);
 
 CREATE INDEX test_BuildingUni_Root_FKX ON test_BuildingUnit (BuildingUnit_Root_ID);
@@ -298,6 +308,8 @@ CREATE INDEX test_Energ_Build_ener_FKX ON test_EnergyPerformanceCer (BuildingUni
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
+CREATE INDEX test_Faciliti_Objectc_FKX ON test_Facilities (OBJECTCLASS_ID);
+
 CREATE INDEX test_Facil_Build_equi_FKX ON test_Facilities (BuildingUni_equippedWi_ID);
 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
