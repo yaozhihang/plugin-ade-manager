@@ -119,7 +119,7 @@
     </featureTypes>
     <propertyInjections>
         <propertyInjection table="test_building" defaultBase="AbstractBuildingType">
-            <join table="test_building" fromColumn="ID" toColumn="ID" toRole="parent"/>
+            <join table="test_building" fromColumn="ID" toColumn="ID" toRole="child"/>
             <attribute column="ownerName" type="string" path="ownerName" schema="TestADE"/>
             <complexAttribute path="floorArea" schema="TestADE">
                 <attribute column="floorArea_uom" type="string" path="@uom" schema="TestADE"/>

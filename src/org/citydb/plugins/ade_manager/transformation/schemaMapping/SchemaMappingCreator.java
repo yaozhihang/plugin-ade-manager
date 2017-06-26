@@ -146,7 +146,7 @@ public class SchemaMappingCreator {
 			if (checkADEHookClass(objectNode)){ 
 				AbstractExtension<?> extension = featureOrObjectOrComplexType.getExtension();
 				String table = featureOrObjectOrComplexType.getTable();
-				Join join = new Join(table, "ID", "ID", TableRole.PARENT);
+				Join join = new Join(table, "ID", "ID", TableRole.CHILD);
 				PropertyInjection propertyInjection = new PropertyInjection(table, join);
 				propertyInjection.setDefaultBase((FeatureType) extension.getBase());
 				schemaMapping.addPropertyInjection(propertyInjection);
@@ -249,22 +249,6 @@ public class SchemaMappingCreator {
 						|| targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.HybridGeometryProperty)) {
 				this.generateGeometryProperty(featureOrObjectOrComplexType, targetNode, appSchema);
 			}
-	
-/*			AbstractExtension<?> extension = featureOrObjectOrComplexType.getExtension();
-			if (extension == null) {
-				if (featureOrObjectOrComplexType instanceof FeatureType) {
-					FeatureType abstractGMLFeature = citygmlSchemaMapping.getFeatureType(new QName("http://www.opengis.net/gml", "_Feature"));
-					FeatureTypeExtension featureTypeExtension = new FeatureTypeExtension(abstractGMLFeature);	
-					((FeatureType) featureOrObjectOrComplexType).setExtension(featureTypeExtension);	
-					featureTypeExtension.setJoin(new Join(abstractGMLFeature.getTable(), "ID", "ID", TableRole.PARENT));
-				}
-				else if (featureOrObjectOrComplexType instanceof ObjectType) {
-					ObjectType abstractGMLObject = citygmlSchemaMapping.getObjectType(new QName("http://www.opengis.net/gml", "_GML"));
-					ObjectTypeExtension ObjectTypeExtension = new ObjectTypeExtension((ObjectType) abstractGMLObject);
-					abstractGMLObject.setExtension(ObjectTypeExtension);
-					ObjectTypeExtension.setJoin(new Join(abstractGMLObject.getTable(), "ID", "ID", TableRole.PARENT));
-				}
-			}*/
 		}		
 	}
 	
