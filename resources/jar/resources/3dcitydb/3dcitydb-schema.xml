@@ -100,37 +100,37 @@
       <attribute path="@name" column="attrname" type="string" minOccurs="1" schema="gen"/>
       <attribute path="@codeSpace" column="genattribset_codespace" type="string" schema="gen"/>
       <complexAttribute path="stringAttribute" type="stringAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="1" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="intAttribute" type="intAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="2" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="doubleAttribute" type="doubleAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="3" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="uriAttribute" type="uriAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="4" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="dateAttribute" type="dateAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="5" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="measureAttribute" type="measureAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="6" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="genericAttributeSet" type="genericAttributeSetType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="parent_genattrib_id" toRole="child">
           <condition column="attributeType" value="7" type="integer"/>
         </join>
       </complexAttribute>
@@ -173,7 +173,7 @@
       <attribute path="creationDate" column="creation_date" type="timestamp" schema="core"/>
       <attribute path="terminationDate" column="termination_date" type="timestamp" schema="core"/>
       <complexAttribute path="externalReference" schema="core">
-        <join table="external_reference" fromColumn="id" toColumn="cityobject_id"/>
+        <join table="external_reference" fromColumn="id" toColumn="cityobject_id" toRole="child"/>
         <attribute path="informationSystem" column="infosys" type="string" schema="core"/>
         <complexAttribute path="externalObject" schema="core">
           <attribute path="name" column="name" type="string" schema="core"/>
@@ -182,8 +182,8 @@
       </complexAttribute>
       <featureProperty path="generalizesTo" target="AbstractCityObjectType" schema="core">
         <joinTable table="generalization">
-          <join table="cityobject" fromColumn="cityobject_id" toColumn="id"/>
-          <join table="${target.table}" fromColumn="generalizes_to_id" toColumn="id">
+          <join table="cityobject" fromColumn="cityobject_id" toColumn="id" toRole="parent"/>
+          <join table="${target.table}" fromColumn="generalizes_to_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
@@ -191,49 +191,49 @@
       <attribute path="relativeToTerrain" column="relative_to_terrain" type="string" schema="core"/>
       <attribute path="relativeToWater" column="relative_to_water" type="string" schema="core"/>
       <complexAttribute path="stringAttribute" type="stringAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="1" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="intAttribute" type="intAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="2" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="doubleAttribute" type="doubleAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="3" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="uriAttribute" type="uriAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="4" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="dateAttribute" type="dateAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="5" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="measureAttribute" type="measureAttributeType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="6" type="integer"/>
         </join>
       </complexAttribute>
       <complexAttribute path="genericAttributeSet" type="genericAttributeSetType" schema="gen">
-        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id">
+        <join table="cityobject_genericattrib" fromColumn="id" toColumn="cityobject_id" toRole="child">
           <condition column="root_genattrib_id" value="${target.id}" type="integer"/>
           <condition column="attributeType" value="7" type="integer"/>
         </join>
       </complexAttribute>
       <featureProperty path="appearance" target="AppearanceType" schema="app">
-        <join table="appearance" fromColumn="id" toColumn="cityobject_id"/>
+        <join table="appearance" fromColumn="id" toColumn="cityobject_id" toRole="child"/>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfCityObject"/>
     </featureType>
@@ -246,7 +246,7 @@
     <!-- Building module -->
     <featureType id="AbstractBuildingType" path="_AbstractBuilding" table="building" schema="bldg" objectClassId="24" abstract="true" topLevel="true">
       <extension base="AbstractSiteType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="bldg">
         <attribute path="." column="class" type="string" schema="bldg"/>
@@ -290,17 +290,17 @@
       <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="bldg"/>
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="outerBuildingInstallation" target="BuildingInstallationType" schema="bldg">
-        <join table="building_installation" fromColumn="id" toColumn="building_id">
+        <join table="building_installation" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorBuildingInstallation" target="IntBuildingInstallationType" schema="bldg">
-        <join table="building_installation" fromColumn="id" toColumn="building_id">
+        <join table="building_installation" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
-        <join table="thematic_surface" fromColumn="id" toColumn="building_id">
+        <join table="thematic_surface" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
@@ -313,21 +313,22 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="bldg"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="interiorRoom" target="RoomType" schema="bldg">
-        <join table="room" fromColumn="id" toColumn="building_id">
+        <join table="room" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="consistsOfBuildingPart" target="BuildingPartType" schema="bldg">
-        <join table="building" fromColumn="id" toColumn="building_parent_id">
+        <join table="building" fromColumn="id" toColumn="building_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="bldg">
         <joinTable table="address_to_building">
-          <join table="building" fromColumn="building_id" toColumn="id"/>
-          <join table="address" fromColumn="address_id" toColumn="id"/>
+          <join table="building" fromColumn="building_id" toColumn="id" toRole="parent"/>
+          <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfAbstractBuilding"/>
     </featureType>
 
@@ -343,19 +344,20 @@
 
     <featureType id="AbstractBoundarySurfaceType" path="_BoundarySurface" table="thematic_surface" schema="bldg" objectClassId="29" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <featureProperty path="opening" target="AbstractOpeningType" schema="bldg">
         <joinTable table="opening_to_them_surface">
-          <join table="thematic_surface" fromColumn="thematic_surface_id" toColumn="id"/>
-          <join table="opening" fromColumn="opening_id" toColumn="id">
+          <join table="thematic_surface" fromColumn="thematic_surface_id" toColumn="id" toRole="parent"/>
+          <join table="opening" fromColumn="opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBoundarySurface"/>
     </featureType>
 
@@ -406,12 +408,13 @@
 
     <featureType id="AbstractOpeningType" path="_Opening" table="opening" schema="bldg" objectClassId="37" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfOpening"/>
     </featureType>
 
@@ -423,13 +426,15 @@
     <featureType id="DoorType" path="Door" table="opening" objectClassId="39" schema="bldg">
       <extension base="AbstractOpeningType"/>
       <featureProperty path="address" target="AddressType" schema="bldg">
-        <join table="address" fromColumn="address_id" toColumn="id"/>
+        <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfDoor"/>
     </featureType>
 
     <featureType id="BuildingInstallationType" path="BuildingInstallation" table="building_installation" objectClassId="27" schema="bldg">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="bldg">
         <attribute path="." column="class" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -449,15 +454,18 @@
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
-        <join table="thematic_surface" fromColumn="id" toColumn="building_installation_id">
+        <join table="thematic_surface" fromColumn="id" toColumn="building_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBuildingInstallation"/>
     </featureType>
 
     <featureType id="IntBuildingInstallationType" path="IntBuildingInstallation" table="building_installation" objectClassId="28" schema="bldg">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="bldg">
         <attribute path="." column="class" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -473,15 +481,18 @@
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
-        <join table="thematic_surface" fromColumn="id" toColumn="building_installation_id">
+        <join table="thematic_surface" fromColumn="id" toColumn="building_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfIntBuildingInstallation"/>
     </featureType>
 
     <featureType id="RoomType" path="Room" table="room" objectClassId="41" schema="bldg">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="bldg">
         <attribute path="." column="class" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -497,25 +508,28 @@
       <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="bldg"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
-        <join table="thematic_surface" fromColumn="id" toColumn="room_id">
+        <join table="thematic_surface" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="BuildingFurnitureType" schema="bldg">
-        <join table="building_furniture" fromColumn="id" toColumn="room_id">
+        <join table="building_furniture" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="roomInstallation" target="IntBuildingInstallationType" schema="bldg">
-        <join table="building_installation" fromColumn="id" toColumn="room_id">
+        <join table="building_installation" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfRoom"/>
     </featureType>
 
     <featureType id="BuildingFurnitureType" path="BuildingFurniture" table="building_furniture" objectClassId="40" schema="bldg">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="bldg">
         <attribute path="." column="class" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -530,13 +544,14 @@
       </complexAttribute>
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBuildingFurniture"/>
     </featureType>
 
     <!-- CityFurniture module -->
     <featureType id="CityFurnitureType" path="CityFurniture" table="city_furniture" objectClassId="21" schema="frn" topLevel="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="frn">
         <attribute path="." column="class" type="string" schema="frn"/>
@@ -562,13 +577,14 @@
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="frn"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="frn"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="frn"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfCityFurniture"/>
     </featureType>
 
     <!-- Generics module -->
     <featureType id="GenericCityObjectType" path="GenericCityObject" table="generic_cityobject" objectClassId="5" schema="gen" topLevel="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="gen">
         <attribute path="." column="class" type="string" schema="gen"/>
@@ -597,12 +613,13 @@
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="gen"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="gen"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="gen"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
     </featureType>
 
     <!-- LandUse module -->
     <featureType id="LandUseType" path="LandUse" table="land_use" objectClassId="4" schema="luse" topLevel="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="luse">
         <attribute path="." column="class" type="string" schema="luse"/>
@@ -621,13 +638,14 @@
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="luse"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="luse"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfLandUse"/>
     </featureType>
 
     <!-- CityObjectGroup module -->
     <featureType id="CityObjectGroupType" path="CityObjectGroup" table="cityobjectgroup" objectClassId="23" schema="grp" topLevel="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="grp">
         <attribute path="." column="class" type="string" schema="grp"/>
@@ -643,50 +661,53 @@
       </complexAttribute>
       <featureProperty path="groupMember" target="AbstractCityObjectType" schema="grp">
         <joinTable table="group_to_cityobject">
-          <join table="cityobjectgroup" fromColumn="cityobjectgroup_id" toColumn="id"/>
-          <join table="${target.table}" fromColumn="cityobject_id" toColumn="id">
+          <join table="cityobjectgroup" fromColumn="cityobjectgroup_id" toColumn="id" toRole="parent"/>
+          <join table="${target.table}" fromColumn="cityobject_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
       <featureProperty path="parent" target="AbstractCityObjectType" schema="grp">
-        <join table="${target.table}" fromColumn="parent_cityobject_id" toColumn="id">
+        <join table="${target.table}" fromColumn="parent_cityobject_id" toColumn="id" toRole="parent">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <geometryProperty path="geometry" refColumn="brep_id" inlineColumn="other_geom" type="AbstractGeometry" schema="grp"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfCityObjectGroup"/>
     </featureType>
 
     <!-- Relief module -->
     <featureType id="ReliefFeatureType" path="ReliefFeature" table="relief_feature" schema="dem" objectClassId="14" topLevel="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <attribute path="lod" column="lod" type="integer" minOccurs="1" schema="dem"/>
       <featureProperty path="reliefComponent" target="AbstractReliefComponentType" schema="dem">
         <joinTable table="relief_feat_to_rel_comp">
-          <join table="relief_feature" fromColumn="relief_feature_id" toColumn="id"/>
-          <join table="${target.table}" fromColumn="relief_component_id" toColumn="id">
+          <join table="relief_feature" fromColumn="relief_feature_id" toColumn="id" toRole="parent"/>
+          <join table="${target.table}" fromColumn="relief_component_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfReliefFeature"/>
     </featureType>
 
     <featureType id="AbstractReliefComponentType" path="_ReliefComponent" table="relief_component" schema="dem" objectClassId="15" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <attribute path="lod" column="lod" type="integer" schema="dem"/>
       <geometryProperty path="extent" inlineColumn="extent" type="Polygon" srsDimension="2" schema="dem"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfReliefComponent"/>
     </featureType>
 
     <featureType id="TINReliefType" path="TINRelief" table="tin_relief" objectClassId="16" schema="dem">
       <extension base="AbstractReliefComponentType">
-        <join table="relief_component" fromColumn="id" toColumn="id"/>
+        <join table="relief_component" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="tin" refColumn="surface_geometry_id" type="TriangulatedSurface" schema="dem"/>
       <adeHook name="_GenericApplicationPropertyOfTinRelief"/>
@@ -694,7 +715,7 @@
 
     <featureType id="MassPointReliefType" path="MassPointRelief" table="masspoint_relief" objectClassId="17" schema="dem">
       <extension base="AbstractReliefComponentType">
-        <join table="relief_component" fromColumn="id" toColumn="id"/>
+        <join table="relief_component" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="reliefPoints" inlineColumn="relief_points" type="MultiPoint" schema="dem"/>
       <adeHook name="_GenericApplicationPropertyOfMassPointRelief"/>
@@ -702,7 +723,7 @@
 
     <featureType id="BreaklineReliefType" path="BreaklineRelief" table="breakline_relief" objectClassId="18" schema="dem">
       <extension base="AbstractReliefComponentType">
-        <join table="relief_component" fromColumn="id" toColumn="id"/>
+        <join table="relief_component" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="ridgeOrValleyLines" inlineColumn="ridge_or_valley_lines" type="MultiCurve" schema="dem"/>
       <geometryProperty path="breaklines" inlineColumn="break_lines" type="MultiCurve" schema="dem"/>
@@ -711,7 +732,7 @@
 
     <featureType id="RasterReliefType" path="RasterRelief" table="raster_relief" objectClassId="19" schema="dem">
       <extension base="AbstractReliefComponentType">
-        <join table="relief_component" fromColumn="id" toColumn="id"/>
+        <join table="relief_component" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <adeHook name="_GenericApplicationPropertyOfRasterRelief"/>
     </featureType>
@@ -724,7 +745,7 @@
 
     <featureType id="WaterBodyType" path="WaterBody" table="waterbody" objectClassId="9" schema="wtr" topLevel="true">
       <extension base="AbstractWaterObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="wtr">
         <attribute path="." column="class" type="string" schema="wtr"/>
@@ -748,22 +769,24 @@
       <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="wtr"/>
       <featureProperty path="boundedBy" target="AbstractWaterBoundarySurfaceType" schema="wtr">
         <joinTable table="waterbod_to_waterbnd_srf">
-          <join table="waterbody" fromColumn="waterbody_id" toColumn="id"/>
-          <join table="waterboundary_surface" fromColumn="waterboundary_surface_id" toColumn="id">
+          <join table="waterbody" fromColumn="waterbody_id" toColumn="id" toRole="parent"/>
+          <join table="waterboundary_surface" fromColumn="waterboundary_surface_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfWaterBody"/>
     </featureType>
 
     <featureType id="AbstractWaterBoundarySurfaceType" path="_WaterBoundarySurface" table="waterboundary_surface" schema="wtr" objectClassId="10" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod2Surface" refColumn="lod2_surface_id" type="AbstractSurface" schema="wtr"/>
       <geometryProperty path="lod3Surface" refColumn="lod3_surface_id" type="AbstractSurface" schema="wtr"/>
       <geometryProperty path="lod4Surface" refColumn="lod4_surface_id" type="AbstractSurface" schema="wtr"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfWaterBoundarySurface"/>
     </featureType>
 
@@ -794,7 +817,7 @@
 
     <featureType id="TransportationComplexType" path="TransportationComplex" table="transportation_complex" objectClassId="42" schema="tran" topLevel="true">
       <extension base="AbstractTransportationObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="tran">
         <attribute path="." column="class" type="string" schema="tran"/>
@@ -809,12 +832,12 @@
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
       <featureProperty path="trafficArea" target="TrafficAreaType" schema="tran">
-        <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id">
+        <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="auxiliaryTrafficArea" target="AuxiliaryTrafficAreaType" schema="tran">
-        <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id">
+        <join table="traffic_area" fromColumn="id" toColumn="transportation_complex_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
@@ -823,6 +846,7 @@
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTransportationComplex"/>
     </featureType>
 
@@ -848,7 +872,7 @@
 
     <featureType id="TrafficAreaType" path="TrafficArea" table="traffic_area" objectClassId="47" schema="tran">
       <extension base="AbstractTransportationObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="tran">
         <attribute path="." column="class" type="string" schema="tran"/>
@@ -869,12 +893,13 @@
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTrafficArea"/>
     </featureType>
 
     <featureType id="AuxiliaryTrafficAreaType" path="AuxiliaryTrafficArea" table="traffic_area" objectClassId="48" schema="tran">
       <extension base="AbstractTransportationObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="tran">
         <attribute path="." column="class" type="string" schema="tran"/>
@@ -895,6 +920,7 @@
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfAuxiliaryTrafficArea"/>
     </featureType>
 
@@ -906,7 +932,7 @@
 
     <featureType id="SolitaryVegetationObjectType" path="SolitaryVegetationObject" table="solitary_vegetat_object" objectClassId="7" schema="veg" topLevel="true">
       <extension base="AbstractVegetationObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="veg">
         <attribute path="." column="class" type="string" schema="veg"/>
@@ -944,12 +970,13 @@
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="veg"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="veg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="veg"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfSolitaryVegetationObject"/>
     </featureType>
 
     <featureType id="PlantCoverType" path="PlantCover" table="plant_cover" objectClassId="8" schema="veg" topLevel="true">
       <extension base="AbstractVegetationObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="veg">
         <attribute path="." column="class" type="string" schema="veg"/>
@@ -975,13 +1002,14 @@
       <geometryProperty path="lod2MultiSolid" refColumn="lod2_multi_solid_id" type="MultiSolid" schema="veg"/>
       <geometryProperty path="lod3MultiSolid" refColumn="lod3_multi_solid_id" type="MultiSolid" schema="veg"/>
       <geometryProperty path="lod4MultiSolid" refColumn="lod4_multi_solid_id" type="MultiSolid" schema="veg"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfPlantCover"/>
     </featureType>
 
     <!-- Bridge module -->
     <featureType id="AbstractBridgeType" path="_AbstractBridge" table="bridge" schema="brid" objectClassId="62" abstract="true" topLevel="true">
       <extension base="AbstractSiteType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
@@ -1006,22 +1034,22 @@
       <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="brid"/>
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="outerBridgeConstruction" target="BridgeConstructionElementType" schema="brid">
-        <join table="bridge_constr_element" fromColumn="id" toColumn="bridge_id">
+        <join table="bridge_constr_element" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="outerBridgeInstallation" target="BridgeInstallationType" schema="brid">
-        <join table="bridge_installation" fromColumn="id" toColumn="bridge_id">
+        <join table="bridge_installation" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorBridgeInstallation" target="IntBridgeInstallationType" schema="brid">
-        <join table="bridge_installation" fromColumn="id" toColumn="bridge_id">
+        <join table="bridge_installation" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_id">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
@@ -1034,21 +1062,22 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="brid"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="interiorBridgeRoom" target="BridgeRoomType" schema="brid">
-        <join table="bridge_room" fromColumn="id" toColumn="bridge_id">
+        <join table="bridge_room" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="consistsOfBridgePart" target="BridgePartType" schema="brid">
-        <join table="bridge" fromColumn="id" toColumn="bridge_parent_id">
+        <join table="bridge" fromColumn="id" toColumn="bridge_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="brid">
         <joinTable table="address_to_bridge">
-          <join table="bridge" fromColumn="bridge_id" toColumn="id"/>
-          <join table="address" fromColumn="address_id" toColumn="id"/>
+          <join table="bridge" fromColumn="bridge_id" toColumn="id" toRole="parent"/>
+          <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfAbstractBridge"/>
     </featureType>
 
@@ -1064,19 +1093,20 @@
 
     <featureType id="AbstractBridgeBoundarySurfaceType" path="_BoundarySurface" table="bridge_thematic_surface" schema="brid" objectClassId="67" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="brid"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <featureProperty path="opening" target="AbstractBridgeOpeningType" schema="brid">
         <joinTable table="bridge_open_to_them_srf">
-          <join table="bridge_thematic_surface" fromColumn="bridge_thematic_surface_id" toColumn="id"/>
-          <join table="bridge_opening" fromColumn="bridge_opening_id" toColumn="id">
+          <join table="bridge_thematic_surface" fromColumn="bridge_thematic_surface_id" toColumn="id" toRole="parent"/>
+          <join table="bridge_opening" fromColumn="bridge_opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBoundarySurface"/>
     </featureType>
 
@@ -1127,12 +1157,13 @@
 
     <featureType id="AbstractBridgeOpeningType" path="_BridgeOpening" table="bridge_opening" schema="brid" objectClassId="77" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfOpening"/>
     </featureType>
 
@@ -1144,13 +1175,15 @@
     <featureType id="BridgeDoorType" path="Door" table="bridge_opening" objectClassId="79" schema="brid">
       <extension base="AbstractBridgeOpeningType"/>
       <featureProperty path="address" target="AddressType" schema="brid">
-        <join table="address" fromColumn="address_id" toColumn="id"/>
+        <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfDoor"/>
     </featureType>
 
     <featureType id="BridgeConstructionElementType" path="BridgeConstructionElement" table="bridge_constr_element" objectClassId="82" schema="brid">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1176,15 +1209,18 @@
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_constr_element_id">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_constr_element_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBridgeConstructionElement"/>
     </featureType>
 
     <featureType id="BridgeInstallationType" path="BridgeInstallation" table="bridge_installation" objectClassId="65" schema="brid">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1204,15 +1240,18 @@
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_installation_id">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBridgeInstallation"/>
     </featureType>
 
     <featureType id="IntBridgeInstallationType" path="IntBridgeInstallation" table="bridge_installation" objectClassId="66" schema="brid">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1228,15 +1267,18 @@
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_installation_id">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfIntBridgeInstallation"/>
     </featureType>
 
     <featureType id="BridgeRoomType" path="BridgeRoom" table="bridge_room" objectClassId="81" schema="brid">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1252,25 +1294,28 @@
       <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="room_id">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="BridgeFurnitureType" schema="brid">
-        <join table="bridge_furniture" fromColumn="id" toColumn="bridge_room_id">
+        <join table="bridge_furniture" fromColumn="id" toColumn="bridge_room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="bridgeRoomInstallation" target="IntBridgeInstallationType" schema="brid">
-        <join table="bridge_installation" fromColumn="id" toColumn="bridge_room_id">
+        <join table="bridge_installation" fromColumn="id" toColumn="bridge_room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBridgeRoom"/>
     </featureType>
 
     <featureType id="BridgeFurnitureType" path="BridgeFurniture" table="bridge_furniture" objectClassId="80" schema="brid">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="brid">
         <attribute path="." column="class" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1285,13 +1330,14 @@
       </complexAttribute>
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBridgeFurniture"/>
     </featureType>
 
     <!-- Tunnel module -->
     <featureType id="AbstractTunnelType" path="_AbstractTunnel" table="tunnel" schema="tun" objectClassId="83" abstract="true" topLevel="true">
       <extension base="AbstractSiteType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <complexAttribute path="class" schema="tun">
         <attribute path="." column="class" type="string" schema="tun"/>
@@ -1315,17 +1361,17 @@
       <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="tun"/>
       <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="outerTunnelInstallation" target="TunnelInstallationType" schema="tun">
-        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id">
+        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorTunnelInstallation" target="IntTunnelInstallationType" schema="tun">
-        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id">
+        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
-        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_id">
+        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
@@ -1338,15 +1384,16 @@
       <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="tun"/>
       <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="interiorHollowSpace" target="HollowSpaceType" schema="tun">
-        <join table="tunnel_hollow_space" fromColumn="id" toColumn="tunnel_id">
+        <join table="tunnel_hollow_space" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="consistsOfTunnelPart" target="TunnelPartType" schema="tun">
-        <join table="tunnel" fromColumn="id" toColumn="tunnel_parent_id">
+        <join table="tunnel" fromColumn="id" toColumn="tunnel_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfAbstractTunnel"/>
     </featureType>
 
@@ -1362,19 +1409,20 @@
 
     <featureType id="AbstractTunnelBoundarySurfaceType" path="_BoundarySurface" table="tunnel_thematic_surface" schema="tun" objectClassId="88" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tun"/>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <featureProperty path="opening" target="AbstractTunnelOpeningType" schema="tun">
         <joinTable table="tunnel_open_to_them_srf">
-          <join table="tunnel_thematic_surface" fromColumn="tunnel_thematic_surface_id" toColumn="id"/>
-          <join table="tunnel_opening" fromColumn="tunnel_opening_id" toColumn="id">
+          <join table="tunnel_thematic_surface" fromColumn="tunnel_thematic_surface_id" toColumn="id" toRole="parent"/>
+          <join table="tunnel_opening" fromColumn="tunnel_opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBoundarySurface"/>
     </featureType>
 
@@ -1425,12 +1473,13 @@
 
     <featureType id="AbstractTunnelOpeningType" path="_Opening" table="tunnel_opening" schema="tun" objectClassId="98" abstract="true">
       <extension base="AbstractCityObjectType">
-        <join table="cityobject" fromColumn="id" toColumn="id"/>
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
       <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfOpening"/>
     </featureType>
 
@@ -1445,7 +1494,9 @@
     </featureType>
 
     <featureType id="TunnelInstallationType" path="TunnelInstallation" table="tunnel_installation" objectClassId="86" schema="tun">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="tun">
         <attribute path="." column="class" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1465,15 +1516,18 @@
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
-        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_installation_id">
+        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTunnelInstallation"/>
     </featureType>
 
     <featureType id="IntTunnelInstallationType" path="IntTunnelInstallation" table="tunnel_installation" objectClassId="87" schema="tun">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="tun">
         <attribute path="." column="class" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1489,15 +1543,18 @@
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
-        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_installation_id">
+        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_installation_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfIntTunnelInstallation"/>
     </featureType>
 
     <featureType id="HollowSpaceType" path="HollowSpace" table="tunnel_hollow_space" objectClassId="102" schema="tun">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="tun">
         <attribute path="." column="class" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1513,25 +1570,28 @@
       <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="tun"/>
       <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
-        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_hollow_space_id">
+        <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_hollow_space_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="interiorFurniture" target="TunnelFurnitureType" schema="tun">
-        <join table="tunnel_furniture" fromColumn="id" toColumn="tunnel_hollow_space_id">
+        <join table="tunnel_furniture" fromColumn="id" toColumn="tunnel_hollow_space_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
       <featureProperty path="hollowSpaceInstallation" target="IntTunnelInstallationType" schema="tun">
-        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_hollow_space_id">
+        <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_hollow_space_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfHollowSpace"/>
     </featureType>
 
     <featureType id="TunnelFurnitureType" path="TunnelFurniture" table="tunnel_furniture" objectClassId="101" schema="tun">
-      <extension base="AbstractCityObjectType"/>
+      <extension base="AbstractCityObjectType">
+        <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
+      </extension>
       <complexAttribute path="class" schema="tun">
         <attribute path="." column="class" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="class_codespace" type="string" schema="gml"/>
@@ -1546,6 +1606,7 @@
       </complexAttribute>
       <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
+      <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTunnelFurniture"/>
     </featureType>
 
@@ -1560,8 +1621,8 @@
       <attribute path="theme" column="theme" type="string" schema="app"/>
       <featureProperty path="surfaceDataMember" target="AbstractSurfaceDataType" schema="app">
         <joinTable table="appear_to_surface_data">
-          <join table="appearance" fromColumn="appearance_id" toColumn="id"/>
-          <join table="surface_data" fromColumn="surface_data_id" toColumn="id">
+          <join table="appearance" fromColumn="appearance_id" toColumn="id" toRole="parent"/>
+          <join table="surface_data" fromColumn="surface_data_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
           </join>
         </joinTable>
@@ -1595,10 +1656,10 @@
     <featureType id="AbstractTextureType" path="_Texture" table="surface_data" objectClassId="52" schema="app" abstract="true">
       <extension base="AbstractSurfaceDataType"/>
       <attribute path="imageURI" column="tex_image_uri" type="string" schema="app">
-        <join table="tex_image" fromColumn="tex_image_id" toColumn="id"/>
+        <join table="tex_image" fromColumn="tex_image_id" toColumn="id" toRole="parent"/>
       </attribute>
       <complexAttribute path="mimeType" schema="app">
-        <join table="tex_image" fromColumn="tex_image_id" toColumn="id"/>
+        <join table="tex_image" fromColumn="tex_image_id" toColumn="id" toRole="parent"/>
         <attribute path="." column="tex_mime_type" type="string" schema="app"/>
         <attribute path="@codeSpace" column="tex_mime_type_codespace" type="string" schema="gml"/>
       </complexAttribute>

@@ -85,7 +85,17 @@ public class GraphCreator {
 			// process extension
 			if (!decl.isDerivedFromOtherDomains()) {				
 				XSElementDecl parentXsElementDecl = xsElementDecl.getSubstAffiliation();
-				if (parentXsElementDecl != null) {
+				if (parentXsElementDecl != null) {					
+					ADEschemaElement parentDecl = new ADEschemaElement(parentXsElementDecl, schemaHandler.getSchema(parentXsElementDecl.getTargetNamespace()));				
+					Node parentNode = this.getOrCreateElementTypeNode(parentDecl);					
+					Node extensionNode = this.createNode(GraphNodeArcType.Extension);
+					this.createArc(GraphNodeArcType.Contains, classNode, extensionNode);
+					this.createArc(GraphNodeArcType.BaseType, extensionNode, parentNode);
+				}		
+			}
+			else {
+				if (decl.isAbstractGML() || decl.isFeature()) {
+					XSElementDecl parentXsElementDecl = xsElementDecl.getSubstAffiliation();
 					ADEschemaElement parentDecl = new ADEschemaElement(parentXsElementDecl, schemaHandler.getSchema(parentXsElementDecl.getTargetNamespace()));				
 					Node parentNode = this.getOrCreateElementTypeNode(parentDecl);					
 					Node extensionNode = this.createNode(GraphNodeArcType.Extension);
@@ -268,9 +278,9 @@ public class GraphCreator {
 			System.out.println("Error --> Unsupported/Unknown Class Type: " + decl.getXSElementDecl().getType().getName());
 		}
 
-		if (ADEschemaHelper.CityGML_Namespaces.contains(namespaceUri)) 
+		if (ADEschemaHelper.CityGML_Namespaces.contains(namespaceUri) || namespaceUri.equalsIgnoreCase("http://www.opengis.net/gml")) 
 			createTableForCityGMLClass(namespaceUri, decl.getXSElementDecl().getType().getName(), classNode);
-				
+					
 		globalClassNodes.put(className, classNode);
 		
 		return classNode;

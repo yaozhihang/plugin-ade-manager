@@ -282,6 +282,8 @@ public class ADEschemaHelper {
 	@SuppressWarnings("serial")
 	public static final  Map<QName, String> CityDB_Tables = new HashMap<QName, String>() {
 		{	
+			put(new QName("http://www.opengis.net/gml", "AbstractGMLType"), "cityobject");
+			put(new QName("http://www.opengis.net/gml", "AbstractFeatureType"), "cityobject");
 			put(new QName("http://www.opengis.net/citygml/1.0", "ObjectClass"), "objectclass");
 			put(new QName("http://www.opengis.net/citygml/2.0", "ObjectClass"), "objectclass");
 			put(new QName("http://www.opengis.net/citygml/1.0", "SurfaceGeometry"), "surface_geometry");

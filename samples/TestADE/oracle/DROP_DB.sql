@@ -65,6 +65,9 @@ ALTER TABLE test_Facilities
     DROP CONSTRAINT test_Faciliti_Objectcl_FK;
 
 ALTER TABLE test_Facilities
+    DROP CONSTRAINT test_Facilities_FK;
+
+ALTER TABLE test_Facilities
     DROP CONSTRAINT test_Facil_Build_equip_FK;
 
 -- -------------------------------------------------------------------- 

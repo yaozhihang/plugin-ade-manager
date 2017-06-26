@@ -137,6 +137,7 @@
         <xs:attribute name="table" type="xs:string" use="required"/>
         <xs:attribute name="fromColumn" type="xs:string" use="required"/>
         <xs:attribute name="toColumn" type="xs:string" use="required"/>
+        <xs:attribute name="toRole" type="tableRole" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -483,6 +484,13 @@
       <xs:enumeration value="boolean"/>
       <xs:enumeration value="date"/>
       <xs:enumeration value="timestamp"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tableRole">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="parent"/>
+      <xs:enumeration value="child"/>
     </xs:restriction>
   </xs:simpleType>
 

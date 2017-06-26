@@ -43,6 +43,7 @@ import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.database.schema.mapping.SchemaMappingException;
 import org.citydb.database.schema.mapping.SimpleAttribute;
 import org.citydb.database.schema.mapping.SimpleType;
+import org.citydb.database.schema.mapping.TableRole;
 import org.citydb.database.schema.util.SchemaMappingUtil;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphNodeArcType;
@@ -145,7 +146,7 @@ public class SchemaMappingCreator {
 			if (checkADEHookClass(objectNode)){ 
 				AbstractExtension<?> extension = featureOrObjectOrComplexType.getExtension();
 				String table = featureOrObjectOrComplexType.getTable();
-				Join join = new Join(table, "ID", "ID");
+				Join join = new Join(table, "ID", "ID", TableRole.PARENT);
 				PropertyInjection propertyInjection = new PropertyInjection(table, join);
 				propertyInjection.setDefaultBase((FeatureType) extension.getBase());
 				schemaMapping.addPropertyInjection(propertyInjection);
@@ -249,21 +250,21 @@ public class SchemaMappingCreator {
 				this.generateGeometryProperty(featureOrObjectOrComplexType, targetNode, appSchema);
 			}
 	
-			AbstractExtension<?> extension = featureOrObjectOrComplexType.getExtension();
+/*			AbstractExtension<?> extension = featureOrObjectOrComplexType.getExtension();
 			if (extension == null) {
 				if (featureOrObjectOrComplexType instanceof FeatureType) {
 					FeatureType abstractGMLFeature = citygmlSchemaMapping.getFeatureType(new QName("http://www.opengis.net/gml", "_Feature"));
 					FeatureTypeExtension featureTypeExtension = new FeatureTypeExtension(abstractGMLFeature);	
 					((FeatureType) featureOrObjectOrComplexType).setExtension(featureTypeExtension);	
-					featureTypeExtension.setJoin(new Join(abstractGMLFeature.getTable(), "ID", "ID"));
+					featureTypeExtension.setJoin(new Join(abstractGMLFeature.getTable(), "ID", "ID", TableRole.PARENT));
 				}
 				else if (featureOrObjectOrComplexType instanceof ObjectType) {
 					ObjectType abstractGMLObject = citygmlSchemaMapping.getObjectType(new QName("http://www.opengis.net/gml", "_GML"));
 					ObjectTypeExtension ObjectTypeExtension = new ObjectTypeExtension((ObjectType) abstractGMLObject);
 					abstractGMLObject.setExtension(ObjectTypeExtension);
-					ObjectTypeExtension.setJoin(new Join(abstractGMLObject.getTable(), "ID", "ID"));
+					ObjectTypeExtension.setJoin(new Join(abstractGMLObject.getTable(), "ID", "ID", TableRole.PARENT));
 				}
-			}
+			}*/
 		}		
 	}
 	
@@ -374,48 +375,73 @@ public class SchemaMappingCreator {
 			}
 			
 			if (targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.Join) && extension != null) {
-				Join extensionJoin = this.createJoin(subType.getTable(), targetNode, subType.getTable());
+				Join extensionJoin = this.createJoin(subType.getTable(), targetNode);
 				extension.setJoin(extensionJoin);
 			}
 		}
 	}
 	
-	private Join createJoin(String localTableName, Node joinNode, String otherTableName) {
+	private Join createJoin(String localTableName, Node joinNode) {
 		Iterator<Arc> iter = joinNode.getOutgoingArcs();
-		String joinToColumnName = null;
-		String joinFromColumnName = null;
-		String joinFromTableName = null;
-		String joinToTableName = null;
-		Node joinFromTableNode = null;
-		Node joinToTableNode = null;
+
+		String fkColumnName = null;
+		String pkColumnName = null;		
+		String fkTableName = null;
+		String pkTableName = null;
+		Node fkTableNode = null;
+		Node pkTableNode = null;
 
 		while (iter.hasNext()) {
 			Arc arc = iter.next();
 			if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinFrom)) {
 				Node joinFromColumnNode = (Node) arc.getTarget();
-				joinFromColumnName = (String)joinFromColumnNode.getAttribute().getValueAt("name");
-				joinFromTableNode = (Node)joinFromColumnNode.getOutgoingArcs().next().getTarget();				
-				joinFromTableName= (String)joinFromTableNode.getAttribute().getValueAt("name");
+				fkColumnName = (String)joinFromColumnNode.getAttribute().getValueAt("name");
+				fkTableNode = (Node)joinFromColumnNode.getOutgoingArcs().next().getTarget();				
+				fkTableName= (String)fkTableNode.getAttribute().getValueAt("name");
 			}
 			else if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTo)) {
 				Node joinToColumnNode = (Node) arc.getTarget();
-				joinToColumnName = (String)joinToColumnNode.getAttribute().getValueAt("name");
-				joinToTableNode = (Node)joinToColumnNode.getOutgoingArcs().next().getTarget();				
-				joinToTableName= (String)joinToTableNode.getAttribute().getValueAt("name");
+				pkColumnName = (String)joinToColumnNode.getAttribute().getValueAt("name");
+				pkTableNode = (Node)joinToColumnNode.getOutgoingArcs().next().getTarget();				
+				pkTableName= (String)pkTableNode.getAttribute().getValueAt("name");
 			}
 		}
-		
-		String refTableName = joinFromTableName;
-		Node refTableNode = joinFromTableNode;
-		if (refTableName.equalsIgnoreCase(localTableName)) {
-			refTableName = joinToTableName;
-			refTableNode = joinToTableNode;
+
+		Join join = null;
+		Node joinToTableNode = null;
+		if (!fkTableName.equalsIgnoreCase(pkTableName)) {
+			if (fkTableName.equalsIgnoreCase(localTableName)) {
+				join = new Join(pkTableName, fkColumnName, pkColumnName, TableRole.PARENT);
+				joinToTableNode = pkTableNode;
+			} 
+			else {
+				join = new Join(fkTableName, pkColumnName, fkColumnName, TableRole.CHILD);
+				joinToTableNode = fkTableNode;
+			}
+		}
+		else {
+			join = new Join(fkTableName, fkColumnName, pkColumnName, TableRole.PARENT);
+			joinToTableNode = fkTableNode;
+			
+			iter = joinNode.getIncomingArcs();
+			while (iter.hasNext()) {
+				Arc arc = iter.next();
+				if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.MapsTo)) {
+					Node propertyNode = (Node) arc.getSource();
+					if (propertyNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexTypeProperty)) {
+						int maxOccurs = (int)propertyNode.getAttribute().getValueAt("maxOccurs");
+						if (maxOccurs > 1 || maxOccurs == -1) {
+							join = new Join(fkTableName, pkColumnName, fkColumnName, TableRole.CHILD);
+							joinToTableNode = fkTableNode;
+						}						
+					}				
+				}
+			}			
 		}
 		
-		Join join = new Join(refTableName, joinFromColumnName, joinToColumnName);
-		
-		if (refTableNode.getAttribute().getValueAt("isMerged") != null && !joinFromTableNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTable)) {
-			if ((boolean)refTableNode.getAttribute().getValueAt("isMerged")) {
+
+		if (joinToTableNode.getAttribute().getValueAt("isMerged") != null && !fkTableNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTable)) {
+			if ((boolean)joinToTableNode.getAttribute().getValueAt("isMerged")) {
 				join.addCondition(new Condition("objectclass_id", "${target.objectclass_id}", SimpleType.INTEGER));
 			}
 		}	
@@ -457,7 +483,7 @@ public class SchemaMappingCreator {
 			}
 			
 			if (targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.Join)) {
-				Join propertyJoin = this.createJoin(localType.getTable(), targetNode, localType.getTable());
+				Join propertyJoin = this.createJoin(localType.getTable(), targetNode);
 				property.setJoin(propertyJoin);
 			}
 			
@@ -482,7 +508,7 @@ public class SchemaMappingCreator {
 					Arc arc2 = arcIter2.next();
 					Node joinNode = (Node) arc2.getSource();
 					if (joinNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.Join)) {
-						Join join = this.createJoin(tableName, joinNode, joinTable.getTable());
+						Join join = this.createJoin(tableName, joinNode);
 						joinTable.addJoin(join);
 					}					
 				}				

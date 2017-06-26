@@ -21,15 +21,15 @@ CREATE TABLE test_BuildingUnit
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
     building_buildingUnit_ID INTEGER,
-    lod2MultiCurve MDSYS.SDO_GEOMETRY,
-    lod3MultiCurve MDSYS.SDO_GEOMETRY,
-    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     class_uom VARCHAR2(254),
     class VARCHAR2(254),
     usage_uom VARCHAR2(254),
     usage VARCHAR2(254),
     function_uom VARCHAR2(254),
     function VARCHAR2(254),
+    lod2MultiCurve MDSYS.SDO_GEOMETRY,
+    lod3MultiCurve MDSYS.SDO_GEOMETRY,
+    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -121,10 +121,10 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    EnergyPerfor_certificatio VARCHAR2(254),
-    ownerName VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,
+    ownerName VARCHAR2(254),
+    EnergyPerfor_certificatio VARCHAR2(254),
     EnergyPerfo_certificati_1 VARCHAR2(254),
     PRIMARY KEY (ID)
 );
@@ -194,6 +194,9 @@ ALTER TABLE test_EnergyPerformanceCer
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_Facilities
     ADD CONSTRAINT test_Faciliti_Objectcl_FK FOREIGN KEY (OBJECTCLASS_ID) REFERENCES objectclass (ID);
+
+ALTER TABLE test_Facilities
+    ADD CONSTRAINT test_Facilities_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_Facilities
     ADD CONSTRAINT test_Facil_Build_equip_FK FOREIGN KEY (BuildingUni_equippedWi_ID) REFERENCES test_BuildingUnit (ID);
