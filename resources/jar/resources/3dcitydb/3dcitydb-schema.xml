@@ -2,61 +2,61 @@
 <schemaMapping xmlns="http://www.3dcitydb.org/database/schema/3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.3dcitydb.org/database/schema/3.0 3dcitydb-schema.xsd">
 
   <applicationSchemas>
-    <schema id="core">
+    <schema id="core" xmlPrefix="core">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/1.0</namespace>
     </schema>
-    <schema id="app">
+    <schema id="app" xmlPrefix="app">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/appearance/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/appearance/1.0</namespace>
     </schema>
-    <schema id="bldg">
+    <schema id="bldg" xmlPrefix="bldg">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/building/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/building/1.0</namespace>
     </schema>
-    <schema id="brid">
+    <schema id="brid" xmlPrefix="brid">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/bridge/2.0</namespace>
     </schema>
-    <schema id="frn">
+    <schema id="frn" xmlPrefix="frn">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/cityfurniture/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/cityfurniture/1.0</namespace>
     </schema>
-    <schema id="grp">
+    <schema id="grp" xmlPrefix="grp">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/cityobjectgroup/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/cityobjectgroup/1.0</namespace>
     </schema>
-    <schema id="gen">
+    <schema id="gen" xmlPrefix="gen">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/generics/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/generics/1.0</namespace>
     </schema>
-    <schema id="luse">
+    <schema id="luse" xmlPrefix="luse">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/landuse/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/landuse/1.0</namespace>
     </schema>
-    <schema id="dem">
+    <schema id="dem" xmlPrefix="dem">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/relief/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/relief/1.0</namespace>
     </schema>
-    <schema id="tran">
+    <schema id="tran" xmlPrefix="tran">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/transportation/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/transportation/1.0</namespace>
     </schema>
-    <schema id="tun">
+    <schema id="tun" xmlPrefix="tun">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/tunnel/2.0</namespace>
     </schema>
-    <schema id="veg">
+    <schema id="veg" xmlPrefix="veg">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/vegetation/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/vegetation/1.0</namespace>
     </schema>
-    <schema id="wtr">
+    <schema id="wtr" xmlPrefix="wtr">
       <namespace context="citygml-2.0">http://www.opengis.net/citygml/waterbody/2.0</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/citygml/waterbody/1.0</namespace>
     </schema>
-    <schema id="gml">
+    <schema id="gml" xmlPrefix="gml">
       <namespace context="citygml-2.0">http://www.opengis.net/gml</namespace>
       <namespace context="citygml-1.0">http://www.opengis.net/gml</namespace>
     </schema>
-    <schema id="citydb">
+    <schema id="citydb" xmlPrefix="citydb">
       <namespace context="citygml-2.0">http://www.3dcitydb.org/citygml-ade/3.0</namespace>
       <namespace context="citygml-1.0">http://www.3dcitydb.org/citygml-ade/3.0</namespace>
     </schema>
@@ -152,7 +152,7 @@
 
   <featureTypes>
     <!-- GML module -->
-    <featureType id="AbstractFeatureType" path="_Feature" table="cityobject" schema="gml" objectClassId="2" abstract="true" topLevel="true">
+    <featureType id="AbstractFeatureType" path="_Feature" table="cityobject" schema="gml" objectClassId="2" abstract="true">
       <attribute path="@id" column="gmlid" type="string" schema="gml"/>
       <attribute path="description" column="description" type="string" schema="gml"/>
       <complexAttribute path="name" schema="gml">
@@ -168,7 +168,7 @@
     </featureType>
 
     <!-- Core module -->
-    <featureType id="AbstractCityObjectType" path="_CityObject" table="cityobject" schema="core" objectClassId="3" abstract="true" topLevel="true">
+    <featureType id="AbstractCityObjectType" path="_CityObject" table="cityobject" schema="core" objectClassId="3" abstract="true">
       <extension base="AbstractFeatureType"/>
       <attribute path="creationDate" column="creation_date" type="timestamp" schema="core"/>
       <attribute path="terminationDate" column="termination_date" type="timestamp" schema="core"/>
@@ -238,13 +238,13 @@
       <adeHook name="_GenericApplicationPropertyOfCityObject"/>
     </featureType>
 
-    <featureType id="AbstractSiteType" path="_Site" table="cityobject" schema="core" objectClassId="20" abstract="true" topLevel="true">
+    <featureType id="AbstractSiteType" path="_Site" table="cityobject" schema="core" objectClassId="20" abstract="true">
       <extension base="AbstractCityObjectType"/>
       <adeHook name="_GenericApplicationPropertyOfSite"/>
     </featureType>
 
     <!-- Building module -->
-    <featureType id="AbstractBuildingType" path="_AbstractBuilding" table="building" schema="bldg" objectClassId="24" abstract="true" topLevel="true">
+    <featureType id="AbstractBuildingType" path="_AbstractBuilding" table="building" schema="bldg" objectClassId="24" abstract="true">
       <extension base="AbstractSiteType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
@@ -280,15 +280,15 @@
         <attribute path="." column="storey_heights_below_ground" type="string" schema="bldg"/>
         <attribute path="@uom" column="storey_heights_bg_unit" type="string" schema="bldg"/>
       </complexAttribute>
-      <geometryProperty path="lod0FootPrint" refColumn="lod0_footprint_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod0RoofEdge" refColumn="lod0_roofprint_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod1Solid" refColumn="lod1_solid_id" type="AbstractSolid" schema="bldg"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="bldg"/>
-      <geometryProperty path="lod2Solid" refColumn="lod2_solid_id" type="AbstractSolid" schema="bldg"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="bldg"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod0FootPrint" lod="0" refColumn="lod0_footprint_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod0RoofEdge" lod="0" refColumn="lod0_roofprint_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod1Solid" lod="1" refColumn="lod1_solid_id" type="AbstractSolid" schema="bldg"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod2Solid" lod="2" refColumn="lod2_solid_id" type="AbstractSolid" schema="bldg"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod2MultiCurve" lod="2" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="outerBuildingInstallation" target="BuildingInstallationType" schema="bldg">
         <join table="building_installation" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -304,14 +304,14 @@
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
-      <geometryProperty path="lod3Solid" refColumn="lod3_solid_id" type="AbstractSolid" schema="bldg"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod3MultiCurve" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="bldg"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="bldg"/>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="bldg"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="bldg"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod3Solid" lod="3" refColumn="lod3_solid_id" type="AbstractSolid" schema="bldg"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod3MultiCurve" lod="3" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="bldg"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod4MultiCurve" lod="4" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="bldg"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="bldg"/>
       <featureProperty path="interiorRoom" target="RoomType" schema="bldg">
         <join table="room" fromColumn="id" toColumn="building_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -320,6 +320,7 @@
       <featureProperty path="consistsOfBuildingPart" target="BuildingPartType" schema="bldg">
         <join table="building" fromColumn="id" toColumn="building_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+          <treeHierarchy rootColumn="building_root_id"/>
         </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="bldg">
@@ -346,9 +347,9 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <featureProperty path="opening" target="AbstractOpeningType" schema="bldg">
         <joinTable table="opening_to_them_surface">
           <join table="thematic_surface" fromColumn="thematic_surface_id" toColumn="id" toRole="parent"/>
@@ -410,8 +411,8 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -447,9 +448,9 @@
         <attribute path="." column="usage" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="bldg"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="bldg"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="bldg"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="bldg"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="bldg"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
@@ -478,7 +479,7 @@
         <attribute path="." column="usage" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
         <join table="thematic_surface" fromColumn="id" toColumn="building_installation_id" toRole="child">
@@ -505,8 +506,8 @@
         <attribute path="." column="usage" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="bldg"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="bldg"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="bldg"/>
       <featureProperty path="boundedBy" target="AbstractBoundarySurfaceType" schema="bldg">
         <join table="thematic_surface" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -542,7 +543,7 @@
         <attribute path="." column="usage" type="string" schema="bldg"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="bldg"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="bldg"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBuildingFurniture"/>
@@ -565,14 +566,14 @@
         <attribute path="." column="usage" type="string" schema="frn"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod1Geometry" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="frn"/>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="frn"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="frn"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="frn"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="frn"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="frn"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="frn"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="frn"/>
+      <geometryProperty path="lod1Geometry" lod="1" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="frn"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="frn"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="frn"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="frn"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="frn"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="frn"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="frn"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="frn"/>
       <implicitGeometryProperty path="lod1ImplicitRepresentation" lod="1" schema="frn"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="frn"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="frn"/>
@@ -598,16 +599,16 @@
         <attribute path="." column="usage" type="string" schema="gen"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod0Geometry" refColumn="lod0_brep_id" inlineColumn="lod0_other_geom" type="AbstractGeometry" schema="gen"/>
-      <geometryProperty path="lod1Geometry" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="gen"/>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="gen"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="gen"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="gen"/>
-      <geometryProperty path="lod0TerrainIntersection" inlineColumn="lod0_terrain_intersection" type="MultiCurve" schema="gen"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="gen"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="gen"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="gen"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="gen"/>
+      <geometryProperty path="lod0Geometry" lod="0" refColumn="lod0_brep_id" inlineColumn="lod0_other_geom" type="AbstractGeometry" schema="gen"/>
+      <geometryProperty path="lod1Geometry" lod="1" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="gen"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="gen"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="gen"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="gen"/>
+      <geometryProperty path="lod0TerrainIntersection" lod="0" inlineColumn="lod0_terrain_intersection" type="MultiCurve" schema="gen"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="gen"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="gen"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="gen"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="gen"/>
       <implicitGeometryProperty path="lod0ImplicitRepresentation" lod="0" schema="gen"/>
       <implicitGeometryProperty path="lod1ImplicitRepresentation" lod="1" schema="gen"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="gen"/>
@@ -633,11 +634,11 @@
         <attribute path="." column="usage" type="string" schema="luse"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod0MultiSurface" refColumn="lod0_multi_surface_id" type="MultiSurface" schema="luse"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="luse"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="luse"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="luse"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <geometryProperty path="lod0MultiSurface" lod="0" refColumn="lod0_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="luse"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="luse"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfLandUse"/>
     </featureType>
@@ -738,7 +739,7 @@
     </featureType>
 
     <!-- WaterBody module -->
-    <featureType id="AbstractWaterObjectType" path="_WaterObject" table="cityobject" schema="wtr" objectClassId="105" abstract="true" topLevel="true">
+    <featureType id="AbstractWaterObjectType" path="_WaterObject" table="cityobject" schema="wtr" objectClassId="105" abstract="true">
       <extension base="AbstractCityObjectType"/>
       <adeHook name="_GenericApplicationPropertyOfWaterObject"/>
     </featureType>
@@ -759,14 +760,14 @@
         <attribute path="." column="usage" type="string" schema="wtr"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod0MultiCurve" inlineColumn="lod0_multi_curve" type="MultiCurve" schema="wtr"/>
-      <geometryProperty path="lod0MultiSurface" refColumn="lod0_multi_surface_id" type="MultiSurface" schema="wtr"/>
-      <geometryProperty path="lod1MultiCurve" inlineColumn="lod1_multi_curve" type="MultiCurve" schema="wtr"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="wtr"/>
-      <geometryProperty path="lod1Solid" refColumn="lod1_solid_id" type="AbstractSolid" schema="wtr"/>
-      <geometryProperty path="lod2Solid" refColumn="lod2_solid_id" type="AbstractSolid" schema="wtr"/>
-      <geometryProperty path="lod3Solid" refColumn="lod3_solid_id" type="AbstractSolid" schema="wtr"/>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="wtr"/>
+      <geometryProperty path="lod0MultiCurve" lod="0" inlineColumn="lod0_multi_curve" type="MultiCurve" schema="wtr"/>
+      <geometryProperty path="lod0MultiSurface" lod="0" refColumn="lod0_multi_surface_id" type="MultiSurface" schema="wtr"/>
+      <geometryProperty path="lod1MultiCurve" lod="1" inlineColumn="lod1_multi_curve" type="MultiCurve" schema="wtr"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="wtr"/>
+      <geometryProperty path="lod1Solid" lod="1" refColumn="lod1_solid_id" type="AbstractSolid" schema="wtr"/>
+      <geometryProperty path="lod2Solid" lod="2" refColumn="lod2_solid_id" type="AbstractSolid" schema="wtr"/>
+      <geometryProperty path="lod3Solid" lod="3" refColumn="lod3_solid_id" type="AbstractSolid" schema="wtr"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="wtr"/>
       <featureProperty path="boundedBy" target="AbstractWaterBoundarySurfaceType" schema="wtr">
         <joinTable table="waterbod_to_waterbnd_srf">
           <join table="waterbody" fromColumn="waterbody_id" toColumn="id" toRole="parent"/>
@@ -783,9 +784,9 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod2Surface" refColumn="lod2_surface_id" type="AbstractSurface" schema="wtr"/>
-      <geometryProperty path="lod3Surface" refColumn="lod3_surface_id" type="AbstractSurface" schema="wtr"/>
-      <geometryProperty path="lod4Surface" refColumn="lod4_surface_id" type="AbstractSurface" schema="wtr"/>
+      <geometryProperty path="lod2Surface" lod="2" refColumn="lod2_surface_id" type="AbstractSurface" schema="wtr"/>
+      <geometryProperty path="lod3Surface" lod="3" refColumn="lod3_surface_id" type="AbstractSurface" schema="wtr"/>
+      <geometryProperty path="lod4Surface" lod="4" refColumn="lod4_surface_id" type="AbstractSurface" schema="wtr"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfWaterBoundarySurface"/>
     </featureType>
@@ -810,7 +811,7 @@
     </featureType>
 
     <!-- Transportation module -->
-    <featureType id="AbstractTransportationObjectType" path="_TransportationObject" table="cityobject" schema="tran" objectClassId="22" abstract="true" topLevel="true">
+    <featureType id="AbstractTransportationObjectType" path="_TransportationObject" table="cityobject" schema="tran" objectClassId="22" abstract="true">
       <extension base="AbstractCityObjectType"/>
       <adeHook name="_GenericApplicationPropertyOfTransportationObject"/>
     </featureType>
@@ -841,11 +842,11 @@
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
-      <geometryProperty path="lod0Network" inlineColumn="lod0_network" type="GeometricComplex" schema="tran"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod0Network" lod="0" inlineColumn="lod0_network" type="GeometricComplex" schema="tran"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTransportationComplex"/>
     </featureType>
@@ -890,9 +891,9 @@
         <attribute path="." column="surface_material" type="string" schema="tran"/>
         <attribute path="@codeSpace" column="surface_material_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTrafficArea"/>
     </featureType>
@@ -917,15 +918,15 @@
         <attribute path="." column="surface_material" type="string" schema="tran"/>
         <attribute path="@codeSpace" column="surface_material_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tran"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tran"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfAuxiliaryTrafficArea"/>
     </featureType>
 
     <!-- Vegetation module -->
-    <featureType id="AbstractVegetationObjectType" path="_VegetationObject" table="cityobject" schema="veg" objectClassId="6" abstract="true" topLevel="true">
+    <featureType id="AbstractVegetationObjectType" path="_VegetationObject" table="cityobject" schema="veg" objectClassId="6" abstract="true">
       <extension base="AbstractCityObjectType"/>
       <adeHook name="_GenericApplicationPropertyOfVegetationObject"/>
     </featureType>
@@ -962,10 +963,10 @@
         <attribute path="." column="crown_diameter" type="double" schema="veg"/>
         <attribute path="@uom" column="crown_diameter_unit" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod1Geometry" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="veg"/>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="veg"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="veg"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="veg"/>
+      <geometryProperty path="lod1Geometry" lod="1" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="veg"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="veg"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="veg"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="veg"/>
       <implicitGeometryProperty path="lod1ImplicitRepresentation" lod="1" schema="veg"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="veg"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="veg"/>
@@ -994,20 +995,20 @@
         <attribute path="." column="average_height" type="double" schema="veg"/>
         <attribute path="@uom" column="average_height_unit" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="veg"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="veg"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="veg"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="veg"/>
-      <geometryProperty path="lod1MultiSolid" refColumn="lod1_multi_solid_id" type="MultiSolid" schema="veg"/>
-      <geometryProperty path="lod2MultiSolid" refColumn="lod2_multi_solid_id" type="MultiSolid" schema="veg"/>
-      <geometryProperty path="lod3MultiSolid" refColumn="lod3_multi_solid_id" type="MultiSolid" schema="veg"/>
-      <geometryProperty path="lod4MultiSolid" refColumn="lod4_multi_solid_id" type="MultiSolid" schema="veg"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="veg"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="veg"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="veg"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="veg"/>
+      <geometryProperty path="lod1MultiSolid" lod="1" refColumn="lod1_multi_solid_id" type="MultiSolid" schema="veg"/>
+      <geometryProperty path="lod2MultiSolid" lod="2" refColumn="lod2_multi_solid_id" type="MultiSolid" schema="veg"/>
+      <geometryProperty path="lod3MultiSolid" lod="3" refColumn="lod3_multi_solid_id" type="MultiSolid" schema="veg"/>
+      <geometryProperty path="lod4MultiSolid" lod="4" refColumn="lod4_multi_solid_id" type="MultiSolid" schema="veg"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfPlantCover"/>
     </featureType>
 
     <!-- Bridge module -->
-    <featureType id="AbstractBridgeType" path="_AbstractBridge" table="bridge" schema="brid" objectClassId="62" abstract="true" topLevel="true">
+    <featureType id="AbstractBridgeType" path="_AbstractBridge" table="bridge" schema="brid" objectClassId="62" abstract="true">
       <extension base="AbstractSiteType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
@@ -1026,13 +1027,13 @@
       <attribute path="yearOfConstruction" column="year_of_construction" type="date" schema="brid"/>
       <attribute path="yearOfDemolition" column="year_of_demolition" type="date" schema="brid"/>
       <attribute path="isMovable" column="is_movable" type="boolean" schema="brid"/>
-      <geometryProperty path="lod1Solid" refColumn="lod1_solid_id" type="AbstractSolid" schema="brid"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod2Solid" refColumn="lod2_solid_id" type="AbstractSolid" schema="brid"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod1Solid" lod="1" refColumn="lod1_solid_id" type="AbstractSolid" schema="brid"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod2Solid" lod="2" refColumn="lod2_solid_id" type="AbstractSolid" schema="brid"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod2MultiCurve" lod="2" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="outerBridgeConstruction" target="BridgeConstructionElementType" schema="brid">
         <join table="bridge_constr_element" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1053,14 +1054,14 @@
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
-      <geometryProperty path="lod3Solid" refColumn="lod3_solid_id" type="AbstractSolid" schema="brid"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod3MultiCurve" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod3Solid" lod="3" refColumn="lod3_solid_id" type="AbstractSolid" schema="brid"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod3MultiCurve" lod="3" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod4MultiCurve" lod="4" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
       <featureProperty path="interiorBridgeRoom" target="BridgeRoomType" schema="brid">
         <join table="bridge_room" fromColumn="id" toColumn="bridge_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1069,6 +1070,7 @@
       <featureProperty path="consistsOfBridgePart" target="BridgePartType" schema="brid">
         <join table="bridge" fromColumn="id" toColumn="bridge_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+          <treeHierarchy rootColumn="bridge_root_id"/>
         </join>
       </featureProperty>
       <featureProperty path="address" target="AddressType" schema="brid">
@@ -1095,9 +1097,9 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <featureProperty path="opening" target="AbstractBridgeOpeningType" schema="brid">
         <joinTable table="bridge_open_to_them_srf">
           <join table="bridge_thematic_surface" fromColumn="bridge_thematic_surface_id" toColumn="id" toRole="parent"/>
@@ -1159,8 +1161,8 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1196,14 +1198,14 @@
         <attribute path="." column="usage" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod1Geometry" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="brid"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod1Geometry" lod="1" refColumn="lod1_brep_id" inlineColumn="lod1_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="brid"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="brid"/>
       <implicitGeometryProperty path="lod1ImplicitRepresentation" lod="1" schema="brid"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="brid"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
@@ -1233,9 +1235,9 @@
         <attribute path="." column="usage" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="brid"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="brid"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
@@ -1264,7 +1266,7 @@
         <attribute path="." column="usage" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
         <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_installation_id" toRole="child">
@@ -1291,8 +1293,8 @@
         <attribute path="." column="usage" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
         <join table="bridge_thematic_surface" fromColumn="id" toColumn="room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1328,14 +1330,14 @@
         <attribute path="." column="usage" type="string" schema="brid"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="brid"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="brid"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfBridgeFurniture"/>
     </featureType>
 
     <!-- Tunnel module -->
-    <featureType id="AbstractTunnelType" path="_AbstractTunnel" table="tunnel" schema="tun" objectClassId="83" abstract="true" topLevel="true">
+    <featureType id="AbstractTunnelType" path="_AbstractTunnel" table="tunnel" schema="tun" objectClassId="83" abstract="true">
       <extension base="AbstractSiteType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
@@ -1353,13 +1355,13 @@
       </complexAttribute>
       <attribute path="yearOfConstruction" column="year_of_construction" type="date" schema="tun"/>
       <attribute path="yearOfDemolition" column="year_of_demolition" type="date" schema="tun"/>
-      <geometryProperty path="lod1Solid" refColumn="lod1_solid_id" type="AbstractSolid" schema="tun"/>
-      <geometryProperty path="lod1MultiSurface" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod1TerrainIntersection" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="tun"/>
-      <geometryProperty path="lod2Solid" refColumn="lod2_solid_id" type="AbstractSolid" schema="tun"/>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod2MultiCurve" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="tun"/>
-      <geometryProperty path="lod2TerrainIntersection" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod1Solid" lod="1" refColumn="lod1_solid_id" type="AbstractSolid" schema="tun"/>
+      <geometryProperty path="lod1MultiSurface" lod="1" refColumn="lod1_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod1TerrainIntersection" lod="1" inlineColumn="lod1_terrain_intersection" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod2Solid" lod="2" refColumn="lod2_solid_id" type="AbstractSolid" schema="tun"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod2MultiCurve" lod="2" inlineColumn="lod2_multi_curve" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod2TerrainIntersection" lod="2" inlineColumn="lod2_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="outerTunnelInstallation" target="TunnelInstallationType" schema="tun">
         <join table="tunnel_installation" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1375,14 +1377,14 @@
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
-      <geometryProperty path="lod3Solid" refColumn="lod3_solid_id" type="AbstractSolid" schema="tun"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod3MultiCurve" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="tun"/>
-      <geometryProperty path="lod3TerrainIntersection" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="tun"/>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="tun"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod4MultiCurve" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="tun"/>
-      <geometryProperty path="lod4TerrainIntersection" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod3Solid" lod="3" refColumn="lod3_solid_id" type="AbstractSolid" schema="tun"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod3MultiCurve" lod="3" inlineColumn="lod3_multi_curve" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod3TerrainIntersection" lod="3" inlineColumn="lod3_terrain_intersection" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="tun"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod4MultiCurve" lod="4" inlineColumn="lod4_multi_curve" type="MultiCurve" schema="tun"/>
+      <geometryProperty path="lod4TerrainIntersection" lod="4" inlineColumn="lod4_terrain_intersection" type="MultiCurve" schema="tun"/>
       <featureProperty path="interiorHollowSpace" target="HollowSpaceType" schema="tun">
         <join table="tunnel_hollow_space" fromColumn="id" toColumn="tunnel_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1391,6 +1393,7 @@
       <featureProperty path="consistsOfTunnelPart" target="TunnelPartType" schema="tun">
         <join table="tunnel" fromColumn="id" toColumn="tunnel_parent_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+          <treeHierarchy rootColumn="tunnel_root_id"/>
         </join>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1411,9 +1414,9 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod2MultiSurface" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod2MultiSurface" lod="2" refColumn="lod2_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <featureProperty path="opening" target="AbstractTunnelOpeningType" schema="tun">
         <joinTable table="tunnel_open_to_them_srf">
           <join table="tunnel_thematic_surface" fromColumn="tunnel_thematic_surface_id" toColumn="id" toRole="parent"/>
@@ -1475,8 +1478,8 @@
       <extension base="AbstractCityObjectType">
         <join table="cityobject" fromColumn="id" toColumn="id" toRole="parent"/>
       </extension>
-      <geometryProperty path="lod3MultiSurface" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod3MultiSurface" lod="3" refColumn="lod3_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1509,9 +1512,9 @@
         <attribute path="." column="usage" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod2Geometry" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="tun"/>
-      <geometryProperty path="lod3Geometry" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="tun"/>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
+      <geometryProperty path="lod2Geometry" lod="2" refColumn="lod2_brep_id" inlineColumn="lod2_other_geom" type="AbstractGeometry" schema="tun"/>
+      <geometryProperty path="lod3Geometry" lod="3" refColumn="lod3_brep_id" inlineColumn="lod3_other_geom" type="AbstractGeometry" schema="tun"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
       <implicitGeometryProperty path="lod2ImplicitRepresentation" lod="2" schema="tun"/>
       <implicitGeometryProperty path="lod3ImplicitRepresentation" lod="3" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
@@ -1540,7 +1543,7 @@
         <attribute path="." column="usage" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
         <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_installation_id" toRole="child">
@@ -1567,8 +1570,8 @@
         <attribute path="." column="usage" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Solid" refColumn="lod4_solid_id" type="AbstractSolid" schema="tun"/>
-      <geometryProperty path="lod4MultiSurface" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
+      <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="tun"/>
+      <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="tun"/>
       <featureProperty path="boundedBy" target="AbstractTunnelBoundarySurfaceType" schema="tun">
         <join table="tunnel_thematic_surface" fromColumn="id" toColumn="tunnel_hollow_space_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
@@ -1604,7 +1607,7 @@
         <attribute path="." column="usage" type="string" schema="tun"/>
         <attribute path="@codeSpace" column="usage_codespace" type="string" schema="gml"/>
       </complexAttribute>
-      <geometryProperty path="lod4Geometry" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
+      <geometryProperty path="lod4Geometry" lod="4" refColumn="lod4_brep_id" inlineColumn="lod4_other_geom" type="AbstractGeometry" schema="tun"/>
       <implicitGeometryProperty path="lod4ImplicitRepresentation" lod="4" schema="tun"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <adeHook name="_GenericApplicationPropertyOfTunnelFurniture"/>

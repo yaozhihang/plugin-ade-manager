@@ -133,6 +133,7 @@
       <xs:extension base="abstractJoin">
         <xs:sequence>
           <xs:element name="condition" type="condition" minOccurs="0" maxOccurs="unbounded"/>
+          <xs:element name="treeHierarchy" type="treeHierarchy" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="table" type="xs:string" use="required"/>
         <xs:attribute name="fromColumn" type="xs:string" use="required"/>
@@ -151,6 +152,11 @@
     <xs:attribute name="column" type="xs:string" use="required"/>
     <xs:attribute name="value" type="xs:string" use="required"/>
     <xs:attribute name="type" type="simpleType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="treeHierarchy">
+    <xs:sequence/>
+    <xs:attribute name="rootColumn" type="xs:string" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="reverseJoin">
@@ -203,23 +209,9 @@
 
   <xs:complexType name="complexTypeExtension">
     <xs:sequence>
-      <xs:choice minOccurs="0">
-        <xs:element name="join" type="join"/>
-        <xs:element name="joinTable" type="joinTable"/>
-      </xs:choice>
+      <xs:element name="join" type="join" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="base" type="xs:string" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="joinTable">
-    <xs:complexContent>
-      <xs:extension base="abstractJoin">
-        <xs:sequence>
-          <xs:element name="join" type="join" maxOccurs="unbounded"/>
-        </xs:sequence>
-        <xs:attribute name="table" type="xs:string" use="required"/>
-      </xs:extension>
-    </xs:complexContent>
   </xs:complexType>
 
   <xs:complexType name="complexProperty">
@@ -250,6 +242,17 @@
             <xs:element name="joinTable" type="joinTable"/>
           </xs:choice>
         </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="joinTable">
+    <xs:complexContent>
+      <xs:extension base="abstractJoin">
+        <xs:sequence>
+          <xs:element name="join" type="join" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="table" type="xs:string" use="required"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -289,6 +292,7 @@
             <xs:element name="reverseJoin" type="reverseJoin"/>
           </xs:choice>
         </xs:sequence>
+        <xs:attribute name="lod" type="xs:int"/>
         <xs:attribute name="refColumn" type="xs:string"/>
         <xs:attribute name="inlineColumn" type="xs:string"/>
         <xs:attribute name="type" type="geometryType" use="required"/>
@@ -331,10 +335,7 @@
 
   <xs:complexType name="objectTypeExtension">
     <xs:sequence>
-      <xs:choice minOccurs="0">
-        <xs:element name="join" type="join"/>
-        <xs:element name="joinTable" type="joinTable"/>
-      </xs:choice>
+      <xs:element name="join" type="join" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="base" type="xs:string" use="required"/>
   </xs:complexType>
@@ -366,10 +367,7 @@
 
   <xs:complexType name="featureTypeExtension">
     <xs:sequence>
-      <xs:choice minOccurs="0">
-        <xs:element name="join" type="join"/>
-        <xs:element name="joinTable" type="joinTable"/>
-      </xs:choice>
+      <xs:element name="join" type="join" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="base" type="xs:string" use="required"/>
   </xs:complexType>
@@ -381,10 +379,7 @@
 
   <xs:complexType name="propertyInjection">
     <xs:sequence>
-      <xs:choice>
-        <xs:element name="join" type="join"/>
-        <xs:element name="joinTable" type="joinTable"/>
-      </xs:choice>
+      <xs:element name="join" type="join" minOccurs="0"/>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="attribute" type="injectedSimpleAttribute"/>
         <xs:element name="complexAttribute" type="injectedComplexAttribute"/>
