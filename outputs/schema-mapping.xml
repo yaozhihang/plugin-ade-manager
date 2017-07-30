@@ -8,7 +8,6 @@
     </metadata>
     <applicationSchemas>
         <schema id="TestADE" isADERoot="true">
-            <namespace context="citygml-1.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
             <namespace context="citygml-2.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
         </schema>
     </applicationSchemas>
@@ -19,7 +18,7 @@
         </complexType>
     </complexTypes>
     <featureTypes>
-        <featureType abstract="true" id="_AbstractBuildingUnitType" table="test_BuildingUnit" objectClassId="20000" topLevel="true" path="_AbstractBuildingUnit" schema="TestADE">
+        <featureType abstract="true" id="_AbstractBuildingUnitType" table="test_BuildingUnit" objectClassId="20000" path="_AbstractBuildingUnit" schema="TestADE">
             <extension base="AbstractCityObjectType">
                 <join table="cityobject" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>
@@ -63,10 +62,11 @@
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="TestADE">
                 <join table="test_BuildingUnit" fromColumn="ID" toColumn="BuildingUnit_Parent_ID" toRole="child">
                     <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                    <treeHierarchy rootColumn="buildingunit_root_id"/>
                 </join>
             </featureProperty>
         </featureType>
-        <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" topLevel="true" path="Facilities" schema="TestADE">
+        <featureType abstract="true" id="FacilitiesType" table="test_Facilities" objectClassId="20001" path="Facilities" schema="TestADE">
             <extension base="AbstractFeatureType">
                 <join table="cityobject" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>
@@ -75,13 +75,13 @@
                 <attribute column="totalValue" type="double" path="." schema="TestADE"/>
             </complexAttribute>
         </featureType>
-        <featureType id="BuildingUnitPartType" table="test_BuildingUnit" objectClassId="20002" topLevel="true" path="BuildingUnitPart" schema="TestADE">
+        <featureType id="BuildingUnitPartType" table="test_BuildingUnit" objectClassId="20002" path="BuildingUnitPart" schema="TestADE">
             <extension base="_AbstractBuildingUnitType"/>
         </featureType>
-        <featureType id="BuildingUnitType" table="test_BuildingUnit" objectClassId="20003" topLevel="true" path="BuildingUnit" schema="TestADE">
+        <featureType id="BuildingUnitType" table="test_BuildingUnit" objectClassId="20003" path="BuildingUnit" schema="TestADE">
             <extension base="_AbstractBuildingUnitType"/>
         </featureType>
-        <featureType id="DHWFacilitiesType" table="test_Facilities" objectClassId="20004" topLevel="true" path="DHWFacilities" schema="TestADE">
+        <featureType id="DHWFacilitiesType" table="test_Facilities" objectClassId="20004" path="DHWFacilities" schema="TestADE">
             <extension base="FacilitiesType"/>
         </featureType>
         <featureType id="IndustrialBuildingType" table="test_IndustrialBuilding" objectClassId="20005" topLevel="true" path="IndustrialBuilding" schema="TestADE">
@@ -90,19 +90,19 @@
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="IndustrialBuildingPartType" table="test_IndustrialBuildingPa" objectClassId="20006" topLevel="true" path="IndustrialBuildingPart" schema="TestADE">
+        <featureType id="IndustrialBuildingPartType" table="test_IndustrialBuildingPa" objectClassId="20006" path="IndustrialBuildingPart" schema="TestADE">
             <extension base="BuildingPartType">
                 <join table="building" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="IndustrialBuildingRoofSurfaceType" table="test_IndustrialBuildingRo" objectClassId="20007" topLevel="true" path="IndustrialBuildingRoofSurface" schema="TestADE">
+        <featureType id="IndustrialBuildingRoofSurfaceType" table="test_IndustrialBuildingRo" objectClassId="20007" path="IndustrialBuildingRoofSurface" schema="TestADE">
             <extension base="RoofSurfaceType">
                 <join table="thematic_surface" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>
             <attribute column="remark" type="string" path="remark" schema="TestADE"/>
         </featureType>
-        <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20008" topLevel="true" path="LightingFacilities" schema="TestADE">
+        <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20008" path="LightingFacilities" schema="TestADE">
             <extension base="FacilitiesType"/>
         </featureType>
         <featureType id="OtherConstructionType" table="test_OtherConstruction" objectClassId="20009" topLevel="true" path="OtherConstruction" schema="TestADE">
