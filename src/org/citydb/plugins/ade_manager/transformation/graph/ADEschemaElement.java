@@ -48,6 +48,16 @@ public class ADEschemaElement extends ElementDecl {
 		return false;
 	}
 	
+	public boolean isImplicitGeometryProperty() {
+		XSType xsType = element.getType();
+		String namespace = xsType.getTargetNamespace();
+		String typeName = xsType.getName();
+		if (typeName.equalsIgnoreCase("ImplicitRepresentationPropertyType") && (namespace.equalsIgnoreCase("http://www.opengis.net/citygml/1.0") || namespace.equalsIgnoreCase("http://www.opengis.net/citygml/2.0"))) {
+			return true;
+		} 
+		return false;
+	}
+	
 	public boolean isFeatureOrObjectOrComplexDataProperty() {
 		XSType xsType = element.getType();
 		String localNamespace = xsType.getTargetNamespace();

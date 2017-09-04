@@ -59,7 +59,7 @@ public class GraphTransformationManager {
 			xmlh.enrichObject(this.edGraphGrammar);			
 		}
 		
-		GraphCreator aggGraphCreator = new GraphCreator(schema, schemaHandler, edGraphGrammar.getBasisGraGra());
+		GraphCreator aggGraphCreator = new GraphCreator(schema, schemaHandler, edGraphGrammar.getBasisGraGra(), config);
 		aggGraphCreator.createGraph();	
 	}
 	

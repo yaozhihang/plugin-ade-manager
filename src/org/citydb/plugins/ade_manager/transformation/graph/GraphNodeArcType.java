@@ -15,6 +15,7 @@ public interface GraphNodeArcType {
     String BrepGeometryProperty = "BrepGeometryProperty";
     String PointOrLineGeometryProperty = "PointOrLineGeometryProperty";
     String HybridGeometryProperty = "HybridGeometryProperty";
+    String ImplicitGeometryProperty = "ImplicitGeometryProperty";
     
     String DatabaseObject = "DatabaseObject";
     String Table = "Table";

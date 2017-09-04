@@ -250,6 +250,14 @@ public class DBScriptGenerator {
 		surfaceGeometryTable.addColumn(pkColumn);
 		surfaceGeometryTable.setName("SURFACE_GEOMETRY");
 		database.addTable(surfaceGeometryTable);
+		
+		Table implicitGeometryTable = new Table();
+		pkColumn = new Column();
+		pkColumn.setName("ID");
+		pkColumn.setTypeCode(Types.NUMERIC);
+		implicitGeometryTable.addColumn(pkColumn);
+		implicitGeometryTable.setName("IMPLICIT_GEOMETRY");
+		database.addTable(implicitGeometryTable);
 	}
 	
 	private void printComment(String text, Platform platform, PrintWriter writer) throws IOException
@@ -407,7 +415,7 @@ public class DBScriptGenerator {
 	}
 	
 	private boolean isMappedFromforeignClass(String tableName) {
-		if (tableName.equalsIgnoreCase("Objectclass") || tableName.equalsIgnoreCase("surface_geometry"))
+		if (tableName.equalsIgnoreCase("Objectclass") || tableName.equalsIgnoreCase("surface_geometry") || tableName.equalsIgnoreCase("implicit_geometry"))
 			return true;
 		
 		Node tableNode = this.getTableNodeByName(tableName);

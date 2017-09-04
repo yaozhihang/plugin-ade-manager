@@ -104,7 +104,7 @@ public class ADEschemaHelper {
 	public static final  Map<String, ComplexAttributeType> ComplexAttributeTypes = new HashMap<String, ComplexAttributeType>() {
 		{
 			put("CodeType", new ComplexAttributeType("CodeType",
-					new ArrayList<SimpleAttribute>(Arrays.asList(new SimpleAttribute("uom", "string", true, "http://www.opengis.net/gml"), new SimpleAttribute("", "string", false, "http://www.opengis.net/gml")))));
+					new ArrayList<SimpleAttribute>(Arrays.asList(new SimpleAttribute("codespace", "string", true, "http://www.opengis.net/gml"), new SimpleAttribute("", "string", false, "http://www.opengis.net/gml")))));
 			
 			put("VectorType", new ComplexAttributeType("VectorType",
 					new ArrayList<SimpleAttribute>(Arrays.asList(new SimpleAttribute("uom", "string", true, "http://www.opengis.net/gml"), new SimpleAttribute("", "double", false, "http://www.opengis.net/gml")))));
@@ -296,6 +296,8 @@ public class ADEschemaHelper {
 			put(new QName("http://www.opengis.net/citygml/2.0", "AbstractCityObjectType"), "cityobject");
 			put(new QName("http://www.opengis.net/citygml/1.0", "AbstractSiteType"), "cityobject");
 			put(new QName("http://www.opengis.net/citygml/2.0", "AbstractSiteType"), "cityobject");
+			put(new QName("http://www.opengis.net/citygml/1.0", "ImplicitGeometryType"), "implicit_geometry");
+			put(new QName("http://www.opengis.net/citygml/2.0", "ImplicitGeometryType"), "implicit_geometry");
 			put(new QName("http://www.opengis.net/citygml/building/1.0", "AbstractBuildingType"), "building");
 			put(new QName("http://www.opengis.net/citygml/building/2.0", "AbstractBuildingType"), "building");
 			put(new QName("http://www.opengis.net/citygml/building/1.0", "BuildingPartType"), "building");

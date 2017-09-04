@@ -25,6 +25,7 @@ import org.citydb.database.schema.mapping.FeatureType;
 import org.citydb.database.schema.mapping.FeatureTypeExtension;
 import org.citydb.database.schema.mapping.GeometryProperty;
 import org.citydb.database.schema.mapping.GeometryType;
+import org.citydb.database.schema.mapping.ImplicitGeometryProperty;
 import org.citydb.database.schema.mapping.InjectedComplexAttribute;
 import org.citydb.database.schema.mapping.InjectedComplexProperty;
 import org.citydb.database.schema.mapping.InjectedFeatureProperty;
@@ -248,6 +249,10 @@ public class SchemaMappingCreator {
 					|| targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.PointOrLineGeometryProperty) 
 						|| targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.HybridGeometryProperty)) {
 				this.generateGeometryProperty(featureOrObjectOrComplexType, targetNode, appSchema);
+			}
+			// process geometry property
+			if (targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ImplicitGeometryProperty)) {
+				this.generateImplicitGeometryProperty(featureOrObjectOrComplexType, targetNode, appSchema);
 			}
 		}		
 	}
@@ -578,6 +583,13 @@ public class SchemaMappingCreator {
 		}		
 		
 		localType.addProperty(geometryProperty);
+	}
+	
+	private void generateImplicitGeometryProperty(AbstractType<?> localType, Node geometryPropertyNode, AppSchema appSchema) {		
+		String propertyPath = (String) geometryPropertyNode.getAttribute().getValueAt("path");
+		int lod = Integer.valueOf(propertyPath.replaceAll("[^0-9]", "")); 
+		ImplicitGeometryProperty implicitGeometryProperty = new ImplicitGeometryProperty(propertyPath, lod, appSchema);		
+		localType.addProperty(implicitGeometryProperty);
 	}
 	
 	private void processTopLevelFeatures(SchemaMapping schemaMapping) {

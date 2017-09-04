@@ -1,5 +1,7 @@
 package org.citydb.plugins.ade_manager.transformation.graph;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -7,14 +9,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.citydb.database.schema.mapping.GeometryType;
 import org.citydb.database.schema.mapping.SimpleType;
+import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper.ComplexAttributeType;
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper.SimpleAttribute;
 import org.citygml4j.xml.schema.Schema;
 import org.citygml4j.xml.schema.SchemaHandler;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.sun.xml.xsom.XSAnnotation;
 import com.sun.xml.xsom.XSElementDecl;
@@ -39,16 +48,18 @@ public class GraphCreator {
 	private Schema schema;
 	private Map<String, Node> globalClassNodes;
 	private Node hostSchemaNode;
-
-	public GraphCreator(Schema schema, SchemaHandler schemaHandler, GraGra graphGrammar){
+	private ConfigImpl config;
+	
+	public GraphCreator(Schema schema, SchemaHandler schemaHandler, GraGra graphGrammar, ConfigImpl config){
 		this.schemaHandler = schemaHandler;			
 		this.schema = schema;
 		this.graphGrammar = graphGrammar;	
+		this.config = config;
 	}
 	
 	public void createGraph() {
 		// Create HostSchema Node		
-		String xmlns = this.getSchemaXmlns();
+		String xmlns = config.getAdeDbPrefix();
 		String namespaceUri = this.schema.getNamespaceURI();
 		this.hostSchemaNode = this.createNode(GraphNodeArcType.Schema);
 		AttrInstance attrInstance = hostSchemaNode.getAttribute();
@@ -192,53 +203,44 @@ public class GraphCreator {
 			String primitiveDataType = ADEschemaHelper.SimpleAttributeTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
 			propertyNode = this.createSimpleAttributeNode(propertyNodeType, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, primitiveDataType);
 		} 		
-        else {
-        	if (propertyDecl.isBrepGeometryProperty()) {    
-        		String geometryType = ADEschemaHelper.BrepGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-            	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.BrepGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-        	}
-            else if (propertyDecl.isPointOrLineGeometryProperty()) {    	                		
-            	String geometryType = ADEschemaHelper.PointOrLineGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-            	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.PointOrLineGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-        	}
-            else if (propertyDecl.isHybridGeometryProperty()) {    	                			 
-            	String geometryType = ADEschemaHelper.HybridGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-            	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.HybridGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-        	}
-            else if (propertyDecl.isGMLreferenceProperty() || propertyDecl.isFeatureOrObjectProperty() || propertyDecl.isCityGMLnonPorperty() || propertyDecl.isComplexDataProperty() || propertyDecl.isUnionProperty()) {
-            	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-            }
-            else if (propertyDecl.isComplexAttribute()) {
-    			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-    		}
-            else {
-    			propertyNode = this.createPropertyNode(GraphNodeArcType.GenericAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-    		}		
-        }
-        	
-        if (propertyNode != null) {
-        	this.processPropertyNode(propertyNode, propertyDecl);
-        	this.createArc(GraphNodeArcType.Contains, parentNode, propertyNode);  
-        }        	      
-	}
-	
-	private void processPropertyNode (Node propertyNode, ADEschemaElement propertyDecl) {
-		if (propertyDecl.isCityGMLnonPorperty()) {
+		else if (propertyDecl.isImplicitGeometryProperty()) {
+			System.out.println(propertyDecl.getLocalName());
+			propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.ImplicitGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, GeometryType.ABSTRACT_GEOMETRY.value());
+		}
+    	else if (propertyDecl.isBrepGeometryProperty()) {    
+    		String geometryType = ADEschemaHelper.BrepGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.BrepGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+    	}
+        else if (propertyDecl.isPointOrLineGeometryProperty()) {    	                		
+        	String geometryType = ADEschemaHelper.PointOrLineGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.PointOrLineGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+    	}
+        else if (propertyDecl.isHybridGeometryProperty()) {    	                			 
+        	String geometryType = ADEschemaHelper.HybridGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.HybridGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+    	}
+        else if (propertyDecl.isCityGMLnonPorperty()) {
+        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
 			this.processCityGMLnonPropertyNode(propertyNode, propertyDecl);
 		}
 		else if (propertyDecl.isGMLreferenceProperty()) {
+			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
 			this.processGMLreferencePropertyNode(propertyNode, propertyDecl);
         }
-        else if (propertyDecl.isFeatureOrObjectProperty() || propertyDecl.isUnionProperty() || propertyDecl.isComplexDataProperty()) {    	                		
+        else if (propertyDecl.isFeatureOrObjectProperty() || propertyDecl.isUnionProperty() || propertyDecl.isComplexDataProperty()) {
+        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
         	this.processComplexTypePropertyNode(propertyNode, propertyDecl);                 		
     	} 
         else if (propertyDecl.isComplexAttribute()) {
+        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
         	this.processComplexAttributeNode(propertyNode, propertyDecl);
         }
-        
-		if (propertyNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.GenericAttribute)) {
-			System.out.println("Not supported Porperty element: \"" + propertyDecl.getLocalName() + "\"; Type name: \"" + propertyDecl.getXSElementDecl().getType().getName() + "\"");
-		}		
+        else {
+        	System.out.println("Not supported Porperty element: \"" + propertyDecl.getLocalName() + "\"; Type name: \"" + propertyDecl.getXSElementDecl().getType().getName() + "\"");
+        	propertyNode = this.createPropertyNode(GraphNodeArcType.GenericAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
+        }
+                	
+		this.createArc(GraphNodeArcType.Contains, parentNode, propertyNode);        	      
 	}
 	
 	private Node getOrCreateADEHookClass (String className, ADEschemaElement parentDecl) {	
@@ -565,13 +567,6 @@ public class GraphCreator {
     		ex.printStackTrace();
     	}		
 		return arc;
-	}
-	
-	private String getSchemaXmlns() {
-		String namespaceUri = this.schema.getNamespaceURI();
-		String[] stringArray = namespaceUri.split("/");
-		String xmlns = stringArray[stringArray.length - 2];
-		return xmlns;
 	}
 	
 }
