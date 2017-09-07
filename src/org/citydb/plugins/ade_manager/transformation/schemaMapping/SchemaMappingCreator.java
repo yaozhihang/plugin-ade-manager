@@ -101,17 +101,17 @@ public class SchemaMappingCreator {
 		Node schemaNode = this.getSchemaNode();
 		
 		AttrInstance attrInstance = schemaNode.getAttribute();
-		String xmlns = (String) attrInstance.getValueAt("xmlns");
+		String dbPrefix = config.getAdeDbPrefix();
 		String namespaceUri = (String) attrInstance.getValueAt("namespaceUri");
 		
 /*		Namespace namespace1 = new Namespace(xmlns, CityGMLContext.CITYGML_1_0);
 		namespace1.setURI(namespaceUri);*/
-		Namespace namespace2 = new Namespace(xmlns, CityGMLContext.CITYGML_2_0);
-		namespace2.setURI(namespaceUri);
+		Namespace namespace2 = new Namespace(namespaceUri, CityGMLContext.CITYGML_2_0);
 
-		AppSchema appSchema = new AppSchema(xmlns, adeSchemaMapping);
+		AppSchema appSchema = new AppSchema(dbPrefix, adeSchemaMapping);
 //		appSchema.addNamespace(namespace1);
-		appSchema.addNamespace(namespace2);
+		appSchema.setId(appSchema.getXMLPrefix());
+		appSchema.addNamespace(namespace2);		
 		appSchema.setIsADERoot(true);
 		
 		return appSchema;

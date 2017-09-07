@@ -50,17 +50,14 @@ public class GraphCreator {
 	
 	public void createGraph() {
 		// Create HostSchema Node		
-		String xmlns = config.getAdeDbPrefix();
 		String namespaceUri = this.schema.getNamespaceURI();
 		this.hostSchemaNode = this.createNode(GraphNodeArcType.Schema);
 		AttrInstance attrInstance = hostSchemaNode.getAttribute();
 		ValueTuple valueTuple = (ValueTuple) attrInstance;		
 		ValueMember attr = (ValueMember) valueTuple.getValueMemberAt("name");
-		attr.setExprAsObject(xmlns);
+		attr.setExprAsObject(config.getAdeName());
 		attr = (ValueMember) valueTuple.getValueMemberAt("namespaceUri");		
 		attr.setExprAsObject(namespaceUri);
-		attr = (ValueMember) valueTuple.getValueMemberAt("xmlns");
-		attr.setExprAsObject(xmlns);
 		
 		// Create class Nodes and put them into a internal map
 		globalClassNodes = new HashMap<String, Node>();
