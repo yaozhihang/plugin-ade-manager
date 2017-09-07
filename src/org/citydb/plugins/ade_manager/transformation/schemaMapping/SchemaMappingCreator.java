@@ -601,22 +601,25 @@ public class SchemaMappingCreator {
 		Iterator<FeatureType> iter = featureTypes.iterator();
 		while (iter.hasNext()) {
 			FeatureType featureType = iter.next();
+		
 			if (isTopLevel(featureType))
 				featureType.setTopLevel(true);
 		}
 	}
 	
 	private boolean isTopLevel(FeatureType featureType) {
-		FeatureTypeExtension extension = (FeatureTypeExtension) featureType.getExtension();
-		if (extension != null) {			
+		FeatureType tempFeatureType = featureType;
+		while (tempFeatureType.getExtension() != null) {
+			FeatureTypeExtension extension = (FeatureTypeExtension) tempFeatureType.getExtension();
 			FeatureType superClass = extension.getBase();
-			if (superClass.isTopLevel())
+			if (superClass.isTopLevel()) {
 				return true;
-			else
-				return isTopLevel(superClass);			
+			}
+			else {
+				tempFeatureType = superClass;
+			}
 		}
-		else
-			return false;
+		return false;
 	}
 	
 }
