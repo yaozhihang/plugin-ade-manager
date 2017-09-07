@@ -250,7 +250,8 @@
     <xs:complexContent>
       <xs:extension base="abstractJoin">
         <xs:sequence>
-          <xs:element name="join" type="join" maxOccurs="unbounded"/>
+          <xs:element name="join" type="join"/>
+          <xs:element name="inverseJoin" type="join"/>
         </xs:sequence>
         <xs:attribute name="table" type="xs:string" use="required"/>
       </xs:extension>

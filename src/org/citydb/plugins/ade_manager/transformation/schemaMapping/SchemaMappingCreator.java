@@ -103,13 +103,13 @@ public class SchemaMappingCreator {
 		String xmlns = (String) attrInstance.getValueAt("xmlns");
 		String namespaceUri = (String) attrInstance.getValueAt("namespaceUri");
 		
-		Namespace namespace1 = new Namespace(xmlns, CityGMLContext.CITYGML_1_0);
-		namespace1.setURI(namespaceUri);
+/*		Namespace namespace1 = new Namespace(xmlns, CityGMLContext.CITYGML_1_0);
+		namespace1.setURI(namespaceUri);*/
 		Namespace namespace2 = new Namespace(xmlns, CityGMLContext.CITYGML_2_0);
 		namespace2.setURI(namespaceUri);
 
 		AppSchema appSchema = new AppSchema(xmlns, adeSchemaMapping);
-		appSchema.addNamespace(namespace1);
+//		appSchema.addNamespace(namespace1);
 		appSchema.addNamespace(namespace2);
 		appSchema.setIsADERoot(true);
 		
@@ -449,9 +449,9 @@ public class SchemaMappingCreator {
 			Node targetNode = (Node) arc.getTarget();
 			if (targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexType)) {				
 				AbstractType<?> targetType = this.getOrCreateFeatureOrObjectOrComplexType(targetNode, schemaMapping, appSchema);
-				
+			
 				String propertyPath = (String) featureOrObjectOrComplexTypePropertyNode.getAttribute().getValueAt("path");
-				
+								
 				if (targetType instanceof FeatureType) {
 					property = new FeatureProperty(propertyPath, (FeatureType) targetType, appSchema);					
 				}
@@ -477,13 +477,13 @@ public class SchemaMappingCreator {
 			}
 			
 			if (targetNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.JoinTable)) {
-				JoinTable propertyJoinTable = this.createJoinTable(targetNode);
+				JoinTable propertyJoinTable = this.createJoinTable(targetNode, localType.getTable());
 				property.setJoin(propertyJoinTable);
 			}
 		}		
 	}
 	
-	private JoinTable createJoinTable(Node joinTableNode) {
+	private JoinTable createJoinTable(Node joinTableNode, String parentTableName) {
 		String tableName = (String)joinTableNode.getAttribute().getValueAt("name");
 		JoinTable joinTable = new JoinTable(tableName);
 
@@ -498,7 +498,10 @@ public class SchemaMappingCreator {
 					Node joinNode = (Node) arc2.getSource();
 					if (joinNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.Join)) {
 						Join join = this.createJoin(tableName, joinNode);
-						joinTable.addJoin(join);
+						if (join.getTable().equalsIgnoreCase(parentTableName))
+							joinTable.setJoin(join);
+						else
+							joinTable.setInverseJoin(join);
 					}					
 				}				
 			}

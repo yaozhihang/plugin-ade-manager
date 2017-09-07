@@ -146,6 +146,7 @@
         <attribute path="." column="name" type="string" schema="gml"/>
         <attribute path="@codeSpace" column="name_codespace" type="string" schema="gml"/>
       </complexAttribute>
+      <attribute path="id" column="id" type="integer" queryable="false" schema="citydb"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
     </objectType>
   </objectTypes>
@@ -160,6 +161,7 @@
         <attribute path="@codeSpace" column="name_codespace" type="string" schema="gml"/>
       </complexAttribute>
       <geometryProperty path="boundedBy" inlineColumn="envelope" type="Envelope" schema="gml"/>
+      <attribute path="id" column="id" type="integer" queryable="false" schema="citydb"/>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
       <attribute path="lastModificationDate" column="last_modification_date" type="timestamp" schema="citydb"/>
       <attribute path="updatingPerson" column="updating_person" type="string" schema="citydb"/>
@@ -183,9 +185,9 @@
       <featureProperty path="generalizesTo" target="AbstractCityObjectType" schema="core">
         <joinTable table="generalization">
           <join table="cityobject" fromColumn="cityobject_id" toColumn="id" toRole="parent"/>
-          <join table="${target.table}" fromColumn="generalizes_to_id" toColumn="id" toRole="parent">
+          <inverseJoin table="${target.table}" fromColumn="generalizes_to_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="relativeToTerrain" column="relative_to_terrain" type="string" schema="core"/>
@@ -326,7 +328,7 @@
       <featureProperty path="address" target="AddressType" schema="bldg">
         <joinTable table="address_to_building">
           <join table="building" fromColumn="building_id" toColumn="id" toRole="parent"/>
-          <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
+          <inverseJoin table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -353,9 +355,9 @@
       <featureProperty path="opening" target="AbstractOpeningType" schema="bldg">
         <joinTable table="opening_to_them_surface">
           <join table="thematic_surface" fromColumn="thematic_surface_id" toColumn="id" toRole="parent"/>
-          <join table="opening" fromColumn="opening_id" toColumn="id" toRole="parent">
+          <inverseJoin table="opening" fromColumn="opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -663,9 +665,9 @@
       <featureProperty path="groupMember" target="AbstractCityObjectType" schema="grp">
         <joinTable table="group_to_cityobject">
           <join table="cityobjectgroup" fromColumn="cityobjectgroup_id" toColumn="id" toRole="parent"/>
-          <join table="${target.table}" fromColumn="cityobject_id" toColumn="id" toRole="parent">
+          <inverseJoin table="${target.table}" fromColumn="cityobject_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <featureProperty path="parent" target="AbstractCityObjectType" schema="grp">
@@ -687,9 +689,9 @@
       <featureProperty path="reliefComponent" target="AbstractReliefComponentType" schema="dem">
         <joinTable table="relief_feat_to_rel_comp">
           <join table="relief_feature" fromColumn="relief_feature_id" toColumn="id" toRole="parent"/>
-          <join table="${target.table}" fromColumn="relief_component_id" toColumn="id" toRole="parent">
+          <inverseJoin table="${target.table}" fromColumn="relief_component_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -771,9 +773,9 @@
       <featureProperty path="boundedBy" target="AbstractWaterBoundarySurfaceType" schema="wtr">
         <joinTable table="waterbod_to_waterbnd_srf">
           <join table="waterbody" fromColumn="waterbody_id" toColumn="id" toRole="parent"/>
-          <join table="waterboundary_surface" fromColumn="waterboundary_surface_id" toColumn="id" toRole="parent">
+          <inverseJoin table="waterboundary_surface" fromColumn="waterboundary_surface_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1076,7 +1078,7 @@
       <featureProperty path="address" target="AddressType" schema="brid">
         <joinTable table="address_to_bridge">
           <join table="bridge" fromColumn="bridge_id" toColumn="id" toRole="parent"/>
-          <join table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
+          <inverseJoin table="address" fromColumn="address_id" toColumn="id" toRole="parent"/>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1103,9 +1105,9 @@
       <featureProperty path="opening" target="AbstractBridgeOpeningType" schema="brid">
         <joinTable table="bridge_open_to_them_srf">
           <join table="bridge_thematic_surface" fromColumn="bridge_thematic_surface_id" toColumn="id" toRole="parent"/>
-          <join table="bridge_opening" fromColumn="bridge_opening_id" toColumn="id" toRole="parent">
+          <inverseJoin table="bridge_opening" fromColumn="bridge_opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1296,7 +1298,7 @@
       <geometryProperty path="lod4Solid" lod="4" refColumn="lod4_solid_id" type="AbstractSolid" schema="brid"/>
       <geometryProperty path="lod4MultiSurface" lod="4" refColumn="lod4_multi_surface_id" type="MultiSurface" schema="brid"/>
       <featureProperty path="boundedBy" target="AbstractBridgeBoundarySurfaceType" schema="brid">
-        <join table="bridge_thematic_surface" fromColumn="id" toColumn="room_id" toRole="child">
+        <join table="bridge_thematic_surface" fromColumn="id" toColumn="bridge_room_id" toRole="child">
           <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
         </join>
       </featureProperty>
@@ -1420,9 +1422,9 @@
       <featureProperty path="opening" target="AbstractTunnelOpeningType" schema="tun">
         <joinTable table="tunnel_open_to_them_srf">
           <join table="tunnel_thematic_surface" fromColumn="tunnel_thematic_surface_id" toColumn="id" toRole="parent"/>
-          <join table="tunnel_opening" fromColumn="tunnel_opening_id" toColumn="id" toRole="parent">
+          <inverseJoin table="tunnel_opening" fromColumn="tunnel_opening_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <attribute path="objectclass_id" column="objectclass_id" type="integer" queryable="false" schema="citydb"/>
@@ -1625,9 +1627,9 @@
       <featureProperty path="surfaceDataMember" target="AbstractSurfaceDataType" schema="app">
         <joinTable table="appear_to_surface_data">
           <join table="appearance" fromColumn="appearance_id" toColumn="id" toRole="parent"/>
-          <join table="surface_data" fromColumn="surface_data_id" toColumn="id" toRole="parent">
+          <inverseJoin table="surface_data" fromColumn="surface_data_id" toColumn="id" toRole="parent">
             <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
-          </join>
+          </inverseJoin>
         </joinTable>
       </featureProperty>
       <adeHook name="_GenericApplicationPropertyOfAppearance"/>

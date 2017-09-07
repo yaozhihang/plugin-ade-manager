@@ -1,7 +1,5 @@
 package org.citydb.plugins.ade_manager.transformation.graph;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,9 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.citydb.database.schema.mapping.GeometryType;
 import org.citydb.database.schema.mapping.SimpleType;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
@@ -19,12 +14,8 @@ import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper.Compl
 import org.citydb.plugins.ade_manager.transformation.graph.ADEschemaHelper.SimpleAttribute;
 import org.citygml4j.xml.schema.Schema;
 import org.citygml4j.xml.schema.SchemaHandler;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
 import com.sun.xml.xsom.XSAnnotation;
 import com.sun.xml.xsom.XSElementDecl;
 import com.sun.xml.xsom.XSModelGroup;
