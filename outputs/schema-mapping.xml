@@ -62,6 +62,7 @@
             <featureProperty target="BuildingUnitPartType" path="consistsOf" schema="test">
                 <join table="test_BuildingUnit" fromColumn="ID" toColumn="BuildingUnit_Parent_ID" toRole="child">
                     <condition column="objectclass_id" value="${target.objectclass_id}" type="integer"/>
+                    <treeHierarchy rootColumn="BuildingUnit_Root_ID"/>
                 </join>
             </featureProperty>
         </featureType>

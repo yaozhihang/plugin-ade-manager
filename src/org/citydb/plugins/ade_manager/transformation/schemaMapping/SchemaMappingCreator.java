@@ -45,6 +45,7 @@ import org.citydb.database.schema.mapping.SchemaMappingException;
 import org.citydb.database.schema.mapping.SimpleAttribute;
 import org.citydb.database.schema.mapping.SimpleType;
 import org.citydb.database.schema.mapping.TableRole;
+import org.citydb.database.schema.mapping.TreeHierarchy;
 import org.citydb.database.schema.util.SchemaMappingUtil;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphNodeArcType;
@@ -379,6 +380,7 @@ public class SchemaMappingCreator {
 		String pkTableName = null;
 		Node fkTableNode = null;
 		Node pkTableNode = null;
+		TreeHierarchy treeHierarchy = null;
 
 		while (iter.hasNext()) {
 			Arc arc = iter.next();
@@ -393,6 +395,12 @@ public class SchemaMappingCreator {
 				pkColumnName = (String)joinToColumnNode.getAttribute().getValueAt("name");
 				pkTableNode = (Node)joinToColumnNode.getOutgoingArcs().next().getTarget();				
 				pkTableName= (String)pkTableNode.getAttribute().getValueAt("name");
+			}
+			else if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.TreeHierarchy)) {
+				Node rootJoinNode = (Node) arc.getTarget();
+				Join rootJoin = createJoin(localTableName, rootJoinNode);
+				String rootColumnName = rootJoin.getFromColumn();
+				treeHierarchy = new TreeHierarchy(rootColumnName);
 			}
 		}
 
@@ -435,6 +443,10 @@ public class SchemaMappingCreator {
 			}
 		}	
 
+		// add treeHierarchy
+		if (treeHierarchy != null)
+			join.setTreeHierarchy(treeHierarchy);
+		
 		return join;
 	}
 

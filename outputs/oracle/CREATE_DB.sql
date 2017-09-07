@@ -24,6 +24,12 @@ CREATE TABLE test_BuildingUnit
     lod2MultiCurve MDSYS.SDO_GEOMETRY,
     lod3MultiCurve MDSYS.SDO_GEOMETRY,
     lod4MultiCurve MDSYS.SDO_GEOMETRY,
+    class_codespace VARCHAR2(254),
+    class VARCHAR2(254),
+    usage_codespace VARCHAR2(254),
+    usage VARCHAR2(254),
+    function_codespace VARCHAR2(254),
+    function VARCHAR2(254),
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -32,12 +38,6 @@ CREATE TABLE test_BuildingUnit
     lod2Solid_ID INTEGER,
     lod3Solid_ID INTEGER,
     lod4Solid_ID INTEGER,
-    class_codespace VARCHAR2(254),
-    class VARCHAR2(254),
-    usage_codespace VARCHAR2(254),
-    usage VARCHAR2(254),
-    function_codespace VARCHAR2(254),
-    function VARCHAR2(254),
     PRIMARY KEY (ID)
 );
 
@@ -121,8 +121,8 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    ownerName VARCHAR2(254),
     EnergyPerfor_certificatio VARCHAR2(254),
+    ownerName VARCHAR2(254),
     EnergyPerfo_certificati_1 VARCHAR2(254),
     floorArea_uom VARCHAR2(254),
     floorArea NUMBER,

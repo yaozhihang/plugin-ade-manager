@@ -46,4 +46,5 @@ public interface GraphNodeArcType {
     String JoinFrom = "joinFrom";
     String JoinTo = "joinTo";
     String ReverseProperty = "reverseProperty";
+    String TreeHierarchy = "treeHierarchy";
 }

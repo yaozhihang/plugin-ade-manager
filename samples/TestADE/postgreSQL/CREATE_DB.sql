@@ -24,11 +24,11 @@ CREATE TABLE test_BuildingUnit
     lod2MultiCurve geometry(GEOMETRYZ),
     lod3MultiCurve geometry(GEOMETRYZ),
     lod4MultiCurve geometry(GEOMETRYZ),
-    class_uom VARCHAR(254),
+    class_codespace VARCHAR(254),
     class VARCHAR(254),
-    usage_uom VARCHAR(254),
+    usage_codespace VARCHAR(254),
     usage VARCHAR(254),
-    function_uom VARCHAR(254),
+    function_codespace VARCHAR(254),
     function VARCHAR(254),
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
@@ -121,11 +121,11 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
+    EnergyPerfor_certificatio VARCHAR(254),
     ownerName VARCHAR(254),
+    EnergyPerfo_certificati_1 VARCHAR(254),
     floorArea_uom VARCHAR(254),
     floorArea NUMERIC,
-    EnergyPerfor_certificatio VARCHAR(254),
-    EnergyPerfo_certificati_1 VARCHAR(254),
     PRIMARY KEY (ID)
 );
 
