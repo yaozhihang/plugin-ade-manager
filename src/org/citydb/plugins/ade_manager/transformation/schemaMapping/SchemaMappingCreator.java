@@ -110,7 +110,7 @@ public class SchemaMappingCreator {
 
 		AppSchema appSchema = new AppSchema(dbPrefix, adeSchemaMapping);
 //		appSchema.addNamespace(namespace1);
-		appSchema.setId(appSchema.getXMLPrefix());
+//		appSchema.setId(appSchema.getXMLPrefix());
 		appSchema.addNamespace(namespace2);		
 		appSchema.setIsADERoot(true);
 		
