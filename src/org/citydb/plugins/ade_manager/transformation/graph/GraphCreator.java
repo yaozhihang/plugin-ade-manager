@@ -240,7 +240,7 @@ public class GraphCreator {
 		boolean isForeign = false;
 		String derivedFrom = "HookClass";
 
-		Node classNode = this.createComplexTypeNode(className, isForeign, className, namespaceUri, isAbstract, derivedFrom);	
+		Node classNode = this.createComplexTypeNode(className, isForeign, className, namespaceUri, isAbstract, derivedFrom, false);	
 		
 		globalClassNodes.put(className, classNode);
 		
@@ -257,12 +257,32 @@ public class GraphCreator {
 		String namespaceUri = decl.getNamespaceURI();
 		boolean isAbstract = decl.isAbstract();	
 		boolean isForeign = !schema.getNamespaceURI().equalsIgnoreCase(namespaceUri);
+		boolean topLevel = false;
+		
+		// read the tagged value of "topLevel" from XML annotation
+		XSAnnotation annotation = decl.getXSElementDecl().getAnnotation();
+		if (annotation != null) {
+			Element annotationElement = (Element) annotation.getAnnotation();       	
+	    	if (annotationElement != null) {   		
+	    		NodeList appinfoNodeList =  annotationElement.getElementsByTagName("appinfo").item(0).getChildNodes();
+	    		for (int i = 0; i < appinfoNodeList.getLength(); i++) {
+	    			org.w3c.dom.Node taggedValueNode = appinfoNodeList.item(0).getNextSibling();
+	    			String taggedValueName = taggedValueNode.getAttributes().getNamedItem("tag").getNodeValue();
+	    			if (taggedValueName.equalsIgnoreCase("topLevel")) {
+	    				String topLevelStr = taggedValueNode.getFirstChild().getNodeValue();
+	    				if (topLevelStr.equalsIgnoreCase("true")) {
+	    	    			topLevel = true;
+	    	    		}
+	    			}
+	    		}
+	    	}
+		}
 
 		Node classNode = null;
 
 		if (decl.isComplexDataType() || decl.isCityObject() || decl.isFeature() || decl.isAbstractGML() || decl.isUnion()) {	
 			String derivedFrom = this.getDerivedFromClassName(decl);		
-			classNode = this.createComplexTypeNode(path, isForeign, className, namespaceUri, isAbstract, derivedFrom);							
+			classNode = this.createComplexTypeNode(path, isForeign, className, namespaceUri, isAbstract, derivedFrom, topLevel);							
 		}
 		else {
 			System.out.println("Error --> Unsupported/Unknown Class Type: " + decl.getXSElementDecl().getType().getName());
@@ -296,7 +316,7 @@ public class GraphCreator {
 		if (globalClassNodes.containsKey(className))
 			return globalClassNodes.get(className);	
 	
-		Node classNode = this.createComplexTypeNode(path, isForeign, className, namespaceUri, isAbstract, derivedFrom);		
+		Node classNode = this.createComplexTypeNode(path, isForeign, className, namespaceUri, isAbstract, derivedFrom, false);		
 		globalClassNodes.put(className, classNode);
 		
 		return classNode;
@@ -328,7 +348,7 @@ public class GraphCreator {
 		return classNode;
 	}
 	
-	private Node createComplexTypeNode (String path, boolean isForeign, String name, String namespace, boolean isAbstract, String derivedFrom) {
+	private Node createComplexTypeNode (String path, boolean isForeign, String name, String namespace, boolean isAbstract, String derivedFrom, boolean topLevel) {
 		Node node = this.createElementTypeNode(GraphNodeArcType.ComplexType, path, isForeign, name, namespace);
 		AttrInstance attrInstance = node.getAttribute();
 		ValueTuple valueTuple = (ValueTuple) attrInstance;
@@ -336,6 +356,8 @@ public class GraphCreator {
 		attr.setExprAsObject(derivedFrom);
 		attr = (ValueMember) valueTuple.getValueMemberAt("isAbstract");
 		attr.setExprAsObject(isAbstract);
+		attr = (ValueMember) valueTuple.getValueMemberAt("topLevel");
+		attr.setExprAsObject(topLevel);
 		return node;
 	}
 	

@@ -18,18 +18,18 @@ CREATE TABLE test_BuildingUnit
 (
     ID INTEGER NOT NULL,
     OBJECTCLASS_ID INTEGER,
+    building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    building_buildingUnit_ID INTEGER,
-    lod2MultiCurve MDSYS.SDO_GEOMETRY,
-    lod3MultiCurve MDSYS.SDO_GEOMETRY,
-    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     class_codespace VARCHAR2(254),
     class VARCHAR2(254),
     usage_codespace VARCHAR2(254),
     usage VARCHAR2(254),
     function_codespace VARCHAR2(254),
     function VARCHAR2(254),
+    lod2MultiCurve MDSYS.SDO_GEOMETRY,
+    lod3MultiCurve MDSYS.SDO_GEOMETRY,
+    lod4MultiCurve MDSYS.SDO_GEOMETRY,
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -121,11 +121,11 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
+    floorArea_uom VARCHAR2(254),
+    floorArea NUMBER,
     EnergyPerfor_certificatio VARCHAR2(254),
     ownerName VARCHAR2(254),
     EnergyPerfo_certificati_1 VARCHAR2(254),
-    floorArea_uom VARCHAR2(254),
-    floorArea NUMBER,
     PRIMARY KEY (ID)
 );
 
@@ -151,13 +151,13 @@ ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_FK FOREIGN KEY (ID) REFERENCES cityobject (ID);
 
 ALTER TABLE test_BuildingUnit
+    ADD CONSTRAINT test_Build_build_build_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
+
+ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUn_Parent_FK FOREIGN KEY (BuildingUnit_Parent_ID) REFERENCES test_BuildingUnit (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_BuildingUnit_Root_FK FOREIGN KEY (BuildingUnit_Root_ID) REFERENCES test_BuildingUnit (ID);
-
-ALTER TABLE test_BuildingUnit
-    ADD CONSTRAINT test_Build_build_build_FK FOREIGN KEY (building_buildingUnit_ID) REFERENCES test_building (ID);
 
 ALTER TABLE test_BuildingUnit
     ADD CONSTRAINT test_Building_lod1Mult_FK FOREIGN KEY (lod1MultiSurface_ID) REFERENCES SURFACE_GEOMETRY (ID);
@@ -263,11 +263,11 @@ prompt Used SRID for spatial indexes: &SRSNO
 -- -------------------------------------------------------------------- 
 CREATE INDEX test_Building_Objectc_FKX ON test_BuildingUnit (OBJECTCLASS_ID);
 
+CREATE INDEX test_Build_build_buil_FKX ON test_BuildingUnit (building_buildingUnit_ID);
+
 CREATE INDEX test_BuildingU_Parent_FKX ON test_BuildingUnit (BuildingUnit_Parent_ID);
 
 CREATE INDEX test_BuildingUni_Root_FKX ON test_BuildingUnit (BuildingUnit_Root_ID);
-
-CREATE INDEX test_Build_build_buil_FKX ON test_BuildingUnit (building_buildingUnit_ID);
 
 DELETE FROM USER_SDO_GEOM_METADATA WHERE TABLE_NAME='TEST_BUILDINGUNIT' AND COLUMN_NAME='LOD2MULTICURVE';
 INSERT INTO USER_SDO_GEOM_METADATA (TABLE_NAME, COLUMN_NAME, DIMINFO, SRID)

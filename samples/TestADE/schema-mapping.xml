@@ -7,7 +7,7 @@
         <dbPrefix>test</dbPrefix>
     </metadata>
     <applicationSchemas>
-        <schema id="test" xmlPrefix="ade6" isADERoot="true">
+        <schema id="test" xmlPrefix="ade5" isADERoot="true">
             <namespace context="citygml-2.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
         </schema>
     </applicationSchemas>
@@ -84,7 +84,7 @@
         <featureType id="DHWFacilitiesType" table="test_Facilities" objectClassId="20004" path="DHWFacilities" schema="test">
             <extension base="FacilitiesType"/>
         </featureType>
-        <featureType id="IndustrialBuildingType" table="test_IndustrialBuilding" objectClassId="20005" path="IndustrialBuilding" schema="test">
+        <featureType id="IndustrialBuildingType" table="test_IndustrialBuilding" objectClassId="20005" topLevel="true" path="IndustrialBuilding" schema="test">
             <extension base="AbstractBuildingType">
                 <join table="building" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>
@@ -105,7 +105,7 @@
         <featureType id="LightingFacilitiesType" table="test_Facilities" objectClassId="20008" path="LightingFacilities" schema="test">
             <extension base="FacilitiesType"/>
         </featureType>
-        <featureType id="OtherConstructionType" table="test_OtherConstruction" objectClassId="20009" path="OtherConstruction" schema="test">
+        <featureType id="OtherConstructionType" table="test_OtherConstruction" objectClassId="20009" topLevel="true" path="OtherConstruction" schema="test">
             <extension base="AbstractSiteType">
                 <join table="cityobject" fromColumn="ID" toColumn="ID" toRole="parent"/>
             </extension>

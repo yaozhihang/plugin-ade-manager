@@ -260,7 +260,7 @@ public class SchemaMappingCreator {
 	
 	private AbstractType<?> getOrCreateFeatureOrObjectOrComplexType(Node featureObjectNode, SchemaMapping schemaMapping, AppSchema appSchema) throws SchemaMappingException{
 		String path = (String) featureObjectNode.getAttribute().getValueAt("path");	
-		String namespaceUri = (String) featureObjectNode.getAttribute().getValueAt("namespaceUri");
+		String namespaceUri = (String) featureObjectNode.getAttribute().getValueAt("namespaceUri");		
 		
 		if (checkInlineType(featureObjectNode)) 
 			return new ComplexType(path, appSchema, schemaMapping);
@@ -302,6 +302,9 @@ public class SchemaMappingCreator {
 						
 		if (derivedFrom.equalsIgnoreCase("_Feature") || derivedFrom.equalsIgnoreCase("_CityObject")) {
 			featureOrObjectOrComplexType = new FeatureType(featureOrObjectId, path, tableName, initialObjectclassId++, appSchema, schemaMapping);
+			boolean topLevel = (boolean) featureObjectNode.getAttribute().getValueAt("topLevel");
+			if (topLevel)
+				((FeatureType) featureOrObjectOrComplexType).setTopLevel(topLevel);			
 			schemaMapping.addFeatureType((FeatureType) featureOrObjectOrComplexType);
 		}
 		else if (derivedFrom.equalsIgnoreCase("_GML")) {
