@@ -40,14 +40,14 @@ public class GraphCreator {
 	private Map<String, Node> globalClassNodes;
 	private Node hostSchemaNode;
 	private ConfigImpl config;
-	
+
 	public GraphCreator(Schema schema, SchemaHandler schemaHandler, GraGra graphGrammar, ConfigImpl config){
 		this.schemaHandler = schemaHandler;			
 		this.schema = schema;
 		this.graphGrammar = graphGrammar;	
 		this.config = config;
 	}
-	
+
 	public void createGraph() {
 		// Create HostSchema Node		
 		String namespaceUri = this.schema.getNamespaceURI();
@@ -58,11 +58,11 @@ public class GraphCreator {
 		attr.setExprAsObject(config.getAdeName());
 		attr = (ValueMember) valueTuple.getValueMemberAt("namespaceUri");		
 		attr.setExprAsObject(namespaceUri);
-		
+
 		// Create class Nodes and put them into a internal map
 		globalClassNodes = new HashMap<String, Node>();
 		Map<String, XSElementDecl> elementDecls = schema.getXSSchema().getElementDecls();
-		
+
 		Iterator<Entry<String, XSElementDecl>> iter = elementDecls.entrySet().iterator();		
 		while (iter.hasNext()) {
 			Entry<String, XSElementDecl> elementDeclEntry = (Entry<String, XSElementDecl>) iter.next();
@@ -80,7 +80,7 @@ public class GraphCreator {
 		else {
 			// get or create graph node for the global class					
 			Node classNode = this.getOrCreateElementTypeNode(decl);	
-			
+
 			// process extension
 			if (!decl.isDerivedFromOtherDomains()) {				
 				XSElementDecl parentXsElementDecl = xsElementDecl.getSubstAffiliation();
@@ -122,25 +122,25 @@ public class GraphCreator {
 			}	
 		}
 	}
-	
+
 	private void parseADEHookElement(XSElementDecl adeHookXsElementDecl) {
 		XSElementDecl citygmlHookXSElementDecl = adeHookXsElementDecl.getSubstAffiliation();
-		
+
 		if (citygmlHookXSElementDecl != null) {
 			String citygmlHookName = citygmlHookXSElementDecl.getName();
 			String citygmlHookNamespace = citygmlHookXSElementDecl.getTargetNamespace();
 			Schema citygmlModuleSchema = schemaHandler.getSchema(citygmlHookNamespace);
 			String superCityGMLClassName = ADEschemaHelper.CityGML_Hooks.get(citygmlHookName);	
-			
+
 			if (superCityGMLClassName != null) {
 				XSElementDecl superCityGMLClassXSElementDecl = citygmlModuleSchema.getXSSchema().getElementDecl(superCityGMLClassName);
 				ADEschemaElement parentDecl = new ADEschemaElement(superCityGMLClassXSElementDecl, schemaHandler.getSchema(superCityGMLClassXSElementDecl.getTargetNamespace()));					
 				Node superCityGMLClassNode = this.getOrCreateElementTypeNode(parentDecl);	
-				
+
 				String subClassName = "_" + ADEschemaHelper.CityDB_Tables.get(new QName(citygmlHookNamespace, superCityGMLClassXSElementDecl.getType().getName()));
-				
+
 				Node subCityGMLADEClassNode = this.getOrCreateADEHookClass(subClassName, parentDecl);
-				
+
 				// create inheritance nodes and arcs
 				boolean createExtensionNode = true;
 				Iterator<Arc> arcIter = subCityGMLADEClassNode.getOutgoingArcs();		
@@ -152,20 +152,20 @@ public class GraphCreator {
 						break;
 					}		
 				}
-				
+
 				if (createExtensionNode) {
 					Node extensionNode = this.createNode(GraphNodeArcType.Extension);
 					this.createArc(GraphNodeArcType.Contains, subCityGMLADEClassNode, extensionNode);
 					this.createArc(GraphNodeArcType.BaseType, extensionNode, superCityGMLClassNode);
 				}				
-				
+
 				// create property node
 				int minOccurs = 0;
 				int maxoccurs = 1;
 				ADEschemaElement propertyDecl = new ADEschemaElement(adeHookXsElementDecl, schema);
 				if (propertyDecl.isFeatureOrObjectProperty())
 					maxoccurs = -1;
-				
+
 				this.parseLocalPropertyElement(adeHookXsElementDecl, subCityGMLADEClassNode, minOccurs, maxoccurs);
 			}
 		}
@@ -173,14 +173,14 @@ public class GraphCreator {
 
 	private void parseLocalPropertyElement(XSElementDecl propertyXSElementDecl, Node parentNode, int minOccurs, int maxOccurs) {
 		ADEschemaElement propertyDecl = new ADEschemaElement(propertyXSElementDecl, schema);
-		
+
 		String nameAndPath = propertyDecl.getLocalName();
 		String namespace = propertyDecl.getNamespaceURI();		
 		boolean isForeign = !schema.getNamespaceURI().equalsIgnoreCase(namespace);		
-		
+
 		String propertyNodeType = null;
 		Node propertyNode = null;
-		
+
 		if (propertyDecl.isEnumerationProperty()) {
 			propertyNodeType = GraphNodeArcType.EnumerationProperty;
 			String primitiveDataType = SimpleType.STRING.value();
@@ -195,87 +195,90 @@ public class GraphCreator {
 			System.out.println(propertyDecl.getLocalName());
 			propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.ImplicitGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, GeometryType.ABSTRACT_GEOMETRY.value());
 		}
-    	else if (propertyDecl.isBrepGeometryProperty()) {    
-    		String geometryType = ADEschemaHelper.BrepGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.BrepGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-    	}
-        else if (propertyDecl.isPointOrLineGeometryProperty()) {    	                		
-        	String geometryType = ADEschemaHelper.PointOrLineGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.PointOrLineGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-    	}
-        else if (propertyDecl.isHybridGeometryProperty()) {    	                			 
-        	String geometryType = ADEschemaHelper.HybridGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
-        	propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.HybridGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
-    	}
-        else if (propertyDecl.isCityGMLnonPorperty()) {
-        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
+		else if (propertyDecl.isBrepGeometryProperty()) {    
+			String geometryType = ADEschemaHelper.BrepGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+			propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.BrepGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+		}
+		else if (propertyDecl.isPointOrLineGeometryProperty()) {    	                		
+			String geometryType = ADEschemaHelper.PointOrLineGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+			propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.PointOrLineGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+		}
+		else if (propertyDecl.isHybridGeometryProperty()) {    	                			 
+			String geometryType = ADEschemaHelper.HybridGeometryPropertyTypes.get(propertyDecl.getXSElementDecl().getType().getName()).value();
+			propertyNode = this.createGeometryPropertyNode(GraphNodeArcType.HybridGeometryProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace, geometryType);
+		}
+		else if (propertyDecl.isCityGMLnonPorperty()) {
+			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
 			this.processCityGMLnonPropertyNode(propertyNode, propertyDecl);
 		}
 		else if (propertyDecl.isGMLreferenceProperty()) {
 			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
 			this.processGMLreferencePropertyNode(propertyNode, propertyDecl);
-        }
-        else if (propertyDecl.isFeatureOrObjectProperty() || propertyDecl.isUnionProperty() || propertyDecl.isComplexDataProperty()) {
-        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-        	this.processComplexTypePropertyNode(propertyNode, propertyDecl);                 		
-    	} 
-        else if (propertyDecl.isComplexAttribute()) {
-        	propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-        	this.processComplexAttributeNode(propertyNode, propertyDecl);
-        }
-        else {
-        	System.out.println("Not supported Porperty element: \"" + propertyDecl.getLocalName() + "\"; Type name: \"" + propertyDecl.getXSElementDecl().getType().getName() + "\"");
-        	propertyNode = this.createPropertyNode(GraphNodeArcType.GenericAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
-        }
-                	
+		}
+		else if (propertyDecl.isFeatureOrObjectProperty() || propertyDecl.isUnionProperty() || propertyDecl.isComplexDataProperty()) {
+			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexTypeProperty, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
+			this.processComplexTypePropertyNode(propertyNode, propertyDecl);                 		
+		} 
+		else if (propertyDecl.isComplexAttribute()) {
+			propertyNode = this.createPropertyNode(GraphNodeArcType.ComplexAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
+			this.processComplexAttributeNode(propertyNode, propertyDecl);
+		}
+		else {
+			System.out.println("Not supported Porperty element: \"" + propertyDecl.getLocalName() + "\"; Type name: \"" + propertyDecl.getXSElementDecl().getType().getName() + "\"");
+			propertyNode = this.createPropertyNode(GraphNodeArcType.GenericAttribute, nameAndPath, isForeign, nameAndPath, minOccurs, maxOccurs, namespace);
+		}
+
 		this.createArc(GraphNodeArcType.Contains, parentNode, propertyNode);        	      
 	}
-	
+
 	private Node getOrCreateADEHookClass (String className, ADEschemaElement parentDecl) {	
 		if (globalClassNodes.containsKey(className))
 			return globalClassNodes.get(className);	
-	
+
 		String namespaceUri = schema.getNamespaceURI();
 		boolean isAbstract = parentDecl.isAbstract();	
 		boolean isForeign = false;
 		String derivedFrom = "HookClass";
 
 		Node classNode = this.createComplexTypeNode(className, isForeign, className, namespaceUri, isAbstract, derivedFrom, false);	
-		
+
 		globalClassNodes.put(className, classNode);
-		
+
 		return classNode;
 	}
 
 	private Node getOrCreateElementTypeNode (ADEschemaElement decl) {
 		String className = decl.getXSElementDecl().getType().getName();
 		String path = decl.getLocalName();
-		
+
 		if (globalClassNodes.containsKey(className))
 			return globalClassNodes.get(className);	
-	
+
 		String namespaceUri = decl.getNamespaceURI();
 		boolean isAbstract = decl.isAbstract();	
 		boolean isForeign = !schema.getNamespaceURI().equalsIgnoreCase(namespaceUri);
 		boolean topLevel = false;
-		
+
 		// read the tagged value of "topLevel" from XML annotation
 		XSAnnotation annotation = decl.getXSElementDecl().getAnnotation();
 		if (annotation != null) {
 			Element annotationElement = (Element) annotation.getAnnotation();       	
-	    	if (annotationElement != null) {   		
-	    		NodeList appinfoNodeList =  annotationElement.getElementsByTagName("appinfo").item(0).getChildNodes();
-	    		for (int i = 0; i < appinfoNodeList.getLength(); i++) {
-	    			org.w3c.dom.Node taggedValueNode = appinfoNodeList.item(0).getNextSibling();
-	    			String taggedValueName = taggedValueNode.getAttributes().getNamedItem("tag").getNodeValue();
-	    			if (taggedValueName.equalsIgnoreCase("topLevel")) {
-	    				String topLevelStr = taggedValueNode.getFirstChild().getNodeValue();
-	    				if (topLevelStr.equalsIgnoreCase("true")) {
-	    	    			topLevel = true;
-	    	    		}
-	    			}
-	    		}
-	    	}
+			if (annotationElement != null) {
+				NodeList annotationNodeList = annotationElement.getElementsByTagName("appinfo");
+				if (annotationNodeList.getLength() > 0) {
+					NodeList appinfoNodeList = annotationNodeList.item(0).getChildNodes();
+					for (int i = 0; i < appinfoNodeList.getLength(); i++) {
+						org.w3c.dom.Node taggedValueNode = appinfoNodeList.item(0).getNextSibling();
+						String taggedValueName = taggedValueNode.getAttributes().getNamedItem("tag").getNodeValue();
+						if (taggedValueName.equalsIgnoreCase("topLevel")) {
+							String topLevelStr = taggedValueNode.getFirstChild().getNodeValue();
+							if (topLevelStr.equalsIgnoreCase("true")) {
+								topLevel = true;
+							}
+						}
+					}	    			
+				}
+			}
 		}
 
 		Node classNode = null;
@@ -290,15 +293,15 @@ public class GraphCreator {
 
 		if (ADEschemaHelper.CityGML_Namespaces.contains(namespaceUri) || namespaceUri.equalsIgnoreCase("http://www.opengis.net/gml")) 
 			createTableForCityGMLClass(namespaceUri, decl.getXSElementDecl().getType().getName(), classNode);
-					
+
 		globalClassNodes.put(className, classNode);
-		
+
 		return classNode;
 	}
-	
+
 	private String getDerivedFromClassName(ADEschemaElement decl) {
 		String derivedFrom = null;
-		
+
 		if (decl.isFeature() || (decl.isCityGMLClass())) {
 			derivedFrom = "_Feature";
 		}
@@ -308,17 +311,17 @@ public class GraphCreator {
 		else {
 			derivedFrom = "_Object";
 		}
-		
+
 		return derivedFrom;
 	}
-	
+
 	private Node getOrCreateComplexTypeNode (String path, boolean isForeign, String className, String namespaceUri, boolean isAbstract, String derivedFrom) {	
 		if (globalClassNodes.containsKey(className))
 			return globalClassNodes.get(className);	
-	
+
 		Node classNode = this.createComplexTypeNode(path, isForeign, className, namespaceUri, isAbstract, derivedFrom, false);		
 		globalClassNodes.put(className, classNode);
-		
+
 		return classNode;
 	}
 
@@ -326,7 +329,7 @@ public class GraphCreator {
 		Node elementNode = this.createNode(nodeType);
 		AttrInstance attrInstance = elementNode.getAttribute();
 		ValueTuple valueTuple = (ValueTuple) attrInstance;
-		
+
 		ValueMember attr = (ValueMember) valueTuple.getValueMemberAt("path");
 		attr.setExprAsObject(path);
 		attr = (ValueMember) valueTuple.getValueMemberAt("isForeign");		
@@ -335,19 +338,19 @@ public class GraphCreator {
 		attr.setExprAsObject(name);
 		attr = (ValueMember) valueTuple.getValueMemberAt("namespaceUri");
 		attr.setExprAsObject(namespace);
-		
+
 		return elementNode;
 	}
 
 	private Node createElementTypeNode (String nodeType, String path, boolean isForeign, String name, String namespace) {
 		Node classNode = this.createNamedElementNode(nodeType, path, isForeign, name, namespace);
-		
+
 		if (!isForeign)
 			this.createArc(GraphNodeArcType.Contains, hostSchemaNode, classNode);
-		
+
 		return classNode;
 	}
-	
+
 	private Node createComplexTypeNode (String path, boolean isForeign, String name, String namespace, boolean isAbstract, String derivedFrom, boolean topLevel) {
 		Node node = this.createElementTypeNode(GraphNodeArcType.ComplexType, path, isForeign, name, namespace);
 		AttrInstance attrInstance = node.getAttribute();
@@ -360,7 +363,7 @@ public class GraphCreator {
 		attr.setExprAsObject(topLevel);
 		return node;
 	}
-	
+
 	private Node createPropertyNode (String nodeType, String path, boolean isForeign, String name, int minOccurs, int maxOccurs, String namespace) {
 		Node propertyNode = this.createNamedElementNode(nodeType, path, isForeign, name, namespace);
 		AttrInstance attrInstance = propertyNode.getAttribute();
@@ -371,7 +374,7 @@ public class GraphCreator {
 		attr.setExprAsObject(maxOccurs);		
 		return propertyNode;
 	}
-	
+
 	private Node createGeometryPropertyNode (String nodeType, String path, boolean isForeign, String name, int minOccurs, int maxOccurs, String namespace, String geometryType) {
 		Node propertyNode = this.createPropertyNode(nodeType, path, isForeign, name, minOccurs, maxOccurs, namespace);
 		AttrInstance attrInstance = propertyNode.getAttribute();
@@ -380,7 +383,7 @@ public class GraphCreator {
 		attr.setExprAsObject(geometryType);
 		return propertyNode;
 	}
-	
+
 	private Node createSimpleAttributeNode (String nodeType, String path, boolean isForeign, String name, int minOccurs, int maxOccurs, String namespace, String type) {
 		Node propertyNode = this.createPropertyNode(nodeType, path, isForeign, name, minOccurs, maxOccurs, namespace);
 		AttrInstance attrInstance = propertyNode.getAttribute();
@@ -389,13 +392,13 @@ public class GraphCreator {
 		attr.setExprAsObject(type);
 		return propertyNode;
 	}
-	
+
 	// CityGML _CityObject and ExternalReference which do not have globally defined property. 
 	private void processCityGMLnonPropertyNode (Node propertyNode, ADEschemaElement propertyDecl) {
 		XSType propertyType = propertyDecl.getXSElementDecl().getType();
 		String propertyTypeNamespaceUri = propertyType.getTargetNamespace();	
 		String className = propertyType.getName();
-		
+
 		Schema targetSchema = schemaHandler.getSchema(propertyTypeNamespaceUri);
 		Iterator<Entry<String, XSElementDecl>> iter = targetSchema.getXSSchema().getElementDecls().entrySet().iterator();		
 		while (iter.hasNext()) {
@@ -425,39 +428,39 @@ public class GraphCreator {
 	 **/
 	private void processGMLreferencePropertyNode(Node propertyNode, ADEschemaElement decl) {
 		Element annotationElement = (Element) decl.getXSElementDecl().getAnnotation().getAnnotation();       	
-    	if (annotationElement != null) {   		
-    		org.w3c.dom.Node targetElementDOMNode = (org.w3c.dom.Node) annotationElement.getElementsByTagName("appinfo").item(0).getFirstChild().getNextSibling().getFirstChild(); 
-    		String[] strArray = targetElementDOMNode.getNodeValue().split(":");
-    		String classPrefix = strArray[0];
-    		String childClassName = strArray[1];
-    		String classNameSpace = annotationElement.lookupNamespaceURI(classPrefix);
-    		XSElementDecl xsChildElement = schemaHandler.getSchema(classNameSpace).getXSSchema().getElementDecl(childClassName);     		
-    		ADEschemaElement childDecl = new ADEschemaElement(xsChildElement, schemaHandler.getSchema(xsChildElement.getTargetNamespace()));	
-    		Node childNode = this.getOrCreateElementTypeNode(childDecl);    		
+		if (annotationElement != null) {   		
+			org.w3c.dom.Node targetElementDOMNode = (org.w3c.dom.Node) annotationElement.getElementsByTagName("appinfo").item(0).getFirstChild().getNextSibling().getFirstChild(); 
+			String[] strArray = targetElementDOMNode.getNodeValue().split(":");
+			String classPrefix = strArray[0];
+			String childClassName = strArray[1];
+			String classNameSpace = annotationElement.lookupNamespaceURI(classPrefix);
+			XSElementDecl xsChildElement = schemaHandler.getSchema(classNameSpace).getXSSchema().getElementDecl(childClassName);     		
+			ADEschemaElement childDecl = new ADEschemaElement(xsChildElement, schemaHandler.getSchema(xsChildElement.getTargetNamespace()));	
+			Node childNode = this.getOrCreateElementTypeNode(childDecl);    		
 			this.createArc(GraphNodeArcType.TargetType, propertyNode, childNode);
-    	}
+		}
 	}
-	
+
 	private void processComplexTypePropertyNode (Node propertyNode, ADEschemaElement decl) {
 		XSAnnotation xsAnnotation = decl.getXSElementDecl().getAnnotation();
 		String reversePropertyName = null;
 		if (xsAnnotation != null) {
 			Element annotationElement = (Element) xsAnnotation.getAnnotation();       	
-	    	if (annotationElement != null) {   
-	    		org.w3c.dom.Node appinfoItem = (org.w3c.dom.Node) annotationElement.getElementsByTagName("appinfo").item(0);
-	    		if (appinfoItem != null) {
-	    			NodeList nodeList = appinfoItem.getChildNodes();
-	    			for (int i = 0; i < nodeList.getLength(); i++) {
-	    				if ((org.w3c.dom.Node)nodeList.item(i).getNextSibling() != null) {
-	    					org.w3c.dom.Node targetElementDOMNode = (org.w3c.dom.Node)nodeList.item(i).getNextSibling().getFirstChild();
-		    				if (targetElementDOMNode != null && targetElementDOMNode.getParentNode().getLocalName().equalsIgnoreCase("reversePropertyName")) {
-				    			String[] strArray = targetElementDOMNode.getNodeValue().split(":");
-				    			reversePropertyName = strArray[1];
-				    		};
-	    				}	    				
-	    			} 			    		
-	    		}	
-	    	}
+			if (annotationElement != null) {   
+				org.w3c.dom.Node appinfoItem = (org.w3c.dom.Node) annotationElement.getElementsByTagName("appinfo").item(0);
+				if (appinfoItem != null) {
+					NodeList nodeList = appinfoItem.getChildNodes();
+					for (int i = 0; i < nodeList.getLength(); i++) {
+						if ((org.w3c.dom.Node)nodeList.item(i).getNextSibling() != null) {
+							org.w3c.dom.Node targetElementDOMNode = (org.w3c.dom.Node)nodeList.item(i).getNextSibling().getFirstChild();
+							if (targetElementDOMNode != null && targetElementDOMNode.getParentNode().getLocalName().equalsIgnoreCase("reversePropertyName")) {
+								String[] strArray = targetElementDOMNode.getNodeValue().split(":");
+								reversePropertyName = strArray[1];
+							};
+						}	    				
+					} 			    		
+				}	
+			}
 		}		
 
 		final String reversePropertyName2 = reversePropertyName;
@@ -468,43 +471,43 @@ public class GraphCreator {
 				for (XSParticle p : modelGroup.getChildren()) {
 					XSTerm pterm = p.getTerm();
 					if (pterm.isElementDecl()) {							 
-	                    XSElementDecl childElementDecl = (XSElementDecl) pterm;
-	                    ADEschemaElement childDecl = new ADEschemaElement(childElementDecl, schemaHandler.getSchema(childElementDecl.getTargetNamespace()));	                   	                        
-	                    Node childNode = getOrCreateElementTypeNode(childDecl);     
-	        			createArc(GraphNodeArcType.TargetType, propertyNode, childNode);
-	        			
-	        			// searching reverse property node in the target class node		
-	        			if (reversePropertyName2 != null) {
-	        				if (childNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexType)) {
-	        					Iterator<Arc> iter = childNode.getOutgoingArcs();
-	        					while (iter.hasNext()) {
-	        						Arc arc = iter.next();
-	        						if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.Contains)) {
-	        							Node reversePropertyNode = (Node) arc.getTarget();	        							
-	        							if (reversePropertyNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexTypeProperty)) {
-	        								String propertyName = (String)reversePropertyNode.getAttribute().getValueAt("name");
-	        								if (propertyName.equalsIgnoreCase(reversePropertyName2)) {
-		        								createArc(GraphNodeArcType.ReverseProperty, propertyNode, reversePropertyNode);
-		        								createArc(GraphNodeArcType.ReverseProperty, reversePropertyNode, propertyNode);
-		        							}
-	        							}
-	        						}
-	        					}
-	        				}
-	        			}	        					                
+						XSElementDecl childElementDecl = (XSElementDecl) pterm;
+						ADEschemaElement childDecl = new ADEschemaElement(childElementDecl, schemaHandler.getSchema(childElementDecl.getTargetNamespace()));	                   	                        
+						Node childNode = getOrCreateElementTypeNode(childDecl);     
+						createArc(GraphNodeArcType.TargetType, propertyNode, childNode);
+
+						// searching reverse property node in the target class node		
+						if (reversePropertyName2 != null) {
+							if (childNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexType)) {
+								Iterator<Arc> iter = childNode.getOutgoingArcs();
+								while (iter.hasNext()) {
+									Arc arc = iter.next();
+									if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.Contains)) {
+										Node reversePropertyNode = (Node) arc.getTarget();	        							
+										if (reversePropertyNode.getType().getName().equalsIgnoreCase(GraphNodeArcType.ComplexTypeProperty)) {
+											String propertyName = (String)reversePropertyNode.getAttribute().getValueAt("name");
+											if (propertyName.equalsIgnoreCase(reversePropertyName2)) {
+												createArc(GraphNodeArcType.ReverseProperty, propertyNode, reversePropertyNode);
+												createArc(GraphNodeArcType.ReverseProperty, reversePropertyNode, propertyNode);
+											}
+										}
+									}
+								}
+							}
+						}	        					                
 					}
 				}						
 			}	
 		});			
-		
+
 	}
-	
+
 	private void processComplexAttributeNode(Node propertyNode, ADEschemaElement decl) {
 		String propertyTypeName = decl.getXSElementDecl().getType().getName();
 		ComplexAttributeType complexAttributeType = ADEschemaHelper.ComplexAttributeTypes.get(propertyTypeName);			
 		List<SimpleAttribute> simpleAttributeList = complexAttributeType.getSimpleAttributes();
 		Iterator<SimpleAttribute> iter = simpleAttributeList.iterator();
-		
+
 		while (iter.hasNext()) {
 			SimpleAttribute simpleAttribute = iter.next();
 
@@ -513,57 +516,57 @@ public class GraphCreator {
 				path = "@" + simpleAttribute.getPropertyName();
 			else
 				path = "." + simpleAttribute.getPropertyName();
-			
+
 			String namespaceUri = simpleAttribute.getNamespaceUri();
 			boolean isForeign = !schema.getNamespaceURI().equalsIgnoreCase(namespaceUri);
-			
+
 			String name = null;
 			if (simpleAttribute.isXMLAttribute())
 				name = "_" + simpleAttribute.getPropertyName();
 			else
 				name = simpleAttribute.getPropertyName();
-						
+
 			String type = simpleAttribute.getPropertyTypeName();
-			
+
 			int minOccurs = simpleAttribute.getMinOccurs();
 			int maxOccurs = simpleAttribute.getMaxOccurs();
-			
-			
+
+
 			Node simpleAttributeNode = this.createSimpleAttributeNode(GraphNodeArcType.SimpleAttribute, path, isForeign, name, minOccurs, maxOccurs, namespaceUri, type);
-			
+
 			createArc(GraphNodeArcType.Contains, propertyNode, simpleAttributeNode);	
 		}
 	}
-		
+
 	private void createTableForCityGMLClass(String citygmlNamespaceUri, String className, Node classNode) {
 		// create a global class table for the respective CityGML class
 		Node tableNode = this.createNode(GraphNodeArcType.DataTable);
 		AttrInstance attrInstance = tableNode.getAttribute();
 		ValueTuple valueTuple = (ValueTuple) attrInstance;
-		
+
 		ValueMember attr1 = (ValueMember) valueTuple.getValueMemberAt("name");
 		attr1.setExprAsObject(ADEschemaHelper.CityDB_Tables.get(new QName(citygmlNamespaceUri, className)));
-		
+
 		// create a primary key column linking with the class table
 		Node pkColumnNode = this.createNode(GraphNodeArcType.PrimaryKeyColumn);
 		this.createArc(GraphNodeArcType.BelongsTo, pkColumnNode, tableNode);
-		
+
 		// bridge CityGML class and 3DCityDB table
 		createArc(GraphNodeArcType.MapsTo, classNode, tableNode);
-				
+
 	}
 
 	private Node createNode(String nodeTypeName) {
 		Type nodeType = graphGrammar.getTypeSet().getTypeByName(nodeTypeName);
 		Graph graph = graphGrammar.getGraph();
-    	Node node = null;    	
-    	try { 
-    		node = graph.createNode(nodeType);
-    	}
-    	catch (Exception ex) { 
-    		ex.printStackTrace();
-    	}   	
-    	return node;
+		Node node = null;    	
+		try { 
+			node = graph.createNode(nodeType);
+		}
+		catch (Exception ex) { 
+			ex.printStackTrace();
+		}   	
+		return node;
 	}
 
 	private Arc createArc(String arcTypeName, Node fromNode, Node toNode) {
@@ -572,11 +575,11 @@ public class GraphCreator {
 		Arc arc = null;		
 		try { 
 			arc = graph.createArc(arcType, fromNode, toNode);
-    	}
-    	catch (TypeException ex) { 
-    		ex.printStackTrace();
-    	}		
+		}
+		catch (TypeException ex) { 
+			ex.printStackTrace();
+		}		
 		return arc;
 	}
-	
+
 }
