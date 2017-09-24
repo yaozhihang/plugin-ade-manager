@@ -296,7 +296,7 @@ public class SchemaMappingCreator {
 			}		
 		}		
 		
-		String featureOrObjectId = (String) featureObjectNode.getAttribute().getValueAt("name");
+		String featureOrObjectId = config.getAdeDbPrefix() + "_" + (String) featureObjectNode.getAttribute().getValueAt("name");
 		boolean isAbstract = (boolean) featureObjectNode.getAttribute().getValueAt("isAbstract");			
 		String derivedFrom = (String) featureObjectNode.getAttribute().getValueAt("derivedFrom");			
 						
