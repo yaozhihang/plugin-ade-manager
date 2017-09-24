@@ -275,14 +275,22 @@ public class DBScriptGenerator {
     }
 	
 	private void shrotenDatabaseObjectName() {
-		int maximumLength = 25;
+		int maxTableNameLength = 25;
+		int maxColumnNameLength = 28;
+		int maxIndexNameLength = 26;
+		int maxConstraintNameLength = 26;
+		int maxSequenceNameLength = 25;
+		
 		String prefix = config.getAdeDbPrefix();
 		
 		if (prefix.length() > 4)
-			prefix = prefix.substring(0, 4);
-		
+			prefix = prefix.substring(0, 4);		
 		int prefixLength = prefix.length();
-		int restStrLength = maximumLength - prefixLength - 1;
+		
+		int maxTableNameLengthWithPrefix = maxTableNameLength - prefixLength - 1;
+		int maxIndexNameLengthWithPrefix = maxIndexNameLength - prefixLength - 1;
+		int maxConstraintNameLengthWithPrefix = maxConstraintNameLength - prefixLength - 1;
+		int maxSequenceNameLengthWithPrefix = maxSequenceNameLength - prefixLength - 1;
 		
 		Enumeration<Type> e = this.graphGrammar.getTypes();
 		while(e.hasMoreElements()){
@@ -298,7 +306,7 @@ public class DBScriptGenerator {
 					String shortenedName = null;
 					if (nodeTypeName.equalsIgnoreCase(GraphNodeArcType.DataTable) || nodeTypeName.equalsIgnoreCase(GraphNodeArcType.JoinTable)) {												
 						if (!ADEschemaHelper.CityDB_Tables.containsValue(originalDatabaseObjectName)) {
-							shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, restStrLength);
+							shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, maxTableNameLengthWithPrefix);
 							shortenedName = prefix + "_" + shortenedName;							
 							Iterator<Arc> iter2 = databaseObjectNode.getIncomingArcs();
 							while (iter2.hasNext()) {
@@ -306,25 +314,25 @@ public class DBScriptGenerator {
 								if (arc.getType().getName().equalsIgnoreCase(GraphNodeArcType.BelongsTo)) {
 									Node columnNode = (Node) arc.getSource();
 									String columnName = (String)columnNode.getAttribute().getValueAt("name");
-									columnName = NameShortener.shortenDbObjectName(columnName, maximumLength);	
-									String processedColumnName = this.processDuplicatedDbColumnName(shortenedName, columnName, maximumLength, 0);
+									columnName = NameShortener.shortenDbObjectName(columnName, maxColumnNameLength);	
+									String processedColumnName = this.processDuplicatedDbColumnName(shortenedName, columnName, maxColumnNameLength, 0);
 									columnNode.getAttribute().setValueAt(processedColumnName, "name");								
 								}
 							}	
 						}											
 					}
 					else if (nodeTypeName.equalsIgnoreCase(GraphNodeArcType.Join)) {
-						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, restStrLength);
+						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, maxConstraintNameLengthWithPrefix);
 						shortenedName = prefix + "_" + shortenedName;		
-						shortenedName = this.processDuplicatedDbConstraintName(shortenedName, maximumLength, 0);
+						shortenedName = this.processDuplicatedDbConstraintName(shortenedName, maxConstraintNameLength, 0);
 					}	
 					else if (nodeTypeName.equalsIgnoreCase(GraphNodeArcType.Index)) {
-						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, restStrLength);
+						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, maxIndexNameLengthWithPrefix);
 						shortenedName = prefix + "_" + shortenedName;		
-						shortenedName = this.processDuplicatedDbIndexName(shortenedName, maximumLength, 0);
+						shortenedName = this.processDuplicatedDbIndexName(shortenedName, maxIndexNameLength, 0);
 					}
 					else if (nodeTypeName.equalsIgnoreCase(GraphNodeArcType.Sequence)) {
-						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, restStrLength);
+						shortenedName = NameShortener.shortenDbObjectName(originalDatabaseObjectName, maxSequenceNameLengthWithPrefix);
 						shortenedName = prefix + "_" + shortenedName;		
 					}
 					
