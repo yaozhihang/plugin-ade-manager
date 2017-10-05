@@ -252,12 +252,13 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		mainScrollView.add(browseCreateDBScriptPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));	
 		mainScrollView.add(browseDropDBScriptPanel, GuiUtil.setConstraints(0,index++,0.0,0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));	
 		mainScrollView.add(adeButtonsPanel, GuiUtil.setConstraints(0,index++,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		mainScrollView.add(Box.createVerticalGlue(), GuiUtil.setConstraints(0,index++,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 
 		JScrollPane mainScrollPanel = new JScrollPane(mainScrollView);
 		mainScrollPanel.setBorder(BorderFactory.createEmptyBorder());
 		mainScrollPanel.setViewportBorder(BorderFactory.createEmptyBorder());
 		this.setLayout(new GridBagLayout());	
-		this.add(mainScrollPanel, GuiUtil.setConstraints(0,1,1.0,1.0,GridBagConstraints.BOTH,0,0,0,0));
+		this.add(mainScrollPanel, GuiUtil.setConstraints(0,1,1.0,1.0,GridBagConstraints.BOTH,5,0,0,0));
 	}
 
 	// localized Labels and Strings
