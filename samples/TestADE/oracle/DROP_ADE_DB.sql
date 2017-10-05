@@ -1,3 +1,4 @@
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2017-10-05 15:26:22 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- ***********************************  Drop foreign keys ********************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -5,88 +6,88 @@
 -- test_BuildingU_to_address 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_BuildingU_to_address
-    DROP CONSTRAINT test_Buildi_to_addres_FK1;
+    DROP CONSTRAINT test_Buildin_to_addres_FK1;
 
 ALTER TABLE test_BuildingU_to_address
-    DROP CONSTRAINT test_Buildi_to_addres_FK2;
+    DROP CONSTRAINT test_Buildin_to_addres_FK2;
 
 -- -------------------------------------------------------------------- 
 -- test_BuildingUnit 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_Objectcl_FK;
+    DROP CONSTRAINT test_BuildingU_Objectcl_FK;
 
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Build_build_build_FK;
+    DROP CONSTRAINT test_Buildi_build_build_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_BuildingUn_Parent_FK;
+    DROP CONSTRAINT test_BuildingUni_Parent_FK;
 
 ALTER TABLE test_BuildingUnit
     DROP CONSTRAINT test_BuildingUnit_Root_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod1Mult_FK;
+    DROP CONSTRAINT test_BuildingU_lod1Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod2Mult_FK;
+    DROP CONSTRAINT test_BuildingU_lod2Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod3Mult_FK;
+    DROP CONSTRAINT test_BuildingU_lod3Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod4Mult_FK;
+    DROP CONSTRAINT test_BuildingU_lod4Mult_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod1Soli_FK;
+    DROP CONSTRAINT test_BuildingU_lod1Soli_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod2Soli_FK;
+    DROP CONSTRAINT test_BuildingU_lod2Soli_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod3Soli_FK;
+    DROP CONSTRAINT test_BuildingU_lod3Soli_FK;
 
 ALTER TABLE test_BuildingUnit
-    DROP CONSTRAINT test_Building_lod4Soli_FK;
+    DROP CONSTRAINT test_BuildingU_lod4Soli_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_EnergyPerformanceCer 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_EnergyPerformanceCer
-    DROP CONSTRAINT test_Energ_Build_energ_FK;
+    DROP CONSTRAINT test_Energy_Build_energ_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_Facilities 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_Facilities
-    DROP CONSTRAINT test_Faciliti_Objectcl_FK;
+    DROP CONSTRAINT test_Facilitie_Objectcl_FK;
 
 ALTER TABLE test_Facilities
     DROP CONSTRAINT test_Facilities_FK;
 
 ALTER TABLE test_Facilities
-    DROP CONSTRAINT test_Facil_Build_equip_FK;
+    DROP CONSTRAINT test_Facili_Build_equip_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_IndustrialBuilding 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_IndustrialBuilding
-    DROP CONSTRAINT test_IndustrialBuildin_FK;
+    DROP CONSTRAINT test_IndustrialBuilding_FK;
 
 -- -------------------------------------------------------------------- 
 -- test_IndustrialBuildingPa 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_IndustrialBuildingPa
-    DROP CONSTRAINT test_IndustrialBuild_FK_1;
+    DROP CONSTRAINT test_IndustrialBuildi_FK_1;
 
 -- -------------------------------------------------------------------- 
 -- test_IndustrialBuildingRo 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_IndustrialBuildingRo
-    DROP CONSTRAINT test_IndustrialBuild_FK_2;
+    DROP CONSTRAINT test_IndustrialBuildi_FK_2;
 
 -- -------------------------------------------------------------------- 
 -- test_OtherConstruction 
@@ -98,10 +99,10 @@ ALTER TABLE test_OtherConstruction
 -- test_Other_to_thema_surfa 
 -- -------------------------------------------------------------------- 
 ALTER TABLE test_Other_to_thema_surfa
-    DROP CONSTRAINT test_Othe_to_them_sur_FK1;
+    DROP CONSTRAINT test_Othe_to_them_surf_FK1;
 
 ALTER TABLE test_Other_to_thema_surfa
-    DROP CONSTRAINT test_Othe_to_them_sur_FK2;
+    DROP CONSTRAINT test_Othe_to_them_surf_FK2;
 
 -- -------------------------------------------------------------------- 
 -- test_building 
