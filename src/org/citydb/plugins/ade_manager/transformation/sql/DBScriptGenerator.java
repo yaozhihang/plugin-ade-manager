@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,6 +45,13 @@ public class DBScriptGenerator {
 	private Platform databasePlatform;
 	private ConfigImpl config;
 	private static final String indentStr = "    ";
+	
+	private static final String postgresSQL_FolderName = "postgreSQL";
+	private static final String oracle_FolderName = "oracle";
+	private static final String create_ADE_DB_fileName = "CREATE_ADE_DB.sql";
+	private static final String drop_ADE_DB_fileName = "DROP_ADE_DB.sql";
+	private static final String enable_ADE_versioning_fileName = "ENABLE_ADE_VERSIONING.sql";
+	private static final String disable_ADE_versioning_fileName = "DISABLE_ADE_VERSIONING.sql";
 	
 	private final Logger LOG = Logger.getInstance();
 	
@@ -437,14 +446,15 @@ public class DBScriptGenerator {
 	}
 
 	private void marshallingDatabaseSchema (Platform databasePlatform, Database database) {
+		String headerText = "This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on " +  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		String outputFolderPath = config.getTransformationOutputPath();
 		String dbFolderName = null;
 		
 		if (databasePlatform instanceof Oracle10Platform) {
-			dbFolderName = "oracle";
+			dbFolderName = oracle_FolderName;
 		}
 		else if (databasePlatform instanceof PostgreSqlPlatform) {
-			dbFolderName = "postgreSQL";
+			dbFolderName = postgresSQL_FolderName;
 		}
 
 		File directory = new File(outputFolderPath, dbFolderName);
@@ -453,10 +463,10 @@ public class DBScriptGenerator {
 		else
 			directory.delete();
 		
-		File createDbFile = new File(directory, "CREATE_DB.sql");
-		File dropDbFile = new File(directory, "DROP_DB.sql");
-		File enableVersioningFile = new File(directory, "ENABLE_VERSIONING.sql");
-		File disableVersioningFile = new File(directory, "DISABLE_VERSIONING.sql");
+		File createDbFile = new File(directory, create_ADE_DB_fileName);
+		File dropDbFile = new File(directory, drop_ADE_DB_fileName);
+		File enableVersioningFile = new File(directory, enable_ADE_versioning_fileName);
+		File disableVersioningFile = new File(directory, disable_ADE_versioning_fileName);
 		
 		Map<String, Table> treeMap = new TreeMap<String, Table>(databaseTables);
 		int counter = 0;	
@@ -468,6 +478,7 @@ public class DBScriptGenerator {
 			writer = new PrintWriter(createDbFile);
 			SqlBuilder sqlBuilder = new SqlBuilder(databasePlatform) {};		
 			sqlBuilder.setWriter(writer);
+			printComment(headerText, databasePlatform, writer);	
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 			printComment("***********************************  Create tables *************************************", databasePlatform, writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);				
@@ -533,6 +544,7 @@ public class DBScriptGenerator {
 			writer = new PrintWriter(dropDbFile);
 			SqlBuilder sqlBuilder = new SqlBuilder(databasePlatform) {};		
 			sqlBuilder.setWriter(writer);
+			printComment(headerText, databasePlatform, writer);	
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 			printComment("***********************************  Drop foreign keys *********************************", databasePlatform, writer);
 			printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);		
@@ -582,6 +594,7 @@ public class DBScriptGenerator {
 		if (databasePlatform instanceof Oracle10Platform){
 			try {
 				writer = new PrintWriter(enableVersioningFile);
+				printComment(headerText, databasePlatform, writer);	
 				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 				printComment("*********************************  Enable Versioning  ***********************************", databasePlatform, writer);
 				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
@@ -608,6 +621,7 @@ public class DBScriptGenerator {
 		if (databasePlatform instanceof Oracle10Platform){
 			try {
 				writer = new PrintWriter(disableVersioningFile);
+				printComment(headerText, databasePlatform, writer);	
 				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);						
 				printComment("*********************************  Disable Versioning  ***********************************", databasePlatform, writer);
 				printComment("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++", databasePlatform, writer);	
