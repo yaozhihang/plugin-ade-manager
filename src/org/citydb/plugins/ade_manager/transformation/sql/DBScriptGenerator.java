@@ -182,6 +182,7 @@ public class DBScriptGenerator {
 
 		if (columnSourceType.equalsIgnoreCase("string")) {
 			column.setTypeCode(Types.VARCHAR);
+			column.setSize("1000");
 		}
 		else if (columnSourceType.equalsIgnoreCase("boolean")) {
 			column.setTypeCode(Types.BOOLEAN);
