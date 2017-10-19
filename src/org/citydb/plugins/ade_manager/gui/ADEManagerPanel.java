@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -656,7 +657,12 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			LOG.error("Failed to create database schema for ADE. Cause: " + e.getMessage());
 		}
 
-		LOG.info("Registration Finished");
+		LOG.info("Registration is Finished and will take effect after reconnecting to the database.");
+		
+		if (dbPool.isConnected()) {
+			dbPool.disconnect();
+			((ImpExpGui)viewController).connectToDatabase();
+		}	
 	}
 	
 	private void fetchADEsFromDB() {
