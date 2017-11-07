@@ -3,11 +3,11 @@
     <metadata>
         <name>TestADE</name>
         <version>1.0</version>
-        <description>TestADE</description>
+        <description>Test ADE</description>
         <dbPrefix>test</dbPrefix>
     </metadata>
     <applicationSchemas>
-        <schema id="test" xmlPrefix="ade1" isADERoot="true">
+        <schema id="test" isADERoot="true">
             <namespace context="citygml-2.0">http://www.citygml.org/ade/TestADE/1.0</namespace>
         </schema>
     </applicationSchemas>

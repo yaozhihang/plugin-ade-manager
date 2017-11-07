@@ -1,4 +1,4 @@
--- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2017-10-05 15:26:22 
+-- This document was automatically created by the ADE-Manager tool of 3DCityDB (https://www.3dcitydb.org) on 2017-11-07 07:58:55 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
 -- ***********************************  Create tables ************************************* 
 -- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
@@ -22,15 +22,15 @@ CREATE TABLE test_BuildingUnit
     building_buildingUnit_ID INTEGER,
     BuildingUnit_Parent_ID INTEGER,
     BuildingUnit_Root_ID INTEGER,
-    class_codespace VARCHAR(254),
-    class VARCHAR(254),
-    usage_codespace VARCHAR(254),
-    usage VARCHAR(254),
-    function_codespace VARCHAR(254),
-    function VARCHAR(254),
     lod2MultiCurve geometry(GEOMETRYZ),
     lod3MultiCurve geometry(GEOMETRYZ),
     lod4MultiCurve geometry(GEOMETRYZ),
+    class_codespace VARCHAR(1000),
+    class VARCHAR(1000),
+    usage_codespace VARCHAR(1000),
+    usage VARCHAR(1000),
+    function_codespace VARCHAR(1000),
+    function VARCHAR(1000),
     lod1MultiSurface_ID INTEGER,
     lod2MultiSurface_ID INTEGER,
     lod3MultiSurface_ID INTEGER,
@@ -49,8 +49,8 @@ CREATE TABLE test_EnergyPerformanceCer
 (
     ID INTEGER NOT NULL,
     BuildingUnit_energyPerfor_ID INTEGER,
-    certificationName VARCHAR(254),
-    certificationid VARCHAR(254),
+    certificationName VARCHAR(1000),
+    certificationid VARCHAR(1000),
     PRIMARY KEY (ID)
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE test_Facilities
     ID INTEGER NOT NULL,
     OBJECTCLASS_ID INTEGER,
     BuildingUnit_equippedWith_ID INTEGER,
-    totalValue_uom VARCHAR(254),
+    totalValue_uom VARCHAR(1000),
     totalValue NUMERIC,
     PRIMARY KEY (ID)
 );
@@ -73,7 +73,7 @@ CREATE TABLE test_Facilities
 CREATE TABLE test_IndustrialBuilding
 (
     ID INTEGER NOT NULL,
-    remark VARCHAR(254),
+    remark VARCHAR(1000),
     PRIMARY KEY (ID)
 );
 
@@ -83,7 +83,7 @@ CREATE TABLE test_IndustrialBuilding
 CREATE TABLE test_IndustrialBuildingPa
 (
     ID INTEGER NOT NULL,
-    remark VARCHAR(254),
+    remark VARCHAR(1000),
     PRIMARY KEY (ID)
 );
 
@@ -93,7 +93,7 @@ CREATE TABLE test_IndustrialBuildingPa
 CREATE TABLE test_IndustrialBuildingRo
 (
     ID INTEGER NOT NULL,
-    remark VARCHAR(254),
+    remark VARCHAR(1000),
     PRIMARY KEY (ID)
 );
 
@@ -122,11 +122,11 @@ CREATE TABLE test_Other_to_thema_surfa
 CREATE TABLE test_building
 (
     ID INTEGER NOT NULL,
-    EnergyPerforma_certification VARCHAR(254),
-    floorArea_uom VARCHAR(254),
+    EnergyPerforma_certification VARCHAR(1000),
+    EnergyPerform_certificatio_1 VARCHAR(1000),
+    floorArea_uom VARCHAR(1000),
     floorArea NUMERIC,
-    ownerName VARCHAR(254),
-    EnergyPerform_certificatio_1 VARCHAR(254),
+    ownerName VARCHAR(1000),
     PRIMARY KEY (ID)
 );
 
