@@ -120,6 +120,10 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		String deleteCityModelFunction = buildDeleteCityModelFuncSql();
 		String deleteGenericAttribFunction = buildDeleteGenericAttribFuncSql();
 		String deleteExternalReferenceFunction = buildDeleteExternalReferenceFuncSql();
+		String deleteAppearanceFunction = buildDeleteAppearanceFuncSql();
+		String deleteSurfaceDataFunction = buildDeleteSurfaceDataFuncSql();
+		
+		String deleteCityObjectFunction = buildDeleteCityObjectFuncSql();
 		
 		String cleanupAddressProcedure = buildCleanupFuncSql(addressList, "delete_address", "cleanup_address");
 		String cleanupSurfaceDataProcedure = buildCleanupFuncSql(surfaceDataList, "delete_surface_data", "cleanup_surface_data");
@@ -128,54 +132,66 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		String cleanupTunnelOpeningProcedure = buildCleanupFuncSql(tunnelOpeningList, "delete_tunnel_openings", "cleanup_tunnel_openings");
 		String cleanupBridgeOpeningProcedure = buildCleanupFuncSql(bridgeOpeningList, "cleanup_bridge_openings", "cleanup_bridge_openings");
 		
-		StringBuilder outputBuilder = new StringBuilder();
-		outputBuilder.append(buildComment("Function for deleting surface geometry"));
-		outputBuilder.append(deleteSurfaceGeometryFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		StringBuilder outputBuilder = new StringBuilder()
+		.append(buildComment("Function for deleting surface geometry"))
+		.append(deleteSurfaceGeometryFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for deleting implicit geometry"));
-		outputBuilder.append(deleteImplicitGeometryFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting implicit geometry"))
+		.append(deleteImplicitGeometryFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for deleting grid coverage"));
-		outputBuilder.append(deleteGridCoverageFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting grid coverage"))
+		.append(deleteGridCoverageFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for deleting city model"));
-		outputBuilder.append(deleteCityModelFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting city model"))
+		.append(deleteCityModelFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for deleting generic attribute"));
-		outputBuilder.append(deleteGenericAttribFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting generic attribute"))
+		.append(deleteGenericAttribFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for deleting external reference"));
-		outputBuilder.append(deleteExternalReferenceFunction);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting external reference"))
+		.append(deleteExternalReferenceFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up addresses"));
-		outputBuilder.append(cleanupAddressProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting appearance"))
+		.append(deleteAppearanceFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up surface data"));
-		outputBuilder.append(cleanupSurfaceDataProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting surface data"))
+		.append(deleteSurfaceDataFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up waterboundary surfaces"));
-		outputBuilder.append(cleanupWaterBoundaryProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for deleting city object"))
+		.append(deleteCityObjectFunction)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up building opening data"));
-		outputBuilder.append(cleanupBuildingOpeningProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for cleaning up addresses"))
+		.append(cleanupAddressProcedure)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up tunnel opening data"));
-		outputBuilder.append(cleanupTunnelOpeningProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for cleaning up surface data"))
+		.append(cleanupSurfaceDataProcedure)
+		.append(lineBreak).append(lineBreak);
 		
-		outputBuilder.append(buildComment("Function for cleaning up bridge opening data"));
-		outputBuilder.append(cleanupBridgeOpeningProcedure);
-		outputBuilder.append(lineBreak).append(lineBreak);
+		outputBuilder.append(buildComment("Function for cleaning up waterboundary surfaces"))
+		.append(cleanupWaterBoundaryProcedure)
+		.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for cleaning up building opening data"))
+		.append(cleanupBuildingOpeningProcedure)
+		.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for cleaning up tunnel opening data"))
+		.append(cleanupTunnelOpeningProcedure)
+		.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for cleaning up bridge opening data"))
+		.append(cleanupBridgeOpeningProcedure)
+		.append(lineBreak).append(lineBreak);
 		
 		return outputBuilder.toString();
 	}
@@ -202,12 +218,15 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 	}  
 	
 	protected abstract String buildPackageHead();
+	protected abstract String buildDeleteCityObjectFuncSql();
 	protected abstract String buildDeleteSurfaceGeometryFuncSql();
 	protected abstract String buildDeleteImplicitGeometryFuncSql();
 	protected abstract String buildDeleteGridCoverageFuncSql();
 	protected abstract String buildDeleteCityModelFuncSql();
 	protected abstract String buildDeleteGenericAttribFuncSql();
 	protected abstract String buildDeleteExternalReferenceFuncSql();
+	protected abstract String buildDeleteAppearanceFuncSql();
+	protected abstract String buildDeleteSurfaceDataFuncSql();
 	protected abstract String buildCleanupFuncSql(List<JoinEntry> entryList, String deleteFuncName, String cleanupFuncName);	
 	protected abstract String buildCleanupQuerySql(List<JoinEntry> entryList, int dentNumber);
 	protected abstract String buildPackageEnd();

@@ -273,4 +273,63 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		return builder.toString();
 	}
 
+	@Override
+	protected String buildDeleteAppearanceFuncSql() {
+		// TODO here we may need to clean up the texture images...
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_appearance(pid number, cleanup int := 0, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.appearance where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_appearance (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
+	protected String buildDeleteSurfaceDataFuncSql() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_surface_data(pid number, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.surface_data where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_surface_data (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
+	protected String buildDeleteCityObjectFuncSql() {
+		// TODO Here we may need to clean up some properties like appearances, addresses, and implicit geometries etc.
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_cityobject(pid number, delete_members int := 0, cleanup int := 0, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.cityobject where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_cityobject (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
 }
