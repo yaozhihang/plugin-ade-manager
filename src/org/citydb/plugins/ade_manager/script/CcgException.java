@@ -1,4 +1,4 @@
-package org.citydb.plugins.ade_manager.cleanup;
+package org.citydb.plugins.ade_manager.script;
 
 public class CcgException extends Exception {
 

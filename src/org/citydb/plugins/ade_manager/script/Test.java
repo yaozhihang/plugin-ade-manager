@@ -1,9 +1,9 @@
-package org.citydb.plugins.ade_manager.cleanup;
+package org.citydb.plugins.ade_manager.script;
 
 import java.io.File;
 import javax.xml.bind.JAXBException;
 
-import org.apache.ddlutils.platform.postgresql.PostgreSqlPlatform;
+import org.citydb.api.database.DatabaseType;
 import org.citydb.database.schema.mapping.SchemaMapping;
 import org.citydb.database.schema.mapping.SchemaMappingException;
 import org.citydb.database.schema.mapping.SchemaMappingValidationException;
@@ -26,12 +26,12 @@ public class Test {
 		} catch (SchemaMappingException | SchemaMappingValidationException | JAXBException e) {
 			throw new CcgException("Failed to load the ADE schema-mapping file", e);
 		}		
+
+		CleanupGeneratorFactory cleanupFactory = new CleanupGeneratorFactory();
+		ICleanupGenerator cleanupScriptGenerator = cleanupFactory.createDatabaseAdapter(DatabaseType.ORACLE);
 		
-		File outputFile = new File("test");
-		CitydbCleanupScriptGenerator generator = new CitydbCleanupScriptGenerator(outputFile);
-		generator.doProzess(mainSchemaMapping, new PostgreSqlPlatform());
-		
-		System.out.println("Finished!");
+		File outputFile = new File("tmp/test.sql");
+		cleanupScriptGenerator.doProcess(mainSchemaMapping, outputFile);
 	}
 
 }
