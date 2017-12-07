@@ -118,6 +118,8 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		String deleteImplicitGeometryFunction = buildDeleteImplicitGeometryFuncSql();
 		String deleteGridCoverageFunction = buildDeleteGridCoverageFuncSql();
 		String deleteCityModelFunction = buildDeleteCityModelFuncSql();
+		String deleteGenericAttribFunction = buildDeleteGenericAttribFuncSql();
+		String deleteExternalReferenceFunction = buildDeleteExternalReferenceFuncSql();
 		
 		String cleanupAddressProcedure = buildCleanupFuncSql(addressList, "delete_address", "cleanup_address");
 		String cleanupSurfaceDataProcedure = buildCleanupFuncSql(surfaceDataList, "delete_surface_data", "cleanup_surface_data");
@@ -128,11 +130,11 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		
 		StringBuilder outputBuilder = new StringBuilder();
 		outputBuilder.append(buildComment("Function for deleting surface geometry"));
-		outputBuilder.append(deleteImplicitGeometryFunction);
+		outputBuilder.append(deleteSurfaceGeometryFunction);
 		outputBuilder.append(lineBreak).append(lineBreak);
 		
 		outputBuilder.append(buildComment("Function for deleting implicit geometry"));
-		outputBuilder.append(deleteSurfaceGeometryFunction);
+		outputBuilder.append(deleteImplicitGeometryFunction);
 		outputBuilder.append(lineBreak).append(lineBreak);
 		
 		outputBuilder.append(buildComment("Function for deleting grid coverage"));
@@ -141,6 +143,14 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		
 		outputBuilder.append(buildComment("Function for deleting city model"));
 		outputBuilder.append(deleteCityModelFunction);
+		outputBuilder.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for deleting generic attribute"));
+		outputBuilder.append(deleteGenericAttribFunction);
+		outputBuilder.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for deleting external reference"));
+		outputBuilder.append(deleteExternalReferenceFunction);
 		outputBuilder.append(lineBreak).append(lineBreak);
 		
 		outputBuilder.append(buildComment("Function for cleaning up addresses"));
@@ -196,6 +206,8 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 	protected abstract String buildDeleteImplicitGeometryFuncSql();
 	protected abstract String buildDeleteGridCoverageFuncSql();
 	protected abstract String buildDeleteCityModelFuncSql();
+	protected abstract String buildDeleteGenericAttribFuncSql();
+	protected abstract String buildDeleteExternalReferenceFuncSql();
 	protected abstract String buildCleanupFuncSql(List<JoinEntry> entryList, String deleteFuncName, String cleanupFuncName);	
 	protected abstract String buildCleanupQuerySql(List<JoinEntry> entryList, int dentNumber);
 	protected abstract String buildPackageEnd();

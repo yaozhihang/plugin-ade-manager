@@ -114,5 +114,17 @@ public class PostgisCleanupGenerator extends AbstractCleanupGenerator {
 		// TODO 
 		return "";
 	}
+
+	@Override
+	protected String buildDeleteGenericAttribFuncSql() {
+		// TODO
+		return "";
+	}
+
+	@Override
+	protected String buildDeleteExternalReferenceFuncSql() {
+		// TODO 
+		return "";
+	}
 	
 }

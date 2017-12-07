@@ -209,15 +209,13 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		.append(dent).append(dent).append("member_id number;").append(lineBreak)
 		.append(dent).append("begin").append(lineBreak)
 		.append(dent).append(dent).append("if delete_members <> 0 then").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("open member_cur for 'select cityobject_id from ' || schema_name || '.cityobject_member where citymodel_id=:1' USING  using pid;").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("open member_cur for 'select cityobject_id from ' || schema_name || '.cityobject_member where citymodel_id=:1' using pid;").append(lineBreak)
 		.append(dent).append(dent).append(dent).append("loop").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("fetch member_cur into member_id;").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("exit when member_cur%notfound;").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("begin").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append(dent).append("dummy_id := delete_cityobject(member_id, delete_members, 0, schema_name);").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("exception").append(lineBreak)
-		.append(dent).append(dent).append(dent).append(dent).append("when no_data_found then").append(lineBreak)
-		.append(dent).append(dent).append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("when others then").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append(dent).append("dbms_output.put_line('pre_delete_citymodel: deletion of cityobject_member with ID ' || member_id || ' threw: ' || SQLERRM);").append(lineBreak)
 		.append(dent).append(dent).append(dent).append(dent).append("end").append(lineBreak)
@@ -232,6 +230,44 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
 		.append(dent).append(dent).append("when others then").append(lineBreak)
 		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_citymodel (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
+	protected String buildDeleteGenericAttribFuncSql() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_genericattrib(pid number, delete_members int := 0, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.cityobject_genericattrib where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_genericattrib (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
+	protected String buildDeleteExternalReferenceFuncSql() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_external_reference(pid number, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.external_reference where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_genericattrib (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
 		.append(dent).append("end;");
 		
 		return builder.toString();
