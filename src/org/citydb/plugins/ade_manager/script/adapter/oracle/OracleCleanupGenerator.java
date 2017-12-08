@@ -2,7 +2,6 @@ package org.citydb.plugins.ade_manager.script.adapter.oracle;
 
 import java.util.List;
 
-import org.citydb.plugins.ade_manager.script.DeleteFuncNameEnum;
 import org.citydb.plugins.ade_manager.script.adapter.AbstractCleanupGenerator;
 
 public class OracleCleanupGenerator extends AbstractCleanupGenerator {
@@ -78,24 +77,35 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 	}
 
 	@Override
-	protected String buildPackageHead() {
+	protected String buildPackageHead(List<String> declaredFuncNameList) {
 		StringBuilder builder = new StringBuilder();
 		
 		builder.append("CREATE OR REPLACE PACKAGE citydb_delete").append(lineBreak)
 		.append("AS").append(lineBreak);
-		for (DeleteFuncNameEnum n : DeleteFuncNameEnum.values()) {	
-			String funcName = n.toString();
-			builder.append(dent).append("function ").append(funcName);
-			if (funcName.equalsIgnoreCase("delete_surface_geometry"))
-				builder.append("(pid number, clean_apps int := 0, schema_name varchar2 := user) return id_array;").append(lineBreak);
-			else if (funcName.equalsIgnoreCase("delete_implicit_geometry"))
-				builder.append("(pid number, clean_apps int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
-			else if (funcName.equalsIgnoreCase("delete_cityobject"))
-				builder.append("(pid number, delete_members int := 0, cleanup int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
-			else if (funcName.equalsIgnoreCase("delete_cityobjectgroup"))
-				builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
-			else
-				builder.append("(pid number, schema_name varchar2 := user) return number;").append(lineBreak);			
+		for (String funcName : declaredFuncNameList) {	
+			if (funcName.equalsIgnoreCase(lineBreak))
+				builder.append(lineBreak);
+			else {
+				builder.append(dent).append("function ").append(funcName);
+				if (funcName.equalsIgnoreCase("delete_surface_geometry"))
+					builder.append("(pid number, clean_apps int := 0, schema_name varchar2 := user) return id_array;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_implicit_geometry"))
+					builder.append("(pid number, clean_apps int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_citymodel"))
+					builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_genericattrib"))
+					builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_genericattrib"))
+					builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_appearance"))
+					builder.append("(pid number, cleanup int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_cityobjectgroup"))
+					builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else if (funcName.equalsIgnoreCase("delete_cityobject"))
+					builder.append("(pid number, delete_members int := 0, cleanup int := 0, schema_name varchar2 := user) return number;").append(lineBreak);
+				else
+					builder.append("(pid number, schema_name varchar2 := user) return number;").append(lineBreak);	
+			}				
 		}
 		builder.append("END citydb_delete;").append(lineBreak)
 		.append("/").append(lineBreak)
@@ -157,7 +167,7 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		.append(dent).append("begin").append(lineBreak)
 		.append(dent).append(dent).append("execute immediate 'select * from ' || schema_name || '.implicit_geometry where id=:1' into implicit_geometry_rec using pid;").append(lineBreak)
 		.append(dent).append(dent).append("if implicit_geometry_rec.relative_brep_id is not null then").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("dummy_surfGeom_ids := delete_surface_geometry(implicit_geometry_rec.relative_brep_id, schema_name);").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dummy_surfGeom_ids := delete_surface_geometry(implicit_geometry_rec.relative_brep_id, clean_apps, schema_name);").append(lineBreak)
 		.append(dent).append(dent).append("end if;").append(lineBreak)
 		.append(lineBreak)
 		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.implicit_geometry where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
@@ -313,6 +323,25 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 	}
 
 	@Override
+	protected String buildDeleteAddressFuncSql() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(dent).append("function delete_address(pid number, schema_name varchar2 := user) return number").append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak)
+		.append(dent).append(dent).append("execute immediate 'delete from ' || schema_name || '.address where id=:1 returning id into :2' using pid, out deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when no_data_found then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_address (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
 	protected String buildDeleteCityObjectFuncSql() {
 		// TODO Here we may need to clean up some properties like appearances, addresses, and implicit geometries etc.
 		StringBuilder builder = new StringBuilder();
@@ -327,6 +356,37 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		.append(dent).append(dent).append(dent).append("return deleted_id;").append(lineBreak)
 		.append(dent).append(dent).append("when others then").append(lineBreak)
 		.append(dent).append(dent).append(dent).append("dbms_output.put_line('delete_cityobject (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
+		.append(dent).append("end;");
+		
+		return builder.toString();
+	}
+
+	@Override
+	protected String buildDeleteFeatureFuncsSql(String funcName) {
+		StringBuilder builder = new StringBuilder();
+		
+		builder.append(dent).append("function ").append(funcName);
+		
+		if (funcName.equalsIgnoreCase("delete_cityobjectgroup"))
+			builder.append("(pid number, delete_members int := 0, schema_name varchar2 := user) return number");
+		else
+			builder.append("(pid number, schema_name varchar2 := user) return number");
+		
+		builder.append(lineBreak)
+		.append(dent).append("is").append(lineBreak)
+		.append(dent).append(dent).append("deleted_id number;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak);
+		
+		if (funcName.equalsIgnoreCase("delete_cityobjectgroup"))
+			builder.append(dent).append(dent).append("deleted_id = delete_cityobject(pid, delete_members, schema_name);");
+		else
+			builder.append(dent).append(dent).append("deleted_id = delete_cityobject(pid, 0, schema_name);");
+		
+		builder.append(lineBreak)
+		.append(dent).append(dent).append("return deleted_id;").append(lineBreak)
+		.append(dent).append("exception").append(lineBreak)
+		.append(dent).append(dent).append("when others then").append(lineBreak)
+		.append(dent).append(dent).append(dent).append("dbms_output.put_line('").append(funcName).append(" (id: ' || pid || '): ' || SQLERRM);").append(lineBreak)
 		.append(dent).append("end;");
 		
 		return builder.toString();

@@ -1,6 +1,7 @@
 package org.citydb.plugins.ade_manager.script.adapter.postgis;
 
 import java.util.List;
+
 import org.citydb.plugins.ade_manager.script.adapter.AbstractCleanupGenerator;
 
 public class PostgisCleanupGenerator extends AbstractCleanupGenerator {
@@ -82,7 +83,7 @@ public class PostgisCleanupGenerator extends AbstractCleanupGenerator {
 	}
 
 	@Override
-	protected String buildPackageHead() {
+	protected String buildPackageHead(List<String> declaredFuncNameList) {
 		return "";
 	}
 
@@ -141,6 +142,18 @@ public class PostgisCleanupGenerator extends AbstractCleanupGenerator {
 
 	@Override
 	protected String buildDeleteCityObjectFuncSql() {
+		// TODO 
+		return "";
+	}
+
+	@Override
+	protected String buildDeleteFeatureFuncsSql(String funcName) {
+		// TODO 
+		return "";
+	}
+
+	@Override
+	protected String buildDeleteAddressFuncSql() {
 		// TODO 
 		return "";
 	}
