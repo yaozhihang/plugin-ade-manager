@@ -16,18 +16,23 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 		.append(dent).append(dent).append("deleted_ids id_array := id_array();").append(lineBreak)
 		.append(dent).append(dent).append("record_cur ref_cursor;").append(lineBreak)
 		.append(dent).append(dent).append("record_id number;").append(lineBreak)
-		.append(dent).append("begin").append(lineBreak)
-		.append(dent).append(dent).append("open record_cur for ").append(sqlProcedure).append("';").append(lineBreak)
-		.append(dent).append(dent).append("loop").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("fetch record_cur into record_id;").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("exit when record_cur%notfound;").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("deleted_id := ").append(deleteFuncName).append("(record_id, schema_name)").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("deleted_ids.extend;").append(lineBreak)
-		.append(dent).append(dent).append(dent).append("deleted_ids(deleted_ids.count) := deleted_id;").append(lineBreak)		
-		.append(dent).append(dent).append("end loop;").append(lineBreak)
-		.append(dent).append(dent).append("close record_cur;")
-		.append(dent).append(lineBreak)
-		.append(dent).append(dent).append("return deleted_ids;").append(lineBreak)
+		.append(dent).append("begin").append(lineBreak);
+		
+		if (sqlProcedure != null) {
+			funcBuilder.append(dent).append(dent).append("open record_cur for ").append(sqlProcedure).append("';").append(lineBreak)
+			.append(dent).append(dent).append("loop").append(lineBreak)
+			.append(dent).append(dent).append(dent).append("fetch record_cur into record_id;").append(lineBreak)
+			.append(dent).append(dent).append(dent).append("exit when record_cur%notfound;").append(lineBreak)
+			.append(dent).append(dent).append(dent).append("deleted_id := ").append(deleteFuncName).append("(record_id, schema_name)").append(lineBreak)
+			.append(dent).append(dent).append(dent).append("deleted_ids.extend;").append(lineBreak)
+			.append(dent).append(dent).append(dent).append("deleted_ids(deleted_ids.count) := deleted_id;").append(lineBreak)		
+			.append(dent).append(dent).append("end loop;").append(lineBreak)
+			.append(dent).append(dent).append("close record_cur;")
+			.append(dent).append(lineBreak);
+		}
+		
+		
+		funcBuilder.append(dent).append(dent).append("return deleted_ids;").append(lineBreak)
 		.append(dent).append("exception").append(lineBreak)
 		.append(dent).append(dent).append("when others then").append(lineBreak)
 		.append(dent).append(dent).append(dent).append("dbms_output.put_line('").append(cleanupFuncName).append(": ' || SQLERRM);").append(lineBreak)		
@@ -37,7 +42,10 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 	}
 	
 	@Override
-	protected String buildCleanupQuerySql(List<JoinEntry> entryList, int dentNumber) {		
+	protected String buildCleanupQuerySql(List<JoinEntry> entryList, int dentNumber) {	
+		if (entryList.size() == 0)
+			return null;
+		
 		String codeDent = "";
 		for (int i = 0; i < dentNumber; i++)
 			codeDent = codeDent + dent;

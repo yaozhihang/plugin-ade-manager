@@ -16,6 +16,7 @@ import org.citydb.database.schema.mapping.FeatureType;
 import org.citydb.database.schema.mapping.Join;
 import org.citydb.database.schema.mapping.JoinTable;
 import org.citydb.database.schema.mapping.SchemaMapping;
+import org.citydb.database.schema.mapping.TableRole;
 import org.citydb.plugins.ade_manager.script.CcgException;
 import org.citydb.plugins.ade_manager.script.ICleanupGenerator;
 
@@ -29,6 +30,7 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 	@SuppressWarnings("serial")
 	protected final  List<String> cleanupTypes = new ArrayList<String>() {
 		{
+			add("AppearanceType");
 			add("AddressType");
 			add("AbstractSurfaceDataType");
 			add("AbstractWaterBoundarySurfaceType");		
@@ -86,6 +88,7 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		
 		List<FeatureType> featureTypes = mainSchemaMapping.getFeatureTypes();
 		
+		List<JoinEntry> appearanceList = new ArrayList<JoinEntry>();
 		List<JoinEntry> addressList = new ArrayList<JoinEntry>();
 		List<JoinEntry> surfaceDataList = new ArrayList<JoinEntry>();
 		List<JoinEntry> waterBoundaryList = new ArrayList<JoinEntry>();
@@ -123,6 +126,7 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 					FeatureType targetFeatureType = featureProperty.getType();
 					JoinEntry entry = null;
 					String targetFeatureTypeId = targetFeatureType.getId();
+					
 					if (cleanupTypes.contains(targetFeatureTypeId)) {
 						AbstractJoin join = featureProperty.getJoin();
 						String joinTable = null;
@@ -136,41 +140,51 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 							targetJoinColumn = ((JoinTable) join).getInverseJoin().getFromColumn();							
 						}
 						else if (join instanceof Join){
-							joinTable = featureType.getTable();
-							targetTable = ((Join) join).getTable();
-							sourceJoinColumn = ((Join) join).getToColumn();
-							targetJoinColumn = ((Join) join).getFromColumn();
+							if (((Join) join).getToRole() == TableRole.PARENT) {
+								joinTable = featureType.getTable();
+								targetTable = ((Join) join).getTable();
+								sourceJoinColumn = ((Join) join).getToColumn();
+								targetJoinColumn = ((Join) join).getFromColumn();
+							}							
 						}
-						entry = new JoinEntry(joinTable, targetTable, sourceJoinColumn, targetJoinColumn);	
 						
+						if (joinTable != null)
+							entry = new JoinEntry(joinTable, targetTable, sourceJoinColumn, targetJoinColumn);
 					}
 					
-					if (targetFeatureTypeId.equalsIgnoreCase( "AddressType")) {
-						addressList.add(entry);
-					}
-					else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractSurfaceDataType")) {
-						surfaceDataList.add(entry);
-					}
-					else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractWaterBoundarySurfaceType")) {
-						waterBoundaryList.add(entry);
-					}
-					else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractOpeningType")) {
-						buildingOpeningList.add(entry);
-					}
-					else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractTunnelOpeningType")) {
-						tunnelOpeningList.add(entry);
-					}
-					else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractBridgeOpeningType")) {
-						bridgeOpeningList.add(entry);
-					}
+					if (entry != null) {
+						if (targetFeatureTypeId.equalsIgnoreCase( "AppearanceType")) {
+							appearanceList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AddressType")) {
+							addressList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractSurfaceDataType")) {
+							surfaceDataList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractWaterBoundarySurfaceType")) {
+							waterBoundaryList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractOpeningType")) {
+							buildingOpeningList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractTunnelOpeningType")) {
+							tunnelOpeningList.add(entry);
+						}
+						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractBridgeOpeningType")) {
+							bridgeOpeningList.add(entry);
+						}
+					}					
 				}
 			}					
 		}
 		
 		declaredFuncNameList.add(lineBreak);
-			
-		String cleanupAddressProcedure = buildCleanupFuncSql(addressList, "delete_address", "cleanup_address");
-		declaredFuncNameList.add("cleanup_address");
+		
+		String cleanupAppearanceProcedure = buildCleanupFuncSql(appearanceList, "delete_appearance", "cleanup_appearances");
+		declaredFuncNameList.add("cleanup_appearances");
+		String cleanupAddressProcedure = buildCleanupFuncSql(addressList, "delete_address", "cleanup_addresses");
+		declaredFuncNameList.add("cleanup_addresses");
 		String cleanupSurfaceDataProcedure = buildCleanupFuncSql(surfaceDataList, "delete_surface_data", "cleanup_surface_data");
 		declaredFuncNameList.add("cleanup_surface_data");
 		String cleanupWaterBoundaryProcedure = buildCleanupFuncSql(waterBoundaryList, "delete_waterbnd_surface", "cleanup_waterbnd_surfaces");
@@ -229,6 +243,10 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 			.append(funcSql)
 			.append(lineBreak).append(lineBreak);
 		}
+		
+		outputBuilder.append(buildComment("Function for cleaning up appearances"))
+		.append(cleanupAppearanceProcedure)
+		.append(lineBreak).append(lineBreak);
 		
 		outputBuilder.append(buildComment("Function for cleaning up addresses"))
 		.append(cleanupAddressProcedure)
@@ -295,6 +313,7 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 	
 	protected abstract String buildCleanupFuncSql(List<JoinEntry> entryList, String deleteFuncName, String cleanupFuncName);	
 	protected abstract String buildCleanupQuerySql(List<JoinEntry> entryList, int dentNumber);
+	
 	protected abstract String buildPackageEnd();
 	
 	protected class JoinEntry {
