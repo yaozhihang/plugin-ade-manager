@@ -29,8 +29,7 @@ public class OracleCleanupGenerator extends AbstractCleanupGenerator {
 			.append(dent).append(dent).append("end loop;").append(lineBreak)
 			.append(dent).append(dent).append("close record_cur;")
 			.append(dent).append(lineBreak);
-		}
-		
+		}		
 		
 		funcBuilder.append(dent).append(dent).append("return deleted_ids;").append(lineBreak)
 		.append(dent).append("exception").append(lineBreak)

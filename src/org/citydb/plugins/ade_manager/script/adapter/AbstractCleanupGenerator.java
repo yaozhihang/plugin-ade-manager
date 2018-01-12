@@ -13,9 +13,11 @@ import org.citydb.database.schema.mapping.AbstractJoin;
 import org.citydb.database.schema.mapping.AbstractProperty;
 import org.citydb.database.schema.mapping.FeatureProperty;
 import org.citydb.database.schema.mapping.FeatureType;
+import org.citydb.database.schema.mapping.ImplicitGeometryProperty;
 import org.citydb.database.schema.mapping.Join;
 import org.citydb.database.schema.mapping.JoinTable;
 import org.citydb.database.schema.mapping.SchemaMapping;
+import org.citydb.database.schema.mapping.SimpleAttribute;
 import org.citydb.database.schema.mapping.TableRole;
 import org.citydb.plugins.ade_manager.script.CcgException;
 import org.citydb.plugins.ade_manager.script.ICleanupGenerator;
@@ -28,15 +30,17 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 	protected final String dent = "  ";
 	
 	@SuppressWarnings("serial")
-	protected final  List<String> cleanupTypes = new ArrayList<String>() {
+	protected final  List<String> cleanupTables = new ArrayList<String>() {
 		{
-			add("AppearanceType");
-			add("AddressType");
-			add("AbstractSurfaceDataType");
-			add("AbstractWaterBoundarySurfaceType");		
-			add("AbstractOpeningType");
-			add("AbstractTunnelOpeningType");
-			add("AbstractBridgeOpeningType");
+			add("appearance");
+			add("address");
+			add("surface_data");
+			add("waterboundary_surface");		
+			add("opening");
+			add("tunnel_opening");
+			add("bridge_opening");
+			add("tex_image");
+			add("implicit_geometry");
 		}
 	};
 	
@@ -94,7 +98,9 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		List<JoinEntry> waterBoundaryList = new ArrayList<JoinEntry>();
 		List<JoinEntry> buildingOpeningList = new ArrayList<JoinEntry>();
 		List<JoinEntry> tunnelOpeningList = new ArrayList<JoinEntry>();
-		List<JoinEntry> bridgeOpeningList = new ArrayList<JoinEntry>();		
+		List<JoinEntry> bridgeOpeningList = new ArrayList<JoinEntry>();	
+		List<JoinEntry> texImageList = new ArrayList<JoinEntry>();
+		List<JoinEntry> implicitGeometryList = new ArrayList<JoinEntry>();
 		
 		Map<String, String> deleteFeatureFuncList = new HashMap<String, String>();
 				
@@ -121,60 +127,62 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 			}
 
 			for (AbstractProperty property : featureType.getProperties()) {
-				if (property instanceof FeatureProperty) {
-					FeatureProperty featureProperty = ((FeatureProperty) property);
-					FeatureType targetFeatureType = featureProperty.getType();
-					JoinEntry entry = null;
-					String targetFeatureTypeId = targetFeatureType.getId();
-					
-					if (cleanupTypes.contains(targetFeatureTypeId)) {
-						AbstractJoin join = featureProperty.getJoin();
-						String joinTable = null;
-						String targetTable = null;
-						String sourceJoinColumn = null;
-						String targetJoinColumn = null;
-						if (join instanceof JoinTable) {
-							joinTable = ((JoinTable) join).getTable();
-							targetTable = ((JoinTable) join).getInverseJoin().getTable();
-							sourceJoinColumn = ((JoinTable) join).getJoin().getFromColumn();
-							targetJoinColumn = ((JoinTable) join).getInverseJoin().getFromColumn();							
-						}
-						else if (join instanceof Join){
-							if (((Join) join).getToRole() == TableRole.PARENT) {
-								joinTable = featureType.getTable();
-								targetTable = ((Join) join).getTable();
-								sourceJoinColumn = ((Join) join).getToColumn();
-								targetJoinColumn = ((Join) join).getFromColumn();
-							}							
-						}
-						
-						if (joinTable != null)
-							entry = new JoinEntry(joinTable, targetTable, sourceJoinColumn, targetJoinColumn);
-					}
-					
+				JoinEntry entry = null;
+				String joinTable = featureType.getTable();
+				String targetTable = null;
+				AbstractJoin join = null;
+				
+				if (property instanceof FeatureProperty) {			
+					targetTable = ((FeatureProperty) property).getType().getTable();
+					join = ((FeatureProperty) property).getJoin();
+					entry = createJoinEntry(join, joinTable);
+				}
+				else if (property instanceof SimpleAttribute) {
+					AbstractJoin attributeJoin = property.getJoin();
+					if (attributeJoin instanceof Join) {
+						targetTable = ((Join) attributeJoin).getTable();
+						join = attributeJoin;
+						entry = createJoinEntry(join, joinTable);
+					}						
+				}
+				else if (property instanceof ImplicitGeometryProperty) {
+					targetTable = "implicit_geometry";
+					int lod = ((ImplicitGeometryProperty) property).getLod();
+					System.out.println(joinTable + "---" + property.getPath());
+					String targetJoinColumn = "lod" + lod + "_implicit_rep_id";
+					entry = new JoinEntry(joinTable, targetTable, "id", targetJoinColumn);
+				}
+				
+				if (cleanupTables.contains(targetTable)) {										
 					if (entry != null) {
-						if (targetFeatureTypeId.equalsIgnoreCase( "AppearanceType")) {
+						if (targetTable.equalsIgnoreCase("Appearance")) {
 							appearanceList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AddressType")) {
+						else if (targetTable.equalsIgnoreCase("Address")) {
 							addressList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractSurfaceDataType")) {
+						else if (targetTable.equalsIgnoreCase("Surface_Data")) {
 							surfaceDataList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractWaterBoundarySurfaceType")) {
+						else if (targetTable.equalsIgnoreCase("waterboundary_surface")) {
 							waterBoundaryList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractOpeningType")) {
+						else if (targetTable.equalsIgnoreCase("Opening")) {
 							buildingOpeningList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractTunnelOpeningType")) {
+						else if (targetTable.equalsIgnoreCase("Tunnel_Opening")) {
 							tunnelOpeningList.add(entry);
 						}
-						else if (targetFeatureTypeId.equalsIgnoreCase( "AbstractBridgeOpeningType")) {
+						else if (targetTable.equalsIgnoreCase("Bridge_Opening")) {
 							bridgeOpeningList.add(entry);
 						}
-					}					
+						else if (targetTable.equalsIgnoreCase("tex_image")) {
+							texImageList.add(entry);
+						}
+						else if (targetTable.equalsIgnoreCase("implicit_geometry")) {
+							implicitGeometryList.add(entry);
+						}
+					}	
 				}
 			}					
 		}
@@ -193,8 +201,12 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		declaredFuncNameList.add("cleanup_building_openings");
 		String cleanupTunnelOpeningProcedure = buildCleanupFuncSql(tunnelOpeningList, "delete_tunnel_openings", "cleanup_tunnel_openings");
 		declaredFuncNameList.add("cleanup_tunnel_openings");
-		String cleanupBridgeOpeningProcedure = buildCleanupFuncSql(bridgeOpeningList, "cleanup_bridge_openings", "cleanup_bridge_openings");
+		String cleanupBridgeOpeningProcedure = buildCleanupFuncSql(bridgeOpeningList, "delete_bridge_openings", "cleanup_bridge_openings");
 		declaredFuncNameList.add("cleanup_bridge_openings");
+		String cleanupTexImageProcedure = buildCleanupFuncSql(texImageList, "delete_tex_images", "cleanup_tex_images");
+		declaredFuncNameList.add("cleanup_tex_images");
+		String cleanupImplicitGeometryProcedure = buildCleanupFuncSql(implicitGeometryList, "delete_implicit_geometry", "cleanup_implicit_geometries");
+		declaredFuncNameList.add("cleanup_implicit_geometries");
 		
 		StringBuilder outputBuilder = new StringBuilder()
 		.append(buildComment("Function for deleting surface geometry"))
@@ -272,7 +284,43 @@ public abstract class AbstractCleanupGenerator implements ICleanupGenerator {
 		.append(cleanupBridgeOpeningProcedure)
 		.append(lineBreak).append(lineBreak);
 		
+		outputBuilder.append(buildComment("Function for cleaning up texture images"))
+		.append(cleanupTexImageProcedure)
+		.append(lineBreak).append(lineBreak);
+		
+		outputBuilder.append(buildComment("Function for cleaning up implicit geometries"))
+		.append(cleanupImplicitGeometryProcedure)
+		.append(lineBreak).append(lineBreak);
+		
 		return outputBuilder.toString();
+	}
+	
+	private JoinEntry createJoinEntry(AbstractJoin join, String joinFromTable){
+		String joinTable = null;
+		String targetTable = null;
+		String sourceJoinColumn = null;
+		String targetJoinColumn = null;
+		JoinEntry entry = null;
+		
+		if (join instanceof JoinTable) {
+			joinTable = ((JoinTable) join).getTable();
+			targetTable = ((JoinTable) join).getInverseJoin().getTable();
+			sourceJoinColumn = ((JoinTable) join).getJoin().getFromColumn();
+			targetJoinColumn = ((JoinTable) join).getInverseJoin().getFromColumn();							
+		}
+		else if (join instanceof Join){
+			if (((Join) join).getToRole() == TableRole.PARENT) {
+				joinTable = joinFromTable;
+				targetTable = ((Join) join).getTable();
+				sourceJoinColumn = ((Join) join).getToColumn();
+				targetJoinColumn = ((Join) join).getFromColumn();
+			}							
+		}
+		
+		if (joinTable != null)
+			entry = new JoinEntry(joinTable, targetTable, sourceJoinColumn, targetJoinColumn);
+		
+		return entry;
 	}
 	
 	private void writeToFile(String sql, File outputFile) throws CcgException {
