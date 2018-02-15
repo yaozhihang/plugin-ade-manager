@@ -1,22 +1,22 @@
 package org.citydb.plugins.ade_manager.script;
 
-public class CcgException extends Exception {
+public class DsgException extends Exception {
 
 	private static final long serialVersionUID = -1115965491412100047L;
 
-	public CcgException() {
+	public DsgException() {
 		super();
 	}
 	
-	public CcgException(String message) {
+	public DsgException(String message) {
 		super(message);
 	}
 	
-	public CcgException(Throwable cause) {
+	public DsgException(Throwable cause) {
 		super(cause);
 	}
 	
-	public CcgException(String message, Throwable cause) {
+	public DsgException(String message, Throwable cause) {
 		super(message, cause);
 	}
 }
