@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -31,6 +30,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.transform.Source;
 
 import org.citydb.api.controller.ViewController;
+import org.citydb.api.database.DatabaseType;
 import org.citydb.api.event.Event;
 import org.citydb.api.event.EventHandler;
 import org.citydb.api.registry.ObjectRegistry;
@@ -52,6 +52,9 @@ import org.citydb.plugins.ade_manager.gui.table.schemaTable.SchemaRow;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImportException;
 import org.citydb.plugins.ade_manager.metadata.DBMetadataImporter;
 import org.citydb.plugins.ade_manager.metadata.DBUtil;
+import org.citydb.plugins.ade_manager.script.DeleteScriptGeneratorFactory;
+import org.citydb.plugins.ade_manager.script.DsgException;
+import org.citydb.plugins.ade_manager.script.IDeleteScriptGenerator;
 import org.citydb.plugins.ade_manager.transformation.TransformationException;
 import org.citydb.plugins.ade_manager.transformation.TransformationManager;
 import org.citydb.plugins.ade_manager.util.SqlRunner;
@@ -116,7 +119,8 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 	private JPanel adeButtonsPanel;
 	private JButton registerADEButton = new JButton();	
 	private JButton fetchADEsButton = new JButton();	
-	private JButton removeADEButton = new JButton();	
+	private JButton removeADEButton = new JButton();
+	private JButton generateDeleteScriptsButton = new JButton();
 	private JScrollPane adeTableScrollPanel;
 	private JTable adeTable;
 	private TableModelImpl<ADERow> adeTableModel = new TableModelImpl<ADERow>(ADERow.getColumnNames());
@@ -237,6 +241,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		adeButtonsPanel.add(fetchADEsButton, GuiUtil.setConstraints(0,0,1.0,1.0,GridBagConstraints.BOTH,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		adeButtonsPanel.add(registerADEButton, GuiUtil.setConstraints(1,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		adeButtonsPanel.add(removeADEButton, GuiUtil.setConstraints(2,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
+		adeButtonsPanel.add(generateDeleteScriptsButton, GuiUtil.setConstraints(3,0,0.0,0.0,GridBagConstraints.NONE,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS,BORDER_THICKNESS));
 		
 		// Assemble all panels
 		JPanel mainScrollView = new JPanel();
@@ -290,6 +295,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		registerADEButton.setText("Register ADE into DB");
 		fetchADEsButton.setText("Fetch ADEs from DB");
 		removeADEButton.setText("Remove seleted ADE from DB");
+		generateDeleteScriptsButton.setText("Generate Delete Scripts");
 	}
 
 	public void loadSettings() {
@@ -400,6 +406,18 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 				Thread thread = new Thread() {
 					public void run() {
 						removeADEFromDB();
+					}
+				};
+				thread.setDaemon(true);
+				thread.start();
+			}
+		});
+		
+		generateDeleteScriptsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Thread thread = new Thread() {
+					public void run() {
+						generateDeleteScripts();
 					}
 				};
 				thread.setDaemon(true);
@@ -716,6 +734,28 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 			return;
 		}
 		LOG.info("Database schema has been successfully dropped");
+	}
+	
+	private void generateDeleteScripts() {
+		checkAndConnectToDB();
+		
+		if (dbPool.isConnected()) {
+			DatabaseType databaseType = dbPool.getActiveDatabaseAdapter().getDatabaseType();
+			DeleteScriptGeneratorFactory factory = new DeleteScriptGeneratorFactory();
+			IDeleteScriptGenerator cleanupScriptGenerator = factory.createDatabaseAdapter(databaseType);
+			
+			File outputFile = new File("tmp/test.sql");
+			try {
+				cleanupScriptGenerator.doProcess(dbPool, outputFile);
+			} catch (DsgException e) {
+				LOG.error("Failed to generate delect-scripts for the connected 3DCityDB instance");
+				Throwable cause = e.getCause();
+				while (cause != null) {
+					LOG.error("Cause: " + cause.getMessage());
+					cause = cause.getCause();
+				}
+			}
+		}
 	}
 	
 	private void checkAndConnectToDB() {
