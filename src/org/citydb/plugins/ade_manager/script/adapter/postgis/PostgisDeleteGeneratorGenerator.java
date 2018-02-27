@@ -202,7 +202,7 @@ public class PostgisDeleteGeneratorGenerator extends AbstractDeleteScriptGenerat
 			
 			RelationType nRootRelation = checkTableRelation(n_table_name, rootTableName);
 			
-			if (!deleteFuncDefs.containsKey(n_table_name))
+			if (!deleteFuncDefs.containsKey(n_table_name) && m_table_name == null)
 				createDeleteFunc(n_table_name, schemaName);
 
 			// PF = FK case e.g. ADE hook and inheritance relationships
