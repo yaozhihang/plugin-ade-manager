@@ -635,7 +635,7 @@ public class ADEManagerPanel extends JPanel implements EventHandler {
 		// read ADE's schema mapping file
 		LOG.info("Loading ADE's schema mapping file...");
 		try {			
-			SchemaMapping citydbSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"));
+			SchemaMapping citydbSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(SchemaMappingUtil.class.getResource("/org/citydb/database/schema/3dcitydb-schema.xml"));
 			adeSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(citydbSchemaMapping, sourceAdeSchemaMappingPath.toFile());	
 		} catch (JAXBException e) {
 			LOG.error(e.getMessage());
