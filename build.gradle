@@ -66,8 +66,8 @@ distributions.main.contents {
     into('lib') {
         from configurations.compile.copy().exclude(group: 'org.citydb')
     }
-    into('templates') {
-        from 'resources/templates'
+    into('samples') {
+        from 'samples'
     }
     into('license') {
         from 'resources/license/APACHE-2.0.txt'
