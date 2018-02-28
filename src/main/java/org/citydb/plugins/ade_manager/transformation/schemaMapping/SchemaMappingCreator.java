@@ -49,6 +49,7 @@ import org.citydb.database.schema.mapping.TreeHierarchy;
 import org.citydb.database.schema.util.SchemaMappingUtil;
 import org.citydb.plugins.ade_manager.config.ConfigImpl;
 import org.citydb.plugins.ade_manager.transformation.graph.GraphNodeArcType;
+import org.citydb.util.CoreConstants;
 
 import agg.attribute.AttrInstance;
 import agg.xt_basis.Arc;
@@ -72,7 +73,7 @@ public class SchemaMappingCreator {
 	public SchemaMapping createSchemaMapping() throws Exception {		
 		initialObjectclassId = config.getInitialObjectclassId();
 		
-		citygmlSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(SchemaMappingUtil.class.getResource("/resources/3dcitydb/3dcitydb-schema.xml"));
+		citygmlSchemaMapping = SchemaMappingUtil.getInstance().unmarshal(CoreConstants.CITYDB_SCHEMA_MAPPING_FILE);
 				
 		adeSchemaMapping = new SchemaMapping();
 		adeSchemaMapping.setMetadata(this.generateMetadata());

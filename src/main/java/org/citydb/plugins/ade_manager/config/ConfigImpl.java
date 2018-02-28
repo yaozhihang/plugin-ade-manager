@@ -28,15 +28,16 @@ package org.citydb.plugins.ade_manager.config;
 
 import java.io.File;
 
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.citydb.config.project.plugin.PluginConfig;
+import org.citydb.util.ClientConstants;
+import org.citydb.util.CoreConstants;
 
 @XmlType(name="ADEManagerType", propOrder={			
 		"xmlSchemaInputPath",		
 		"transformationOutputPath",	
-		"inputGraphPath",		
-		"outputGraphPath",
 		"adeName",		
 		"adeDescription",	
 		"adeVersion",	
@@ -50,9 +51,7 @@ import org.citydb.config.project.plugin.PluginConfig;
 public class ConfigImpl extends PluginConfig {
 	private String xmlSchemaInputPath;
 	private String transformationOutputPath;
-	private String inputGraphPath;
-	private String outputGraphPath;
-	
+
 	private String adeName;
 	private String adeDescription;
 	private String adeVersion;
@@ -63,9 +62,20 @@ public class ConfigImpl extends PluginConfig {
 	private String dbScriptPath;
 	private String dropDbScriptPath;
 	
+	@XmlTransient
+	private String inputGraphPath;
+	@XmlTransient
+	private String outputGraphPath;
+	
 	public ConfigImpl() {
-		inputGraphPath = "graphs" + File.separator + "Working_Graph.ggx";
-		outputGraphPath = "graphs" + File.separator + "Working_Graph2.ggx";
+		inputGraphPath = new File("src/main/resources/graph/Working_Graph.ggx").getAbsolutePath();	
+		
+		File tmp = new File(CoreConstants.IMPEXP_DATA_DIR.resolve("graph").toString());
+		if (!tmp.exists()) {
+			tmp.mkdirs();
+			outputGraphPath = tmp.getAbsolutePath() + File.separator + "Working_Graph_Tmp.ggx";
+		}
+		
 		initialObjectclassId = 10000;
 	}
 

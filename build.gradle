@@ -69,9 +69,6 @@ distributions.main.contents {
     into('samples') {
         from 'samples'
     }
-    into('graphs') {
-        from 'graphs'
-    }
     into('license') {
         from 'resources/license/APACHE-2.0.txt'
         from 'resources/license/LICENSE.txt'
