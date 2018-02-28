@@ -2,7 +2,7 @@ ext {
     date = new Date()
     pluginShortName = 'ADE Manager Plugin'
     pluginName = '3D City Database Importer/Exporter ' + pluginShortName
-    pluginUrl = 'https://github.com/3dcitydb/plugin-spreadsheet-generator'
+    pluginUrl = 'https://github.com/3dcitydb/plugin-ade-manager'
 
     // vendor information
     vendorName = 'Chair of Geoinformatics'
