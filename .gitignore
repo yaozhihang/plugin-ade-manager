@@ -1,3 +1,17 @@
-.settings
-bin
-tmp
+
+.gradle/
+gradle.properties
+build/
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+tmp/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+out/
