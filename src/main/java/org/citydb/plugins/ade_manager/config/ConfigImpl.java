@@ -73,8 +73,9 @@ public class ConfigImpl extends PluginConfig {
 		File tmp = new File(CoreConstants.IMPEXP_DATA_DIR.resolve("graph").toString());
 		if (!tmp.exists()) {
 			tmp.mkdirs();
-			outputGraphPath = tmp.getAbsolutePath() + File.separator + "Working_Graph_Tmp.ggx";
 		}
+		outputGraphPath = tmp.getAbsolutePath() + File.separator + "Working_Graph_Tmp.ggx";
+		
 		
 		initialObjectclassId = 10000;
 	}
